@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(composer global require laravel/installer)",
+      "PowerShell(try { laravel --version } catch { \"not on PATH\" }; \"---\"; $bin = Join-Path $env:APPDATA \"Composer\\\\vendor\\\\bin\\\\laravel.bat\"; \"Exists: \" + \\(Test-Path $bin\\))",
+      "PowerShell(laravel new --help)",
+      "PowerShell(Copy-Item \"README.md\" \"$env:TEMP\\\\mayang-prd-backup.md\" -Force; \"Backed up README.md \\($\\(\\(\\(Get-Item README.md\\).Length\\)\\) bytes\\) to $env:TEMP\\\\mayang-prd-backup.md\")",
+      "PowerShell(laravel new . --force --database=sqlite --react --npm --boost --no-interaction)",
+      "PowerShell(Move-Item \"README.md\" \"$env:TEMP\\\\mayang-readme-moved.md\" -Force; \"Dir contents now:\"; Get-ChildItem -Force | Select-Object -ExpandProperty Name)",
+      "PowerShell(laravel new . --database=sqlite --react --npm --boost --no-interaction)",
+      "PowerShell(laravel new _laravel_tmp --database=pgsql --react --npm --boost --no-interaction)",
+      "PowerShell(\"composer source:\"; \\(Get-Command composer -ErrorAction SilentlyContinue\\).Source; \\(Get-Command composer -ErrorAction SilentlyContinue\\).Path; \"--- php source:\"; \\(Get-Command php\\).Source; \"--- _laravel_tmp exists:\"; Test-Path \"_laravel_tmp\")",
+      "Read(//c/Users/Dzaky Ahnaf/AppData/Local/Temp/**)",
+      "PowerShell(\"PATH has ComposerSetup: \" + \\($env:PATH -split ';' -contains 'C:\\\\ProgramData\\\\ComposerSetup\\\\bin'\\); \"--- raw cmd test:\"; cmd /c \"composer -V\")",
+      "PowerShell(php -r \"echo shell_exec\\('composer -V 2>&1'\\);\")",
+      "Read(//c/Users/Dzaky Ahnaf/AppData/Roaming/Composer/vendor/bin/**)"
+    ]
+  }
+}
