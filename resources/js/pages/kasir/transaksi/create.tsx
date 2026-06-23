@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -25,7 +25,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CreateTransaction({ period }: Props) {
-    const { flash } = usePage<any>().props;
+    const { flash } = usePage<SharedData>().props;
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Customer[]>([]);
     const [selected, setSelected] = useState<Customer | null>(null);
@@ -77,8 +77,6 @@ export default function CreateTransaction({ period }: Props) {
             },
         });
     }
-
-    const formatRupiah = (val: number) => 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

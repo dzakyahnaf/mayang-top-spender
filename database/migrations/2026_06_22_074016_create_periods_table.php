@@ -19,7 +19,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('ALTER TABLE periods ADD CONSTRAINT chk_period_dates CHECK (end_date >= start_date)');
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('ALTER TABLE periods ADD CONSTRAINT chk_period_dates CHECK (end_date >= start_date)');
+        }
     }
 
     public function down(): void

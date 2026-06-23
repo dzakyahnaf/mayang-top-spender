@@ -19,7 +19,9 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
         });
 
-        DB::statement("ALTER TABLE otp_verifications ADD CONSTRAINT chk_otp_purpose CHECK (purpose IN ('my_spending'))");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE otp_verifications ADD CONSTRAINT chk_otp_purpose CHECK (purpose IN ('my_spending'))");
+        }
     }
 
     public function down(): void

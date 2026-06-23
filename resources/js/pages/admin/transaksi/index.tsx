@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 
 interface Transaction {
@@ -30,7 +30,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const formatRupiah = (val: number) => 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
 
 export default function TransactionIndex({ transactions, periods, filters }: Props) {
-    const { flash } = usePage<any>().props;
+    const { flash } = usePage<SharedData>().props;
 
     function filterByPeriod(periodId: string) {
         router.get(route('admin.transaksi.index'), periodId ? { period_id: periodId } : {}, { preserveState: true });

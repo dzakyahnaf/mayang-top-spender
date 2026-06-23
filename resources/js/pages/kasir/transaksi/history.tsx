@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 interface Transaction {
@@ -28,7 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const formatRupiah = (val: number) => 'Rp ' + new Intl.NumberFormat('id-ID').format(val);
 
 export default function TransactionHistory({ transactions }: Props) {
-    const { flash } = usePage<any>().props;
+    const { flash } = usePage<SharedData>().props;
     const today = new Date().toDateString();
 
     return (

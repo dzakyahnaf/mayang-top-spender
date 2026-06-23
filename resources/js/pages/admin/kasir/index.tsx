@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -72,7 +72,7 @@ function ResetPasswordForm({ cashierId, onClose }: { cashierId: number; onClose:
 }
 
 export default function KasirIndex({ cashiers }: Props) {
-    const { flash } = usePage<any>().props;
+    const { flash } = usePage<SharedData>().props;
     const [resetPasswordId, setResetPasswordId] = useState<number | null>(null);
 
     const breadcrumbs: BreadcrumbItem[] = [

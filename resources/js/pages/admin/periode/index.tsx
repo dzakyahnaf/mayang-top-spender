@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +20,7 @@ interface Props {
 const formatDate = (date: string) => new Date(date).toLocaleDateString('id-ID');
 
 export default function PeriodeIndex({ periods }: Props) {
-    const { flash } = usePage<any>().props;
+    const { flash } = usePage<SharedData>().props;
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Periode', href: '/admin/periode' },

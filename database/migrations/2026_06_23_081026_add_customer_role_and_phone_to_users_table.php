@@ -9,7 +9,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'kasir', 'customer') NOT NULL DEFAULT 'customer'");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'kasir', 'customer') NOT NULL DEFAULT 'customer'");
+        } else {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('role');
+            });
+            Schema::table('users', function (Blueprint $table) {
+                $table->enum('role', ['admin', 'kasir', 'customer'])->default('customer');
+            });
+        }
 
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone', 20)->nullable()->unique()->after('email');
@@ -22,6 +31,15 @@ return new class extends Migration
             $table->dropColumn('phone');
         });
 
-        DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'kasir') NOT NULL DEFAULT 'kasir'");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'kasir') NOT NULL DEFAULT 'kasir'");
+        } else {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('role');
+            });
+            Schema::table('users', function (Blueprint $table) {
+                $table->enum('role', ['admin', 'kasir'])->default('kasir');
+            });
+        }
     }
 };

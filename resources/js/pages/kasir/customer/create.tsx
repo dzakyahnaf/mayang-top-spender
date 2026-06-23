@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
@@ -8,7 +8,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CreateCustomer() {
-    const { flash } = usePage<any>().props;
+    const { flash } = usePage<SharedData>().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
