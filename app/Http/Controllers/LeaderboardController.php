@@ -16,9 +16,9 @@ class LeaderboardController extends Controller
         $leaderboard = [];
 
         if ($period) {
-            $leaderboard = DB::select("
+            $leaderboard = DB::select('
                 SELECT
-                    ROW_NUMBER() OVER (ORDER BY SUM(t.amount) DESC) AS rank,
+                    ROW_NUMBER() OVER (ORDER BY SUM(t.amount) DESC) AS ranking,
                     c.name,
                     SUM(t.amount) AS total_spending
                 FROM transactions t
@@ -26,7 +26,7 @@ class LeaderboardController extends Controller
                 WHERE t.period_id = ?
                 GROUP BY c.id, c.name
                 ORDER BY SUM(t.amount) DESC
-            ", [$period->id]);
+            ', [$period->id]);
         }
 
         return Inertia::render('leaderboard', [

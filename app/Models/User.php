@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,14 +10,14 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
-        'role',
     ];
 
     protected $hidden = [
@@ -40,6 +41,11 @@ class User extends Authenticatable
     public function isKasir(): bool
     {
         return $this->role === 'kasir';
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
     }
 
     public function transactions(): HasMany

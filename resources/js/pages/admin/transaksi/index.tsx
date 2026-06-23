@@ -109,7 +109,7 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                     <div className="mt-4 flex gap-1">
                         {transactions.links.map((link, i) => (
                             <Link key={i} href={link.url || '#'}
-                                className={`rounded px-3 py-1 text-sm ${link.active ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} ${!link.url ? 'pointer-events-none opacity-50' : ''}`}
+                                className={`rounded px-3 py-1 text-sm ${link.active ? 'bg-mayang-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} ${!link.url ? 'pointer-events-none opacity-50' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: link.label }} />
                         ))}
                     </div>

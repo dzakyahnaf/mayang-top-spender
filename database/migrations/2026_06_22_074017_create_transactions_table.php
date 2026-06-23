@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->decimal('original_amount', 15, 2)->nullable();
             $table->foreignId('edited_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->timestampTz('edited_at')->nullable();
+            $table->timestamp('edited_at')->nullable();
             $table->timestamps();
         });
 

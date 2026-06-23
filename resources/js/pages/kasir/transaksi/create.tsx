@@ -53,16 +53,18 @@ export default function CreateTransaction({ period }: Props) {
     }, []);
 
     useEffect(() => {
+        if (selected) return;
         if (debounceRef.current) clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(() => searchCustomers(query), 300);
         return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
-    }, [query, searchCustomers]);
+    }, [query, searchCustomers, selected]);
 
     function selectCustomer(customer: Customer) {
         setSelected(customer);
         setData('customer_id', String(customer.id));
         setQuery(customer.name);
         setShowDropdown(false);
+        setResults([]);
     }
 
     function submit(e: FormEvent) {
@@ -106,7 +108,7 @@ export default function CreateTransaction({ period }: Props) {
                                     value={query}
                                     onChange={(e) => { setQuery(e.target.value); setSelected(null); setData('customer_id', ''); }}
                                     placeholder="Ketik nama, HP, atau email..."
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500"
+                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500"
                                 />
                                 {showDropdown && (
                                     <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg border bg-white shadow-lg">
@@ -137,7 +139,7 @@ export default function CreateTransaction({ period }: Props) {
                                     min="1"
                                     step="1"
                                     placeholder="Contoh: 150000"
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500"
+                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500"
                                 />
                                 {errors.amount && <p className="mt-1 text-sm text-red-600">{errors.amount}</p>}
                             </div>
@@ -148,14 +150,14 @@ export default function CreateTransaction({ period }: Props) {
                                     value={data.notes}
                                     onChange={(e) => setData('notes', e.target.value)}
                                     rows={2}
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500"
+                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500"
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={processing || !selected}
-                                className="w-full rounded-lg bg-pink-600 px-4 py-2 text-white hover:bg-pink-700 disabled:opacity-50"
+                                className="w-full cursor-pointer rounded-lg bg-mayang-600 px-4 py-2 text-white hover:bg-mayang-700 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 {processing ? 'Menyimpan...' : 'Submit Transaksi'}
                             </button>

@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -59,7 +60,7 @@ class TransactionController extends Controller
 
     public function edit(Transaction $transaction): Response
     {
-        $this->authorize('update', $transaction);
+        Gate::authorize('update', $transaction);
 
         $transaction->load(['customer', 'period']);
 
@@ -91,9 +92,9 @@ class TransactionController extends Controller
         }
 
         $customers = Customer::query()
-            ->where('name', 'ILIKE', "%{$keyword}%")
-            ->orWhere('phone', 'ILIKE', "%{$keyword}%")
-            ->orWhere('email', 'ILIKE', "%{$keyword}%")
+            ->where('name', 'LIKE', "%{$keyword}%")
+            ->orWhere('phone', 'LIKE', "%{$keyword}%")
+            ->orWhere('email', 'LIKE', "%{$keyword}%")
             ->limit(10)
             ->get(['id', 'name', 'email', 'phone']);
 

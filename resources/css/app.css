@@ -14,6 +14,17 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
+    --color-mayang-50: #eef5f6;
+    --color-mayang-100: #d1e0e3;
+    --color-mayang-200: #b0ced4;
+    --color-mayang-300: #83c0c8;
+    --color-mayang-400: #61b2bc;
+    --color-mayang-500: #1baeb9;
+    --color-mayang-600: #158b94;
+    --color-mayang-700: #106f76;
+    --color-mayang-800: #0d5459;
+    --color-mayang-900: #0a464a;
+
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 

@@ -70,7 +70,7 @@ export default function TransactionHistory({ transactions }: Props) {
                                         <td className="px-6 py-4 text-sm">{t.period.name}</td>
                                         <td className="px-6 py-4 text-sm">
                                             {isToday && (
-                                                <Link href={route('kasir.transaksi.edit', t.id)} className="text-pink-600 hover:underline">
+                                                <Link href={route('kasir.transaksi.edit', t.id)} className="text-mayang-600 hover:underline">
                                                     Edit
                                                 </Link>
                                             )}
@@ -91,7 +91,7 @@ export default function TransactionHistory({ transactions }: Props) {
                             <Link
                                 key={i}
                                 href={link.url || '#'}
-                                className={`rounded px-3 py-1 text-sm ${link.active ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} ${!link.url ? 'pointer-events-none opacity-50' : ''}`}
+                                className={`rounded px-3 py-1 text-sm ${link.active ? 'bg-mayang-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} ${!link.url ? 'pointer-events-none opacity-50' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         ))}

@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateCashierRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,10 +29,10 @@ class CashierController extends Controller
 
     public function store(StoreCashierRequest $request): RedirectResponse
     {
-        User::create([
-            ...$request->validated(),
-            'role' => 'kasir',
-        ]);
+        $user = new User($request->validated());
+        $user->role = 'kasir';
+        $user->email_verified_at = now();
+        $user->save();
 
         return redirect()->route('admin.kasir.index')
             ->with('success', 'Akun kasir berhasil dibuat.');

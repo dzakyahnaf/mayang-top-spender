@@ -48,7 +48,7 @@ export default function EditTransaction({ transaction }: Props) {
                             value={data.amount}
                             onChange={(e) => setData('amount', e.target.value)}
                             min="1"
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500"
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500"
                         />
                         {errors.amount && <p className="mt-1 text-sm text-red-600">{errors.amount}</p>}
                     </div>
@@ -59,11 +59,11 @@ export default function EditTransaction({ transaction }: Props) {
                             value={data.notes}
                             onChange={(e) => setData('notes', e.target.value)}
                             rows={2}
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500"
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500"
                         />
                     </div>
 
-                    <button type="submit" disabled={processing} className="w-full rounded-lg bg-pink-600 px-4 py-2 text-white hover:bg-pink-700 disabled:opacity-50">
+                    <button type="submit" disabled={processing} className="w-full rounded-lg bg-mayang-600 px-4 py-2 text-white hover:bg-mayang-700 disabled:opacity-50">
                         {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </button>
                 </form>

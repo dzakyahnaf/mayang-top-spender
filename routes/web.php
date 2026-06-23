@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PeriodController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
-use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\Kasir\CustomerController as KasirCustomerController;
 use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
 use App\Http\Controllers\LeaderboardController;
@@ -20,11 +19,7 @@ Route::get('/', function () {
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 
-Route::get('/register-member', [CustomerRegisterController::class, 'create'])->name('customer.register');
-Route::post('/register-member', [CustomerRegisterController::class, 'store'])->name('customer.register.store');
-
-Route::get('/my-spending', [MySpendingController::class, 'index'])->name('my-spending');
-Route::post('/my-spending', [MySpendingController::class, 'search'])->name('my-spending.search');
+Route::get('/my-spending', [MySpendingController::class, 'index'])->name('my-spending')->middleware('auth');
 
 // Auth redirect after login
 Route::middleware(['auth'])->get('/dashboard', function () {
@@ -34,7 +29,11 @@ Route::middleware(['auth'])->get('/dashboard', function () {
         return redirect()->route('admin.dashboard');
     }
 
-    return redirect()->route('kasir.transaksi.create');
+    if ($user->isKasir()) {
+        return redirect()->route('kasir.transaksi.create');
+    }
+
+    return redirect()->route('my-spending');
 })->name('dashboard');
 
 // Admin routes

@@ -1,14 +1,12 @@
-import { type SharedData } from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Head, Link } from '@inertiajs/react';
 
 interface MySpendingProps {
-    customer?: {
+    customer: {
         name: string;
         email: string;
         phone: string;
     };
-    transactions?: Array<{
+    transactions: Array<{
         id: number;
         amount: number;
         created_at: string;
@@ -16,8 +14,7 @@ interface MySpendingProps {
             name: string;
         };
     }>;
-    totalSpending?: number;
-    error?: string;
+    totalSpending: number;
 }
 
 function formatRupiah(amount: number): string {
@@ -32,151 +29,142 @@ function formatDate(dateString: string): string {
     });
 }
 
-export default function MySpending({ customer, transactions, totalSpending, error }: MySpendingProps) {
-    const { auth } = usePage<SharedData>().props;
-
-    const { data, setData, post, processing } = useForm({
-        phone: '',
-    });
-
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-        post(route('my-spending.search'));
-    };
-
+export default function MySpending({ customer, transactions, totalSpending }: MySpendingProps) {
     return (
         <>
-            <Head title="Cek Belanjaanku" />
+            <Head title="Belanjaanku" />
 
-            <div className="min-h-screen bg-gray-50">
-                {/* Navbar */}
-                <nav className="bg-white shadow-sm">
+            <div className="min-h-screen bg-slate-50 font-sans selection:bg-mayang-500 selection:text-white">
+                {/* Navbar (Glassmorphism) */}
+                <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/20 bg-white/70 backdrop-blur-md transition-all duration-300">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex h-16 items-center justify-between">
-                            <Link href="/" className="text-xl font-bold text-pink-600">Mayang Top Spender</Link>
-                            <div className="flex items-center gap-4">
-                                <Link href={route('leaderboard')} className="text-sm text-gray-600 hover:text-gray-900">Leaderboard</Link>
-                                <Link href={route('my-spending')} className="text-sm text-gray-600 hover:text-gray-900">Cek Belanjaanku</Link>
-                                <Link href={route('customer.register')} className="text-sm text-gray-600 hover:text-gray-900">Daftar Member</Link>
-                                {auth.user ? (
-                                    <Link href={route('dashboard')} className="rounded-md bg-pink-600 px-4 py-2 text-sm font-medium text-white hover:bg-pink-700">
-                                        Dashboard
-                                    </Link>
-                                ) : (
-                                    <Link href={route('login')} className="rounded-md bg-pink-600 px-4 py-2 text-sm font-medium text-white hover:bg-pink-700">
-                                        Login
-                                    </Link>
-                                )}
+                        <div className="flex h-20 items-center justify-between">
+                            <Link href="/" className="text-2xl font-black tracking-tight text-mayang-600 transition hover:text-mayang-700">
+                                Mayang
+                                <span className="text-mayang-400"> Top Spender</span>
+                            </Link>
+                            <div className="flex items-center gap-6">
+                                <Link href={route('leaderboard')} className="text-sm font-semibold text-slate-600 transition-colors hover:text-mayang-600">
+                                    Leaderboard
+                                </Link>
+                                <Link
+                                    href={route('dashboard')}
+                                    className="rounded-full bg-gradient-to-r from-mayang-500 to-mayang-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-mayang-500/30 transition-all hover:-translate-y-0.5 hover:shadow-mayang-500/50"
+                                >
+                                    Dashboard
+                                </Link>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                {/* Content */}
-                <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-                    <h1 className="text-center text-3xl font-bold text-gray-900">Cek Belanjaanku</h1>
-                    <p className="mt-2 text-center text-gray-600">Masukkan nomor HP untuk melihat riwayat belanjamu</p>
+                <div className="relative mx-auto max-w-4xl px-4 pb-20 pt-32 sm:px-6 lg:px-8">
+                    {/* Decorative Elements */}
+                    <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-mayang-200/40 blur-3xl filter"></div>
+                    <div className="absolute -right-20 top-60 h-72 w-72 rounded-full bg-mayang-100/60 blur-3xl filter"></div>
 
-                    {/* Search Form */}
-                    <form onSubmit={submit} className="mx-auto mt-8 max-w-md">
-                        <div className="flex gap-3">
-                            <input
-                                type="text"
-                                value={data.phone}
-                                onChange={(e) => setData('phone', e.target.value)}
-                                className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-1 focus:ring-pink-500"
-                                placeholder="Masukkan nomor HP"
-                            />
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="whitespace-nowrap rounded-md bg-pink-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 disabled:opacity-50"
-                            >
-                                {processing ? 'Mencari...' : 'Cek Belanja'}
-                            </button>
+                    <div className="relative z-10">
+                        <div className="mb-10 text-center">
+                            <h1 className="text-4xl font-extrabold text-slate-900 sm:text-5xl">
+                                Cek <span className="bg-gradient-to-r from-mayang-500 to-mayang-400 bg-clip-text text-transparent">Belanjaanku</span>
+                            </h1>
                         </div>
-                    </form>
 
-                    {/* Error Message */}
-                    {error && (
-                        <div className="mx-auto mt-6 max-w-md rounded-md bg-red-50 p-4">
-                            <p className="text-sm font-medium text-red-800">{error}</p>
-                        </div>
-                    )}
-
-                    {/* Customer Info & Transactions */}
-                    {customer && (
-                        <div className="mt-8 space-y-6">
-                            {/* Customer Card */}
-                            <div className="rounded-lg bg-white p-6 shadow-md">
-                                <h2 className="text-lg font-semibold text-gray-900">Informasi Member</h2>
-                                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                                    <div>
-                                        <p className="text-sm text-gray-500">Nama</p>
-                                        <p className="font-medium text-gray-900">{customer.name}</p>
+                        <div className="mt-8 space-y-8">
+                            {/* Card Informasi Member */}
+                            <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/80 p-8 shadow-xl backdrop-blur-md sm:p-10">
+                                <div className="mb-6 flex items-center gap-4">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-mayang-500 to-mayang-600 text-white shadow-inner">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-500">Email</p>
-                                        <p className="font-medium text-gray-900">{customer.email}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Nomor HP</p>
-                                        <p className="font-medium text-gray-900">{customer.phone}</p>
+                                        <h2 className="text-2xl font-bold text-slate-900">Informasi Member</h2>
+                                        <p className="text-sm text-slate-500">Detail akun dan total transaksimu.</p>
                                     </div>
                                 </div>
-                                <div className="mt-4 border-t border-gray-200 pt-4">
-                                    <p className="text-sm text-gray-500">Total Belanja</p>
-                                    <p className="text-2xl font-bold text-pink-600">
-                                        Rp {formatRupiah(totalSpending ?? 0)}
+                                
+                                <div className="grid grid-cols-1 gap-6 rounded-2xl bg-slate-50/50 p-6 sm:grid-cols-3">
+                                    <div>
+                                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Nama</p>
+                                        <p className="mt-1 text-lg font-bold text-slate-900">{customer.name}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Email</p>
+                                        <p className="mt-1 text-lg font-bold text-slate-900">{customer.email}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Nomor HP</p>
+                                        <p className="mt-1 text-lg font-bold text-slate-900">{customer.phone || '-'}</p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-mayang-50 to-mayang-100 p-6 sm:flex-row">
+                                    <div>
+                                        <p className="text-sm font-semibold text-mayang-700">Total Belanja Terakumulasi</p>
+                                        <p className="text-xs text-mayang-600/80">Semua transaksi yang tercatat atas namamu.</p>
+                                    </div>
+                                    <p className="text-4xl font-black tracking-tight text-mayang-600">
+                                        Rp {formatRupiah(totalSpending)}
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Transaction History */}
-                            {transactions && transactions.length > 0 && (
-                                <div className="overflow-hidden rounded-lg bg-white shadow-md">
-                                    <div className="px-6 py-4">
-                                        <h2 className="text-lg font-semibold text-gray-900">Riwayat Belanja</h2>
-                                    </div>
-                                    <table className="w-full">
-                                        <thead className="bg-pink-50">
+                            {/* Riwayat Belanja */}
+                            <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/90 shadow-2xl backdrop-blur-md">
+                                <div className="border-b border-slate-100 bg-white/50 px-8 py-6">
+                                    <h2 className="text-xl font-bold text-slate-900">Riwayat Transaksi</h2>
+                                    <p className="mt-1 text-sm text-slate-500">Daftar transaksi terakhirmu di Mayang Modest Wear.</p>
+                                </div>
+
+                                {transactions.length > 0 ? (
+                                    <table className="w-full text-left">
+                                        <thead className="bg-slate-50/80">
                                             <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-pink-600">
-                                                    Tanggal
-                                                </th>
-                                                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-pink-600">
-                                                    Nominal
-                                                </th>
-                                                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-pink-600">
-                                                    Periode
-                                                </th>
+                                                <th className="px-8 py-4 text-xs font-bold uppercase tracking-wider text-slate-600">Tanggal</th>
+                                                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-600">Periode</th>
+                                                <th className="px-8 py-4 text-right text-xs font-bold uppercase tracking-wider text-slate-600">Nominal</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {transactions.map((transaction) => (
-                                                <tr key={transaction.id} className="hover:bg-gray-50">
-                                                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                                                        {formatDate(transaction.created_at)}
+                                        <tbody className="divide-y divide-slate-100">
+                                            {transactions.map((t) => (
+                                                <tr key={t.id} className="transition-colors hover:bg-mayang-50/30">
+                                                    <td className="whitespace-nowrap px-8 py-5 text-sm font-medium text-slate-900">
+                                                        {formatDate(t.created_at)}
                                                     </td>
-                                                    <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium text-gray-900">
-                                                        Rp {formatRupiah(transaction.amount)}
+                                                    <td className="whitespace-nowrap px-8 py-5 text-sm">
+                                                        <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                                                            {t.period.name}
+                                                        </span>
                                                     </td>
-                                                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                                                        {transaction.period.name}
+                                                    <td className="whitespace-nowrap px-8 py-5 text-right text-sm font-bold text-mayang-600">
+                                                        Rp {formatRupiah(t.amount)}
                                                     </td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="px-8 py-16 text-center">
+                                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-50 text-slate-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                            </svg>
+                                        </div>
+                                        <p className="text-lg font-medium text-slate-900">Belum ada riwayat belanja.</p>
+                                        <p className="mt-1 text-sm text-slate-500">Silakan belanja di toko dan berikan nomor HP/Email ke kasir.</p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
+                    </div>
                 </div>
 
-                {/* Footer */}
-                <footer className="bg-gray-800 py-8 text-center text-sm text-gray-400">
-                    &copy; 2026 Mayang Modest Wear
+                <footer className="mt-auto bg-slate-900 py-12 text-center text-sm text-slate-400">
+                    <div className="mx-auto max-w-7xl px-4">
+                        <p>&copy; 2026 Mayang Modest Wear. All rights reserved.</p>
+                    </div>
                 </footer>
             </div>
         </>

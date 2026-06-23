@@ -20,17 +20,17 @@ class DashboardController extends Controller
         $topSpenders = [];
 
         if ($period) {
-            $periodStats = DB::selectOne("
+            $periodStats = DB::selectOne('
                 SELECT
                     COUNT(t.id) AS total_transactions,
                     COALESCE(SUM(t.amount), 0) AS total_nominal
                 FROM transactions t
                 WHERE t.period_id = ?
-            ", [$period->id]);
+            ', [$period->id]);
 
-            $topSpenders = DB::select("
+            $topSpenders = DB::select('
                 SELECT
-                    ROW_NUMBER() OVER (ORDER BY SUM(t.amount) DESC) AS rank,
+                    ROW_NUMBER() OVER (ORDER BY SUM(t.amount) DESC) AS ranking,
                     c.name,
                     SUM(t.amount) AS total_spending
                 FROM transactions t
@@ -39,7 +39,7 @@ class DashboardController extends Controller
                 GROUP BY c.id, c.name
                 ORDER BY SUM(t.amount) DESC
                 LIMIT 5
-            ", [$period->id]);
+            ', [$period->id]);
         }
 
         return Inertia::render('admin/dashboard', [

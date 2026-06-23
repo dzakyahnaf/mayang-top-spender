@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('otp_code');
             $table->string('purpose')->default('my_spending');
             $table->boolean('is_used')->default(false);
-            $table->timestampTz('expires_at');
-            $table->timestampTz('created_at')->useCurrent();
+            $table->timestamp('expires_at');
+            $table->timestamp('created_at')->useCurrent();
         });
 
         DB::statement("ALTER TABLE otp_verifications ADD CONSTRAINT chk_otp_purpose CHECK (purpose IN ('my_spending'))");

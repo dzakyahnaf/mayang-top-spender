@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface TopSpender {
-    rank: number;
+    ranking: number;
     name: string;
     total_spending: number;
 }
@@ -85,8 +85,8 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                                     </thead>
                                     <tbody>
                                         {topSpenders.map((spender) => (
-                                            <tr key={spender.rank} className="border-b last:border-0">
-                                                <td className="py-3 px-2">{spender.rank}</td>
+                                            <tr key={spender.ranking} className="border-b last:border-0">
+                                                <td className="py-3 px-2">{spender.ranking}</td>
                                                 <td className="py-3 px-2">{spender.name}</td>
                                                 <td className="py-3 px-2 text-right">Rp {formatRupiah(spender.total_spending)}</td>
                                             </tr>

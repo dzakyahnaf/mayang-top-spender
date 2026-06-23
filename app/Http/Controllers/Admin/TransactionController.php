@@ -8,6 +8,7 @@ use App\Models\Period;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -60,7 +61,7 @@ class TransactionController extends Controller
 
     public function destroy(Transaction $transaction): RedirectResponse
     {
-        $this->authorize('delete', $transaction);
+        Gate::authorize('delete', $transaction);
 
         $transaction->delete();
 

@@ -34,23 +34,23 @@ export default function CreateCustomer() {
                     <div>
                         <label className="mb-1 block text-sm font-medium">Nama Lengkap</label>
                         <input type="text" value={data.name} onChange={(e) => setData('name', e.target.value)}
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500" />
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500" />
                         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                     </div>
                     <div>
                         <label className="mb-1 block text-sm font-medium">Email</label>
                         <input type="email" value={data.email} onChange={(e) => setData('email', e.target.value)}
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500" />
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500" />
                         {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
                     </div>
                     <div>
                         <label className="mb-1 block text-sm font-medium">Nomor HP</label>
                         <input type="text" value={data.phone} onChange={(e) => setData('phone', e.target.value)}
                             placeholder="08xxxxxxxxxx"
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-pink-500 focus:ring-pink-500" />
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500" />
                         {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
                     </div>
-                    <button type="submit" disabled={processing} className="w-full rounded-lg bg-pink-600 px-4 py-2 text-white hover:bg-pink-700 disabled:opacity-50">
+                    <button type="submit" disabled={processing} className="w-full rounded-lg bg-mayang-600 px-4 py-2 text-white hover:bg-mayang-700 disabled:opacity-50">
                         {processing ? 'Menyimpan...' : 'Daftarkan Customer'}
                     </button>
                 </form>
