@@ -9,18 +9,24 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Admin Mayang',
-            'email' => 'admin@mayang.com',
-            'password' => 'password',
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@mayang.com'],
+            [
+                'name' => 'Admin Mayang',
+                'password' => 'password',
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Kasir Demo',
-            'email' => 'kasir@mayang.com',
-            'password' => 'password',
-            'role' => 'kasir',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'kasir@mayang.com'],
+            [
+                'name' => 'Kasir Demo',
+                'password' => 'password',
+                'role' => 'kasir',
+                'email_verified_at' => now(),
+            ]
+        );
     }
 }

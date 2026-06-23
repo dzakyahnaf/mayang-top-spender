@@ -13,7 +13,9 @@ DOMAIN="loyalty.mayangmodestwear.com"
 APP_DIR="/var/www/mayang-top-spender"
 DB_NAME="mayang_top_spender"
 DB_USER="mayang_user"
-DB_PASS="loyaltym4y4ng2"
+# Password dibaca dari environment variable DB_PASS, atau di-prompt saat runtime.
+# JANGAN hardcode password di file ini (file ini ada di repo publik).
+DB_PASS="${DB_PASS:-}"
 REPO_URL="https://github.com/dzakyahnaf/mayang-top-spender.git"
 PHP_VERSION="8.5"
 PHP_FPM_SOCK="/run/php/php${PHP_VERSION}-fpm.sock"
@@ -40,6 +42,16 @@ echo "============================================"
 echo "  Mayang Top Spender — Deployment"
 echo "  Domain: ${DOMAIN}"
 echo "============================================"
+
+# Prompt password jika belum di-set via environment variable
+if [ -z "$DB_PASS" ]; then
+    read -sp "Masukkan password MySQL untuk user '${DB_USER}': " DB_PASS
+    echo ""
+    if [ -z "$DB_PASS" ]; then
+        echo_err "Password tidak boleh kosong."
+        exit 1
+    fi
+fi
 
 # ==========================================================
 # STEP 1: Install PHP 8.5 Extensions & FPM
