@@ -53,6 +53,14 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                 >
                                     Dashboard
                                 </Link>
+                                <Link
+                                    method="post"
+                                    href={route('logout')}
+                                    as="button"
+                                    className="rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-xl cursor-pointer"
+                                >
+                                    Logout
+                                </Link>
                             </div>
                         </div>
                     </div>

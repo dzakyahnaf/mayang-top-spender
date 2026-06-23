@@ -1,7 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import InputError from '@/components/input-error';
+import { ArrowLeft, PencilLine } from 'lucide-react';
 
 interface Props {
     transaction: {
@@ -33,30 +38,66 @@ export default function EditTransaction({ transaction }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Transaksi" />
-            <div className="mx-auto max-w-2xl p-6">
-                <h1 className="mb-6 text-2xl font-bold">Edit Transaksi</h1>
-
-                <div className="mb-6 rounded-lg bg-gray-50 p-4 text-sm">
-                    <p><strong>Customer:</strong> {transaction.customer.name}</p>
-                    <p><strong>Periode:</strong> {transaction.period.name}</p>
+            <div className="p-6 max-w-4xl space-y-6 font-sans">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Edit Transaksi</h1>
+                        <p className="text-sm text-slate-500 mt-1">Sesuaikan nominal belanja atau catatan transaksi.</p>
+                    </div>
+                    <Button variant="outline" className="rounded-xl flex items-center gap-1.5" asChild>
+                        <Link href={route('admin.transaksi.index')}>
+                            <ArrowLeft className="h-4 w-4" />
+                            Kembali
+                        </Link>
+                    </Button>
                 </div>
 
-                <form onSubmit={submit} className="space-y-4">
-                    <div>
-                        <label className="mb-1 block text-sm font-medium">Nominal Belanja (Rp)</label>
-                        <input type="number" value={data.amount} onChange={(e) => setData('amount', e.target.value)} min="1"
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500" />
-                        {errors.amount && <p className="mt-1 text-sm text-red-600">{errors.amount}</p>}
-                    </div>
-                    <div>
-                        <label className="mb-1 block text-sm font-medium">Catatan</label>
-                        <textarea value={data.notes} onChange={(e) => setData('notes', e.target.value)} rows={2}
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-mayang-500 focus:ring-mayang-500" />
-                    </div>
-                    <button type="submit" disabled={processing} className="w-full rounded-lg bg-mayang-600 px-4 py-2 text-white hover:bg-mayang-700 disabled:opacity-50">
-                        {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
-                    </button>
-                </form>
+                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 p-6 shadow-xl dark:border-slate-800/50 dark:bg-slate-900/40 backdrop-blur-md">
+                    <form onSubmit={submit} className="max-w-2xl space-y-6">
+                        <div className="flex items-center gap-2 pb-4 border-b border-slate-100 dark:border-slate-855">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-mayang-500/10 text-mayang-600">
+                                <PencilLine className="h-5 w-5" />
+                            </div>
+                            <div>
+                                <h3 className="text-base font-bold text-slate-900 dark:text-white">Detail Transaksi</h3>
+                                <p className="text-xs text-slate-500">
+                                    Customer: <strong className="text-slate-900 dark:text-white">{transaction.customer.name}</strong> • Periode: <strong className="text-slate-900 dark:text-white">{transaction.period.name}</strong>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="amount" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Nominal Belanja (Rp)</Label>
+                            <Input
+                                id="amount"
+                                type="number"
+                                value={data.amount}
+                                onChange={(e) => setData('amount', e.target.value)}
+                                min="1"
+                                className="bg-white/50 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl py-5"
+                            />
+                            <InputError message={errors.amount} />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="notes" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Catatan Tambahan</Label>
+                            <textarea
+                                id="notes"
+                                value={data.notes}
+                                onChange={(e) => setData('notes', e.target.value)}
+                                rows={3}
+                                placeholder="Tulis catatan jika diperlukan..."
+                                className="flex min-h-[80px] w-full rounded-xl border border-slate-200 bg-white/50 dark:bg-slate-950/20 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mayang-500/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            />
+                        </div>
+
+                        <div className="pt-2">
+                            <Button type="submit" disabled={processing} className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-mayang-500 to-mayang-600 text-white hover:from-mayang-600 hover:to-mayang-700 shadow-md shadow-mayang-500/20 font-bold px-8 py-5">
+                                {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                            </Button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </AppLayout>
     );

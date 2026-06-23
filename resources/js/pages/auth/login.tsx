@@ -42,7 +42,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email" className="text-slate-300 font-semibold text-sm">Email address</Label>
                         <Input
                             id="email"
                             type="email"
@@ -53,15 +53,16 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
                         <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password" className="text-slate-300 font-semibold text-sm">Password</Label>
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
+                                <TextLink href={route('password.request')} className="ml-auto text-sm text-mayang-400 hover:text-mayang-300" tabIndex={5}>
                                     Forgot password?
                                 </TextLink>
                             )}
@@ -75,24 +76,25 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.password} />
                     </div>
 
-                    <div className="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" tabIndex={3} />
-                        <Label htmlFor="remember">Remember me</Label>
+                    <div className="flex items-center space-x-3 text-slate-300">
+                        <Checkbox id="remember" name="remember" tabIndex={3} className="border-white/20 data-[state=checked]:bg-mayang-500 data-[state=checked]:border-mayang-500" />
+                        <Label htmlFor="remember" className="text-slate-300 font-medium text-sm">Remember me</Label>
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="mt-4 w-full rounded-xl bg-gradient-to-r from-mayang-500 to-mayang-600 font-bold hover:from-mayang-600 hover:to-mayang-700 shadow-lg shadow-mayang-500/20 text-white transition-all hover:-translate-y-0.5" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
+                <div className="text-slate-400 text-center text-sm">
                     Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
+                    <TextLink href={route('register')} className="text-mayang-400 hover:text-mayang-300 font-semibold" tabIndex={5}>
                         Sign up
                     </TextLink>
                 </div>

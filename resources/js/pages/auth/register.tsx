@@ -39,7 +39,7 @@ export default function Register() {
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Nama Lengkap</Label>
+                        <Label htmlFor="name" className="text-slate-300 font-semibold text-sm">Nama Lengkap</Label>
                         <Input
                             id="name"
                             type="text"
@@ -51,12 +51,13 @@ export default function Register() {
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Nama lengkap"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.name} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email" className="text-slate-300 font-semibold text-sm">Email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -67,12 +68,13 @@ export default function Register() {
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
                             placeholder="email@contoh.com"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="phone">Nomor HP</Label>
+                        <Label htmlFor="phone" className="text-slate-300 font-semibold text-sm">Nomor HP</Label>
                         <Input
                             id="phone"
                             type="text"
@@ -82,12 +84,13 @@ export default function Register() {
                             onChange={(e) => setData('phone', e.target.value)}
                             disabled={processing}
                             placeholder="08xxxxxxxxxx"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.phone} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password" className="text-slate-300 font-semibold text-sm">Password</Label>
                         <Input
                             id="password"
                             type="password"
@@ -98,12 +101,13 @@ export default function Register() {
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
                             placeholder="Minimal 8 karakter"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.password} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
+                        <Label htmlFor="password_confirmation" className="text-slate-300 font-semibold text-sm">Konfirmasi Password</Label>
                         <Input
                             id="password_confirmation"
                             type="password"
@@ -114,19 +118,20 @@ export default function Register() {
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
                             placeholder="Ulangi password"
+                            className="bg-white/5 border-white/10 text-white placeholder-slate-500 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" className="mt-2 w-full" tabIndex={6} disabled={processing}>
+                    <Button type="submit" className="mt-2 w-full rounded-xl bg-gradient-to-r from-mayang-500 to-mayang-600 font-bold hover:from-mayang-600 hover:to-mayang-700 shadow-lg shadow-mayang-500/20 text-white transition-all hover:-translate-y-0.5" tabIndex={6} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Daftar
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
+                <div className="text-slate-400 text-center text-sm">
                     Sudah punya akun?{' '}
-                    <TextLink href={route('login')} tabIndex={7}>
+                    <TextLink href={route('login')} className="text-mayang-400 hover:text-mayang-300 font-semibold" tabIndex={7}>
                         Login
                     </TextLink>
                 </div>
