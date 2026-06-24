@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ClipboardList, LayoutGrid, Trophy, UserPlus, Users, CalendarDays, History } from 'lucide-react';
+import { CalendarDays, ClipboardList, History, LayoutGrid, Trophy, UserPlus, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const adminNavItems: NavItem[] = [
@@ -21,9 +21,7 @@ const kasirNavItems: NavItem[] = [
     { title: 'Daftarkan Customer', url: '/kasir/customer/create', icon: UserPlus },
 ];
 
-const footerNavItems: NavItem[] = [
-    { title: 'Leaderboard', url: '/leaderboard', icon: Trophy },
-];
+const footerNavItems: NavItem[] = [{ title: 'Leaderboard', url: '/leaderboard', icon: Trophy }];
 
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;

@@ -20,17 +20,17 @@ $host = '127.0.0.1';
 $port = 8000;
 
 echo PHP_EOL;
-echo "  Starting development servers..." . PHP_EOL;
-echo "  App:  http://{$host}:{$port}" . PHP_EOL;
-echo "  Vite: http://localhost:5173" . PHP_EOL;
+echo '  Starting development servers...'.PHP_EOL;
+echo "  App:  http://{$host}:{$port}".PHP_EOL;
+echo '  Vite: http://localhost:5173'.PHP_EOL;
 echo PHP_EOL;
 
 // Start PHP built-in server in background
-$phpCmd = PHP_BINARY . " -S {$host}:{$port} -t " . escapeshellarg($dir . DIRECTORY_SEPARATOR . 'public');
+$phpCmd = PHP_BINARY." -S {$host}:{$port} -t ".escapeshellarg($dir.DIRECTORY_SEPARATOR.'public');
 if (PHP_OS_FAMILY === 'Windows') {
     $phpProc = proc_open($phpCmd, [['pipe', 'r'], STDOUT, STDERR], $pipes, $dir, null, ['bypass_shell' => true]);
 } else {
-    $phpProc = proc_open($phpCmd . ' &', [['pipe', 'r'], STDOUT, STDERR], $pipes, $dir);
+    $phpProc = proc_open($phpCmd.' &', [['pipe', 'r'], STDOUT, STDERR], $pipes, $dir);
 }
 
 // Run Vite in foreground (blocks until Ctrl+C)

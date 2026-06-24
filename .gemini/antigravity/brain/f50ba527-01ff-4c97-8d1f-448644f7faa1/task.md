@@ -1,0 +1,6 @@
+- [ ] Update App Logo to use `public/MayangCollection_Logo Icon_White.png`
+- [ ] Redesign `welcome.tsx` (Landing Page)
+- [ ] Redesign `leaderboard.tsx`
+- [ ] Redesign `my-spending.tsx`
+- [ ] Redesign Auth/Register Member pages (if time permits)
+- [ ] Verify UI works and looks cohesive

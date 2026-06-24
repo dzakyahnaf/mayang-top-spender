@@ -1,12 +1,12 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/input-error';
-import { FormEventHandler } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, UserPlus } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 export default function KasirCreate() {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -28,13 +28,13 @@ export default function KasirCreate() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Kasir" />
-            <div className="p-6 max-w-4xl space-y-6 font-sans">
+            <div className="max-w-4xl space-y-6 p-6 font-sans">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Tambah Kasir</h1>
-                        <p className="text-sm text-slate-500 mt-1">Buat akun kasir baru untuk sistem kasir belanja.</p>
+                        <p className="mt-1 text-sm text-slate-500">Buat akun kasir baru untuk sistem kasir belanja.</p>
                     </div>
-                    <Button variant="outline" className="rounded-xl flex items-center gap-1.5" asChild>
+                    <Button variant="outline" className="flex items-center gap-1.5 rounded-xl" asChild>
                         <Link href={route('admin.kasir.index')}>
                             <ArrowLeft className="h-4 w-4" />
                             Kembali
@@ -42,10 +42,10 @@ export default function KasirCreate() {
                     </Button>
                 </div>
 
-                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 p-6 shadow-xl dark:border-slate-800/50 dark:bg-slate-900/40 backdrop-blur-md">
+                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 p-6 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
                     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-                        <div className="flex items-center gap-2 pb-4 border-b border-slate-100 dark:border-slate-850">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-mayang-500/10 text-mayang-600">
+                        <div className="dark:border-slate-850 flex items-center gap-2 border-b border-slate-100 pb-4">
+                            <div className="bg-mayang-500/10 text-mayang-600 flex h-10 w-10 items-center justify-center rounded-xl">
                                 <UserPlus className="h-5 w-5" />
                             </div>
                             <div>
@@ -55,45 +55,55 @@ export default function KasirCreate() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="name" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Nama Lengkap</Label>
+                            <Label htmlFor="name" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                Nama Lengkap
+                            </Label>
                             <Input
                                 id="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Nama lengkap kasir"
-                                className="bg-white/50 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl py-5"
+                                className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5"
                             />
                             <InputError message={errors.name} />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Alamat Email</Label>
+                            <Label htmlFor="email" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                Alamat Email
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 placeholder="email@contoh.com"
-                                className="bg-white/50 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl py-5"
+                                className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5"
                             />
                             <InputError message={errors.email} />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Password</Label>
+                            <Label htmlFor="password" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                Password
+                            </Label>
                             <Input
                                 id="password"
                                 type="password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 placeholder="Masukkan password akun"
-                                className="bg-white/50 focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl py-5"
+                                className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5"
                             />
                             <InputError message={errors.password} />
                         </div>
 
                         <div className="pt-2">
-                            <Button type="submit" disabled={processing} className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-mayang-500 to-mayang-600 text-white hover:from-mayang-600 hover:to-mayang-700 shadow-md shadow-mayang-500/20 font-bold px-8 py-5">
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full rounded-xl bg-gradient-to-r px-8 py-5 font-bold text-white shadow-md sm:w-auto"
+                            >
                                 {processing ? 'Menyimpan...' : 'Simpan Akun'}
                             </Button>
                         </div>
