@@ -9,8 +9,11 @@ interface AuthLayoutProps {
 
 export default function AuthSimpleLayout({ children, title, description }: AuthLayoutProps) {
     return (
-        <div className="selection:bg-mayang-500 min-h-screen bg-slate-50 font-sans text-slate-900 selection:text-white flex flex-col justify-center items-center p-6 md:p-10">
-            <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+        <div className="relative selection:bg-mayang-500 min-h-screen bg-gradient-to-br from-mayang-50 via-slate-50 to-mayang-100/40 font-sans text-slate-900 selection:text-white flex flex-col justify-center items-center p-6 md:p-10 overflow-hidden">
+            {/* Spotlight Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none z-0" />
+
+            <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10 z-10">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-4 text-center">
                         <Link href="/" className="group flex flex-col items-center gap-3 transition hover:opacity-80">

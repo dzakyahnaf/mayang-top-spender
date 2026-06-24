@@ -33,7 +33,10 @@ export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
         <>
             <Head title="Leaderboard" />
 
-            <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-mayang-500 selection:text-white">
+            <div className="relative min-h-screen bg-gradient-to-br from-mayang-50 via-slate-50 to-mayang-100/40 font-sans text-slate-900 selection:bg-mayang-500 selection:text-white overflow-x-hidden flex flex-col justify-between">
+                {/* Spotlight Glow */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none z-0" />
+
                 {/* Clean Navbar */}
                 <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-sm transition-all duration-300">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -71,7 +74,7 @@ export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
                 </nav>
 
                 {/* Content */}
-                <div className="relative mx-auto max-w-4xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+                <div className="relative mx-auto max-w-4xl px-4 pt-32 pb-20 sm:px-6 lg:px-8 z-10 flex-1 w-full">
                     <div className="mb-10 text-center">
                         <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
                             Top Spender <span className="text-mayang-500">Leaderboard</span>
@@ -124,7 +127,7 @@ export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
                                                     className={`flex size-8 items-center justify-center rounded-full text-sm font-bold shadow-sm ${
                                                         entry.ranking === 1
                                                             ? 'bg-amber-100 text-amber-600'
-                                                            : entry.ranking === 2
+                                                             : entry.ranking === 2
                                                                 ? 'bg-slate-200 text-slate-600'
                                                                 : entry.ranking === 3
                                                                 ? 'bg-orange-100 text-orange-700'
@@ -151,7 +154,7 @@ export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
                 </div>
 
                 {/* Footer */}
-                <footer className="mt-auto border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500">
+                <footer className="relative border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500 z-10 w-full mt-auto">
                     <div className="mx-auto max-w-7xl px-4">
                         <p>&copy; {new Date().getFullYear()} Mayang Modest Wear. All rights reserved.</p>
                     </div>
