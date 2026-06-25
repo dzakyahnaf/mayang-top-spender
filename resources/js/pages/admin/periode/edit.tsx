@@ -43,7 +43,11 @@ export default function PeriodeEdit({ period }: Props) {
                         <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Edit Periode</h1>
                         <p className="mt-1 text-sm text-slate-500">Ubah rentang waktu atau informasi kompetisi.</p>
                     </div>
-                    <Button variant="outline" className="flex items-center gap-1.5 rounded-xl" asChild>
+                    <Button
+                        variant="outline"
+                        className="flex items-center gap-1.5 rounded-xl border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                        asChild
+                    >
                         <Link href={route('admin.periode.index')}>
                             <ArrowLeft className="h-4 w-4" />
                             Kembali
@@ -51,10 +55,10 @@ export default function PeriodeEdit({ period }: Props) {
                     </Button>
                 </div>
 
-                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 p-6 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
+                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-                        <div className="dark:border-slate-855 flex items-center gap-2 border-b border-slate-100 pb-4">
-                            <div className="bg-mayang-500/10 text-mayang-600 flex h-10 w-10 items-center justify-center rounded-xl">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-4 dark:border-zinc-800/80">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-10 w-10 items-center justify-center rounded-xl">
                                 <CalendarRange className="h-5 w-5" />
                             </div>
                             <div>
@@ -71,7 +75,7 @@ export default function PeriodeEdit({ period }: Props) {
                                 id="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5"
+                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                             />
                             <InputError message={errors.name} />
                         </div>
@@ -86,7 +90,7 @@ export default function PeriodeEdit({ period }: Props) {
                                     type="date"
                                     value={data.start_date}
                                     onChange={(e) => setData('start_date', e.target.value)}
-                                    className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5"
+                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                 />
                                 <InputError message={errors.start_date} />
                             </div>
@@ -100,7 +104,7 @@ export default function PeriodeEdit({ period }: Props) {
                                     type="date"
                                     value={data.end_date}
                                     onChange={(e) => setData('end_date', e.target.value)}
-                                    className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5"
+                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                 />
                                 <InputError message={errors.end_date} />
                             </div>
@@ -110,7 +114,7 @@ export default function PeriodeEdit({ period }: Props) {
                             <Button
                                 type="submit"
                                 disabled={processing}
-                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full rounded-xl bg-gradient-to-r px-8 py-5 font-bold text-white shadow-md sm:w-auto"
+                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full rounded-xl bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                             >
                                 {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                             </Button>

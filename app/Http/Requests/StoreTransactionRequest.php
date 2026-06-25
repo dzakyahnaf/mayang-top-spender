@@ -17,6 +17,7 @@ class StoreTransactionRequest extends FormRequest
             'customer_id' => ['required', 'exists:customers,id'],
             'amount' => ['required', 'numeric', 'gt:0'],
             'notes' => ['nullable', 'string', 'max:500'],
+            'receipt_photo' => ['nullable', 'image', 'max:5120'],
         ];
     }
 

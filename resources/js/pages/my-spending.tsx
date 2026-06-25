@@ -34,16 +34,16 @@ export default function MySpending({ customer, transactions, totalSpending }: My
         <>
             <Head title="Belanjaanku" />
 
-            <div className="relative min-h-screen bg-gradient-to-br from-mayang-50 via-slate-50 to-mayang-100/40 font-sans text-slate-900 selection:bg-mayang-500 selection:text-white overflow-x-hidden flex flex-col justify-between">
+            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
                 {/* Spotlight Glow */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none z-0" />
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
 
                 {/* Clean Navbar */}
                 <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-sm transition-all duration-300">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-20 items-center justify-between">
                             <Link href="/" className="flex items-center gap-3 transition hover:opacity-80">
-                                <div className="flex size-10 items-center justify-center rounded-xl bg-mayang-500 shadow-sm">
+                                <div className="bg-mayang-500 flex size-10 items-center justify-center rounded-xl shadow-sm">
                                     <img src="/MayangCollection_Logo Icon_White.png" alt="Mayang Logo" className="size-6 object-contain" />
                                 </div>
                                 <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -53,13 +53,13 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                             <div className="flex items-center gap-6">
                                 <Link
                                     href={route('leaderboard')}
-                                    className="text-sm font-semibold text-slate-600 transition-colors hover:text-mayang-600"
+                                    className="hover:text-mayang-600 text-sm font-semibold text-slate-600 transition-colors"
                                 >
                                     Leaderboard
                                 </Link>
                                 <Link
                                     href={route('dashboard')}
-                                    className="rounded-full bg-mayang-500 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-mayang-600"
+                                    className="bg-mayang-500 hover:bg-mayang-600 rounded-full px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all"
                                 >
                                     Dashboard
                                 </Link>
@@ -76,7 +76,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                     </div>
                 </nav>
 
-                <div className="relative mx-auto max-w-4xl px-4 pt-32 pb-20 sm:px-6 lg:px-8 z-10 flex-1 w-full">
+                <div className="relative z-10 mx-auto w-full max-w-4xl flex-1 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
                     <div className="mb-10 text-center">
                         <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
                             Cek <span className="text-mayang-500">Belanjaanku</span>
@@ -87,9 +87,14 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                         {/* Card Informasi Member */}
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
                             <div className="mb-6 flex items-center gap-4">
-                                <div className="flex size-14 items-center justify-center rounded-xl bg-mayang-50 text-mayang-500">
+                                <div className="bg-mayang-50 text-mayang-500 flex size-14 items-center justify-center rounded-xl">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                        />
                                     </svg>
                                 </div>
                                 <div>
@@ -113,12 +118,12 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                 </div>
                             </div>
 
-                            <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-xl border border-mayang-200 bg-mayang-50 p-6 sm:flex-row">
+                            <div className="border-mayang-200 bg-mayang-50 mt-6 flex flex-col items-center justify-between gap-4 rounded-xl border p-6 sm:flex-row">
                                 <div>
-                                    <p className="text-sm font-semibold text-mayang-700">Total Belanja Terakumulasi</p>
-                                    <p className="text-xs text-mayang-600">Semua transaksi yang tercatat atas namamu.</p>
+                                    <p className="text-mayang-700 text-sm font-semibold">Total Belanja Terakumulasi</p>
+                                    <p className="text-mayang-600 text-xs">Semua transaksi yang tercatat atas namamu.</p>
                                 </div>
-                                <p className="text-4xl font-black tracking-tight text-mayang-600">Rp {formatRupiah(totalSpending)}</p>
+                                <p className="text-mayang-600 text-4xl font-black tracking-tight">Rp {formatRupiah(totalSpending)}</p>
                             </div>
                         </div>
 
@@ -135,21 +140,23 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                         <tr>
                                             <th className="px-8 py-4 text-xs font-bold tracking-wider text-slate-500 uppercase">Tanggal</th>
                                             <th className="px-8 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase">Periode</th>
-                                            <th className="px-8 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Nominal</th>
+                                            <th className="px-8 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">
+                                                Nominal
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-100">
                                         {transactions.map((t) => (
                                             <tr key={t.id} className="transition-colors hover:bg-slate-50/80">
-                                                <td className="whitespace-nowrap px-8 py-5 text-sm font-medium text-slate-900">
+                                                <td className="px-8 py-5 text-sm font-medium whitespace-nowrap text-slate-900">
                                                     {formatDate(t.created_at)}
                                                 </td>
-                                                <td className="whitespace-nowrap px-8 py-5 text-sm">
+                                                <td className="px-8 py-5 text-sm whitespace-nowrap">
                                                     <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
                                                         {t.period.name}
                                                     </span>
                                                 </td>
-                                                <td className="whitespace-nowrap px-8 py-5 text-right text-sm font-bold text-mayang-600">
+                                                <td className="text-mayang-600 px-8 py-5 text-right text-sm font-bold whitespace-nowrap">
                                                     Rp {formatRupiah(t.amount)}
                                                 </td>
                                             </tr>
@@ -159,8 +166,19 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                             ) : (
                                 <div className="px-8 py-16 text-center">
                                     <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-slate-50 text-slate-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="size-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="size-8"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                                            />
                                         </svg>
                                     </div>
                                     <p className="text-lg font-medium text-slate-900">Belum ada riwayat belanja.</p>
@@ -172,7 +190,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                 </div>
 
                 {/* Footer */}
-                <footer className="relative border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500 z-10 w-full mt-auto">
+                <footer className="relative z-10 mt-auto w-full border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500">
                     <div className="mx-auto max-w-7xl px-4">
                         <p>&copy; {new Date().getFullYear()} Mayang Modest Wear. All rights reserved.</p>
                     </div>

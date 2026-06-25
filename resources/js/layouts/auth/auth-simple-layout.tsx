@@ -9,15 +9,15 @@ interface AuthLayoutProps {
 
 export default function AuthSimpleLayout({ children, title, description }: AuthLayoutProps) {
     return (
-        <div className="relative selection:bg-mayang-500 min-h-screen bg-gradient-to-br from-mayang-50 via-slate-50 to-mayang-100/40 font-sans text-slate-900 selection:text-white flex flex-col justify-center items-center p-6 md:p-10 overflow-hidden">
+        <div className="selection:bg-mayang-500 from-mayang-50 to-mayang-100/40 relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br via-slate-50 p-6 font-sans text-slate-900 selection:text-white md:p-10">
             {/* Spotlight Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none z-0" />
+            <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
 
-            <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10 z-10">
+            <div className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-4 text-center">
                         <Link href="/" className="group flex flex-col items-center gap-3 transition hover:opacity-80">
-                            <div className="flex size-14 items-center justify-center rounded-xl bg-mayang-500 shadow-sm transition-transform group-hover:scale-105">
+                            <div className="bg-mayang-500 flex size-14 items-center justify-center rounded-xl shadow-sm transition-transform group-hover:scale-105">
                                 <img src="/MayangCollection_Logo Icon_White.png" alt="Mayang Logo" className="size-8 object-contain" />
                             </div>
                             <span className="text-xl font-bold tracking-tight text-slate-900">

@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { CircleDollarSign, Landmark, NotebookText, Search, UserCheck2 } from 'lucide-react';
+import { Camera, CircleDollarSign, Landmark, NotebookText, Search, UserCheck2, X } from 'lucide-react';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 interface Customer {
@@ -35,11 +35,20 @@ export default function CreateTransaction({ period }: Props) {
     const [showDropdown, setShowDropdown] = useState(false);
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm<{
+        customer_id: string;
+        amount: string;
+        notes: string;
+        receipt_photo: File | null;
+    }>({
         customer_id: '',
         amount: '',
         notes: '',
+        receipt_photo: null,
     });
+
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const searchCustomers = useCallback((keyword: string) => {
         if (keyword.length < 2) {
@@ -72,13 +81,32 @@ export default function CreateTransaction({ period }: Props) {
         setResults([]);
     }
 
+    function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0] ?? null;
+        setData('receipt_photo', file);
+        if (file) {
+            setPreviewUrl(URL.createObjectURL(file));
+        } else {
+            setPreviewUrl(null);
+        }
+    }
+
+    function removeFile() {
+        setData('receipt_photo', null);
+        setPreviewUrl(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+
     function submit(e: FormEvent) {
         e.preventDefault();
         post(route('kasir.transaksi.store'), {
+            forceFormData: true,
             onSuccess: () => {
                 reset();
                 setSelected(null);
                 setQuery('');
+                setPreviewUrl(null);
+                if (fileInputRef.current) fileInputRef.current.value = '';
             },
         });
     }
@@ -134,9 +162,9 @@ export default function CreateTransaction({ period }: Props) {
                         </div>
                     </div>
                 ) : (
-                    <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 p-6 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
-                        <div className="from-mayang-500/10 to-mayang-600/5 border-mayang-100/50 dark:border-mayang-900/30 mb-6 flex items-center gap-3 rounded-2xl border bg-gradient-to-r p-4">
-                            <div className="bg-mayang-500/10 text-mayang-600 flex h-9 w-9 items-center justify-center rounded-xl">
+                    <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                        <div className="from-mayang-500/10 to-mayang-600/5 border-mayang-500/10 dark:border-mayang-500/10 mb-6 flex items-center gap-3 rounded-2xl border bg-gradient-to-r p-4">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-9 w-9 items-center justify-center rounded-xl">
                                 <Landmark className="h-5 w-5" />
                             </div>
                             <p className="text-mayang-700 dark:text-mayang-400 text-sm font-semibold">
@@ -152,7 +180,7 @@ export default function CreateTransaction({ period }: Props) {
                                     Cari Customer
                                 </Label>
                                 <div className="relative">
-                                    <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                    <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                     <Input
                                         id="search"
                                         type="text"
@@ -163,19 +191,19 @@ export default function CreateTransaction({ period }: Props) {
                                             setData('customer_id', '');
                                         }}
                                         placeholder="Ketik nama, nomor HP, atau email..."
-                                        className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5 pl-10"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
                                 {showDropdown && (
-                                    <ul className="absolute z-10 mt-2 max-h-60 w-full space-y-1 overflow-auto rounded-2xl border border-slate-100 bg-white p-2 shadow-xl dark:border-slate-800 dark:bg-slate-950">
+                                    <ul className="absolute z-10 mt-2 max-h-60 w-full space-y-1 overflow-auto rounded-2xl border border-slate-200/50 bg-white/95 p-2 shadow-2xl backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/95">
                                         {results.map((c) => (
                                             <li
                                                 key={c.id}
                                                 onClick={() => selectCustomer(c)}
-                                                className="hover:bg-mayang-50 dark:hover:bg-mayang-950/50 cursor-pointer rounded-xl border-b border-slate-50 px-4 py-3 transition-colors last:border-0 dark:border-slate-900"
+                                                className="hover:bg-mayang-50/80 cursor-pointer rounded-xl border-b border-slate-50/50 px-4 py-3 transition-colors last:border-0 dark:border-zinc-900/30 dark:hover:bg-zinc-900/60"
                                             >
                                                 <div className="font-bold text-slate-900 dark:text-white">{c.name}</div>
-                                                <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                                                <div className="mt-0.5 text-xs text-slate-500 dark:text-zinc-400">
                                                     {c.email} · {c.phone}
                                                 </div>
                                             </li>
@@ -186,16 +214,16 @@ export default function CreateTransaction({ period }: Props) {
                             </div>
 
                             {selected && (
-                                <div className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-5 dark:border-slate-800/50 dark:bg-slate-950/20">
+                                <div className="flex items-start gap-3 rounded-2xl border border-slate-200/50 bg-slate-50/40 p-5 dark:border-zinc-800/50 dark:bg-zinc-950/30">
                                     <div className="bg-mayang-500/10 text-mayang-600 mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl">
                                         <UserCheck2 className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase dark:text-slate-500">
+                                        <p className="dark:text-zinc-550 text-xs font-semibold tracking-wider text-slate-400 uppercase">
                                             Customer Terpilih
                                         </p>
                                         <p className="mt-1 text-base font-bold text-slate-900 dark:text-white">{selected.name}</p>
-                                        <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                                        <p className="mt-0.5 text-sm text-slate-500 dark:text-zinc-400">
                                             {selected.email} · {selected.phone}
                                         </p>
                                     </div>
@@ -207,7 +235,7 @@ export default function CreateTransaction({ period }: Props) {
                                     Nominal Belanja (Rp)
                                 </Label>
                                 <div className="relative">
-                                    <CircleDollarSign className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                    <CircleDollarSign className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                     <Input
                                         id="amount"
                                         type="number"
@@ -216,7 +244,7 @@ export default function CreateTransaction({ period }: Props) {
                                         min="1"
                                         step="1"
                                         placeholder="Contoh: 150000"
-                                        className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50 py-5 pl-10"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
                                 <InputError message={errors.amount} />
@@ -227,23 +255,54 @@ export default function CreateTransaction({ period }: Props) {
                                     Catatan (opsional)
                                 </Label>
                                 <div className="relative">
-                                    <NotebookText className="absolute top-3 left-3.5 h-4 w-4 text-slate-400" />
+                                    <NotebookText className="absolute top-3.5 left-3.5 h-4 w-4 text-slate-400 dark:text-zinc-500" />
                                     <textarea
                                         id="notes"
                                         value={data.notes}
                                         onChange={(e) => setData('notes', e.target.value)}
                                         rows={3}
                                         placeholder="Cth: Pembelian gamis & jilbab"
-                                        className="ring-offset-background placeholder:text-muted-foreground focus-visible:ring-mayang-500/30 flex min-h-[80px] w-full rounded-xl border border-slate-200 bg-white/50 py-2 pr-3 pl-10 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950/20"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 flex min-h-[85px] w-full rounded-xl border border-slate-200 bg-white/60 py-2.5 pr-3 pl-10 text-sm transition-all duration-300 placeholder:text-slate-400 focus-visible:ring-4 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:placeholder:text-zinc-500"
                                     />
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="receipt_photo" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                    Foto Struk (opsional)
+                                </Label>
+                                <div className="relative">
+                                    <input
+                                        ref={fileInputRef}
+                                        id="receipt_photo"
+                                        type="file"
+                                        accept="image/*"
+                                        capture="environment"
+                                        onChange={handleFileChange}
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 block w-full rounded-xl border border-slate-200 bg-white/60 px-4 py-3 text-sm text-slate-500 transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:bg-slate-200 focus-visible:ring-4 focus-visible:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                    />
+                                    <Camera className="absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
+                                </div>
+                                {previewUrl && (
+                                    <div className="relative mt-2 inline-block">
+                                        <img src={previewUrl} alt="Preview struk" className="h-32 rounded-xl border border-slate-200 object-cover shadow-sm" />
+                                        <button
+                                            type="button"
+                                            onClick={removeFile}
+                                            className="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm transition-colors hover:bg-rose-600"
+                                        >
+                                            <X className="size-3.5" />
+                                        </button>
+                                    </div>
+                                )}
+                                <InputError message={errors.receipt_photo} />
                             </div>
 
                             <div className="pt-2">
                                 <Button
                                     type="submit"
                                     disabled={processing || !selected}
-                                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full rounded-xl bg-gradient-to-r px-8 py-5 font-bold text-white shadow-md sm:w-auto"
+                                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full rounded-xl bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                                 >
                                     {processing ? 'Menyimpan...' : 'Submit Transaksi'}
                                 </Button>

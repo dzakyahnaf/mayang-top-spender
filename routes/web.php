@@ -4,11 +4,13 @@ use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PeriodController;
+use App\Http\Controllers\Admin\RewardController as AdminRewardController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Kasir\CustomerController as KasirCustomerController;
 use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\MySpendingController;
+use App\Http\Controllers\RewardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +20,12 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
+
+Route::get('/daftar-hadiah', [RewardController::class, 'index'])->name('daftar-hadiah');
+
+Route::get('/faq', fn () => Inertia::render('faq'))->name('faq');
+
+Route::get('/syarat', fn () => Inertia::render('syarat'))->name('syarat');
 
 Route::get('/my-spending', [MySpendingController::class, 'index'])->name('my-spending')->middleware('auth');
 
@@ -50,6 +58,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/transaksi/{transaction}/edit', [AdminTransactionController::class, 'edit'])->name('transaksi.edit');
     Route::put('/transaksi/{transaction}', [AdminTransactionController::class, 'update'])->name('transaksi.update');
     Route::delete('/transaksi/{transaction}', [AdminTransactionController::class, 'destroy'])->name('transaksi.destroy');
+
+    Route::resource('hadiah', AdminRewardController::class)->except(['show']);
 
     Route::get('/customer', [AdminCustomerController::class, 'index'])->name('customer.index');
 });

@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CalendarDays, ClipboardList, History, LayoutGrid, Trophy, UserPlus, Users } from 'lucide-react';
+import { CalendarDays, ClipboardList, Gift, History, LayoutGrid, Trophy, UserPlus, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const adminNavItems: NavItem[] = [
@@ -12,6 +12,7 @@ const adminNavItems: NavItem[] = [
     { title: 'Periode', url: '/admin/periode', icon: CalendarDays },
     { title: 'Kasir', url: '/admin/kasir', icon: Users },
     { title: 'Transaksi', url: '/admin/transaksi', icon: ClipboardList },
+    { title: 'Hadiah', url: '/admin/hadiah', icon: Gift },
     { title: 'Customer', url: '/admin/customer', icon: UserPlus },
 ];
 

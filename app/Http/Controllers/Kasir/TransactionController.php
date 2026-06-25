@@ -34,12 +34,18 @@ class TransactionController extends Controller
             return back()->withErrors(['period' => 'Tidak ada periode kompetisi yang aktif saat ini.']);
         }
 
+        $receiptPath = null;
+        if ($request->hasFile('receipt_photo')) {
+            $receiptPath = $request->file('receipt_photo')->store('receipts', 'public');
+        }
+
         Transaction::create([
             'customer_id' => $request->customer_id,
             'period_id' => $period->id,
             'cashier_id' => $request->user()->id,
             'amount' => $request->amount,
             'notes' => $request->notes,
+            'receipt_photo' => $receiptPath,
         ]);
 
         return redirect()->route('kasir.transaksi.create')

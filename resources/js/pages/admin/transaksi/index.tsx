@@ -58,7 +58,7 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                         <select
                             value={filters.period_id || ''}
                             onChange={(e) => filterByPeriod(e.target.value)}
-                            className="focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white/80 px-4 py-2.5 pr-10 text-sm font-semibold text-slate-700 shadow-sm focus:ring-2 focus:outline-none dark:bg-slate-900/80 dark:text-slate-200"
+                            className="focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white/80 px-4 py-2.5 pr-10 text-sm font-semibold text-slate-700 shadow-sm focus:ring-4 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200"
                         >
                             <option value="">Semua Periode</option>
                             {periods.map((p) => (
@@ -79,11 +79,11 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                     </div>
                 )}
 
-                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
+                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-100 bg-slate-50/50 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-slate-800/50 dark:bg-slate-950/20 dark:text-slate-400">
+                                <tr className="border-b border-slate-200/30 bg-slate-50/60 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
                                     <th className="px-6 py-4">Tanggal & Waktu</th>
                                     <th className="px-6 py-4">Customer</th>
                                     <th className="px-6 py-4">Nominal Transaksi</th>
@@ -91,10 +91,10 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                                     <th className="px-6 py-4 text-right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50">
+                            <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                                 {transactions.data.map((t) => (
-                                    <tr key={t.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-5/5 text-sm transition-colors">
-                                        <td className="px-6 py-4.5 text-slate-500 dark:text-slate-400">
+                                    <tr key={t.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200">
+                                        <td className="px-6 py-4.5 text-slate-500 dark:text-zinc-400">
                                             {new Date(t.created_at).toLocaleDateString('id-ID', {
                                                 day: 'numeric',
                                                 month: 'short',
@@ -110,33 +110,38 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                                                     Rp {formatRupiah(t.amount)}
                                                 </span>
                                                 {t.original_amount && (
-                                                    <span className="mt-0.5 text-[11px] font-medium text-slate-400 italic dark:text-slate-500">
+                                                    <span className="mt-0.5 text-[11px] font-medium text-slate-400 italic dark:text-zinc-500">
                                                         diedit (sebelumnya Rp {formatRupiah(t.original_amount)})
                                                     </span>
                                                 )}
                                                 {t.notes && (
-                                                    <span className="mt-1 inline-flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
+                                                    <span className="mt-1 inline-flex items-center gap-1 text-[11px] text-slate-500 dark:text-zinc-400">
                                                         <FileText className="inline h-3 w-3" />
                                                         {t.notes}
                                                     </span>
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4.5 text-slate-600 dark:text-slate-300">
-                                            {t.cashier?.name || <span className="text-slate-400 dark:text-slate-600">-</span>}
+                                        <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">
+                                            {t.cashier?.name || <span className="text-slate-400 dark:text-zinc-600">-</span>}
                                         </td>
                                         <td className="px-6 py-4.5">
                                             <div className="flex items-center justify-end gap-2">
-                                                <Button variant="outline" size="sm" className="flex items-center gap-1 rounded-xl" asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="flex items-center gap-1 rounded-xl border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                                                    asChild
+                                                >
                                                     <Link href={route('admin.transaksi.edit', t.id)}>
                                                         <Edit2 className="h-3.5 w-3.5" />
                                                         Edit
                                                     </Link>
                                                 </Button>
                                                 <Button
-                                                    variant="destructive"
+                                                    variant="ghost"
                                                     size="sm"
-                                                    className="flex items-center gap-1 rounded-xl"
+                                                    className="flex items-center gap-1 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 transition-all duration-200 hover:bg-rose-500/20 hover:text-rose-700"
                                                     onClick={() => deleteTransaction(t.id)}
                                                 >
                                                     <Trash2 className="h-3.5 w-3.5" />
@@ -148,7 +153,7 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                                 ))}
                                 {transactions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="py-12 text-center text-slate-500 dark:text-slate-400">
+                                        <td colSpan={5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada data transaksi tercatat.
                                         </td>
                                     </tr>
@@ -164,10 +169,10 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                             <Link
                                 key={i}
                                 href={link.url || '#'}
-                                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all ${
+                                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                                     link.active
                                         ? 'from-mayang-500 to-mayang-600 border-mayang-500 shadow-mayang-500/20 bg-gradient-to-r text-white shadow-md'
-                                        : 'border-slate-100 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800'
+                                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-300 dark:hover:bg-zinc-800/50'
                                 } ${!link.url ? 'pointer-events-none opacity-40' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />

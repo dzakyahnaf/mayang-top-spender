@@ -23,15 +23,15 @@ export default function RegisterMember() {
         <>
             <Head title="Daftar Member" />
 
-            <div className="relative min-h-screen bg-gradient-to-br from-mayang-50 via-slate-50 to-mayang-100/40 font-sans text-slate-900 selection:bg-mayang-500 selection:text-white overflow-x-hidden flex flex-col justify-between">
+            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
                 {/* Spotlight Glow */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none z-0" />
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
                 {/* Clean Navbar */}
                 <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-sm transition-all duration-300">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-20 items-center justify-between">
                             <Link href="/" className="flex items-center gap-3 transition hover:opacity-80">
-                                <div className="flex size-10 items-center justify-center rounded-xl bg-mayang-500 shadow-sm">
+                                <div className="bg-mayang-500 flex size-10 items-center justify-center rounded-xl shadow-sm">
                                     <img src="/MayangCollection_Logo Icon_White.png" alt="Mayang Logo" className="size-6 object-contain" />
                                 </div>
                                 <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -41,14 +41,14 @@ export default function RegisterMember() {
                             <div className="flex items-center gap-6">
                                 <Link
                                     href={route('leaderboard')}
-                                    className="text-sm font-semibold text-slate-600 transition-colors hover:text-mayang-600"
+                                    className="hover:text-mayang-600 text-sm font-semibold text-slate-600 transition-colors"
                                 >
                                     Leaderboard
                                 </Link>
                                 {auth.user ? (
                                     <Link
                                         href={route('dashboard')}
-                                        className="rounded-full bg-mayang-500 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-mayang-600"
+                                        className="bg-mayang-500 hover:bg-mayang-600 rounded-full px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all"
                                     >
                                         Dashboard
                                     </Link>
@@ -66,7 +66,7 @@ export default function RegisterMember() {
                 </nav>
 
                 {/* Content */}
-                <div className="relative flex min-h-screen items-center justify-center px-4 pt-32 pb-20 sm:px-6 lg:px-8 z-10 flex-1 w-full">
+                <div className="relative z-10 flex min-h-screen w-full flex-1 items-center justify-center px-4 pt-32 pb-20 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
                         <div className="mb-8 text-center">
                             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Daftar Member</h1>
@@ -74,13 +74,17 @@ export default function RegisterMember() {
                         </div>
 
                         {flash?.success && (
-                            <div className="mb-6 flex items-center gap-3 rounded-xl border border-mayang-200 bg-mayang-50 p-4">
-                                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-mayang-500 text-white">
+                            <div className="border-mayang-200 bg-mayang-50 mb-6 flex items-center gap-3 rounded-xl border p-4">
+                                <div className="bg-mayang-500 flex size-8 shrink-0 items-center justify-center rounded-full text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="size-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clipRule="evenodd"
+                                        />
                                     </svg>
                                 </div>
-                                <p className="text-sm font-semibold text-mayang-800">{flash.success}</p>
+                                <p className="text-mayang-800 text-sm font-semibold">{flash.success}</p>
                             </div>
                         )}
 
@@ -96,7 +100,7 @@ export default function RegisterMember() {
                                         type="text"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10"
+                                        className="focus:border-mayang-500 focus:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                                         placeholder="Cth: Nisa Sabyan"
                                     />
                                 </div>
@@ -114,7 +118,7 @@ export default function RegisterMember() {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10"
+                                        className="focus:border-mayang-500 focus:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                                         placeholder="Cth: nisa@example.com"
                                     />
                                 </div>
@@ -132,7 +136,7 @@ export default function RegisterMember() {
                                         type="text"
                                         value={data.phone}
                                         onChange={(e) => setData('phone', e.target.value)}
-                                        className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10"
+                                        className="focus:border-mayang-500 focus:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                                         placeholder="Cth: 081234567890"
                                     />
                                 </div>
@@ -143,21 +147,39 @@ export default function RegisterMember() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="group flex w-full justify-center rounded-xl bg-mayang-500 px-4 py-3.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-mayang-600 hover:shadow-md focus:ring-2 focus:ring-mayang-500 focus:ring-offset-2 focus:outline-none disabled:opacity-70 disabled:hover:shadow-sm"
+                                    className="group bg-mayang-500 hover:bg-mayang-600 focus:ring-mayang-500 flex w-full justify-center rounded-xl px-4 py-3.5 text-sm font-bold text-white shadow-sm transition-all hover:shadow-md focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-70 disabled:hover:shadow-sm"
                                 >
                                     {processing ? (
                                         <span className="flex items-center gap-2">
-                                            <svg className="size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <svg
+                                                className="size-5 animate-spin text-white"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                ></path>
                                             </svg>
                                             Memproses...
                                         </span>
                                     ) : (
                                         <span className="flex items-center gap-2">
                                             Daftar Sekarang
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="size-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="size-4 transition-transform group-hover:translate-x-1"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                />
                                             </svg>
                                         </span>
                                     )}
@@ -168,7 +190,7 @@ export default function RegisterMember() {
                 </div>
 
                 {/* Footer */}
-                <footer className="relative border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500 z-10 w-full mt-auto">
+                <footer className="relative z-10 mt-auto w-full border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500">
                     <div className="mx-auto max-w-7xl px-4">
                         <p>&copy; {new Date().getFullYear()} Mayang Modest Wear. All rights reserved.</p>
                     </div>

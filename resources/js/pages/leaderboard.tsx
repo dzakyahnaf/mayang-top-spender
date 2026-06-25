@@ -1,81 +1,88 @@
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import PublicFooter from '@/components/public-footer';
+import PublicNavbar from '@/components/public-navbar';
+import { Head } from '@inertiajs/react';
+import { Gift, Trophy } from 'lucide-react';
+
+interface Reward {
+    id: number;
+    rank_start: number;
+    rank_end: number;
+    title: string;
+    description: string | null;
+}
+
+interface Entry {
+    ranking: number;
+    name: string;
+    total_spending: number;
+}
+
+interface MyRank {
+    ranking: number | null;
+    name: string;
+    total_spending: number;
+}
 
 interface LeaderboardProps {
-    period: {
-        name: string;
-        start_date: string;
-        end_date: string;
-    } | null;
-    leaderboard: Array<{
-        ranking: number;
-        name: string;
-        total_spending: number;
-    }>;
+    period: { name: string; start_date: string; end_date: string } | null;
+    leaderboard: Entry[];
+    rewards: Reward[];
+    myRank: MyRank | null;
 }
 
 function formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
+    return new Date(dateString).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function formatRupiah(amount: number): string {
     return new Intl.NumberFormat('id-ID').format(amount);
 }
 
-export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
-    const { auth } = usePage<SharedData>().props;
+function rankLabel(r: Reward): string {
+    return r.rank_start === r.rank_end ? `Peringkat ${r.rank_start}` : `Peringkat ${r.rank_start}-${r.rank_end}`;
+}
+
+function medalClass(ranking: number): string {
+    if (ranking === 1) return 'bg-amber-100 text-amber-600';
+    if (ranking === 2) return 'bg-slate-200 text-slate-600';
+    if (ranking === 3) return 'bg-orange-100 text-orange-700';
+    return 'bg-slate-50 text-slate-500';
+}
+
+function EntryRow({ entry }: { entry: Entry }) {
+    return (
+        <div className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-slate-50/80">
+            <div className={`flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold shadow-sm ${medalClass(entry.ranking)}`}>
+                {entry.ranking}
+            </div>
+            <span className={`flex-1 truncate font-semibold ${entry.ranking <= 3 ? 'text-slate-900' : 'text-slate-700'}`}>{entry.name}</span>
+            <span className="text-mayang-600 shrink-0 font-bold">Rp {formatRupiah(entry.total_spending)}</span>
+        </div>
+    );
+}
+
+export default function Leaderboard({ period, leaderboard, rewards, myRank }: LeaderboardProps) {
+    // Map each reward bracket to its entries; collect entries not covered by any bracket.
+    const grouped = rewards
+        .map((reward) => ({
+            reward,
+            entries: leaderboard.filter((e) => e.ranking >= reward.rank_start && e.ranking <= reward.rank_end),
+        }))
+        .filter((g) => g.entries.length > 0);
+
+    const coveredRanks = new Set(grouped.flatMap((g) => g.entries.map((e) => e.ranking)));
+    const others = leaderboard.filter((e) => !coveredRanks.has(e.ranking));
 
     return (
         <>
             <Head title="Leaderboard" />
+            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
 
-            <div className="relative min-h-screen bg-gradient-to-br from-mayang-50 via-slate-50 to-mayang-100/40 font-sans text-slate-900 selection:bg-mayang-500 selection:text-white overflow-x-hidden flex flex-col justify-between">
-                {/* Spotlight Glow */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none z-0" />
+                <PublicNavbar current="leaderboard" />
 
-                {/* Clean Navbar */}
-                <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-sm transition-all duration-300">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex h-20 items-center justify-between">
-                            <Link href="/" className="flex items-center gap-3 transition hover:opacity-80">
-                                <div className="flex size-10 items-center justify-center rounded-xl bg-mayang-500 shadow-sm">
-                                    <img src="/MayangCollection_Logo Icon_White.png" alt="Mayang Logo" className="size-6 object-contain" />
-                                </div>
-                                <span className="text-xl font-bold tracking-tight text-slate-900">
-                                    Mayang <span className="text-mayang-500 font-black">Top Spender</span>
-                                </span>
-                            </Link>
-                            <div className="flex items-center gap-6">
-                                <Link href={route('leaderboard')} className="text-sm font-semibold text-mayang-600 transition-colors">
-                                    Leaderboard
-                                </Link>
-                                {auth.user ? (
-                                    <Link
-                                        href={route('dashboard')}
-                                        className="rounded-full bg-mayang-500 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-mayang-600"
-                                    >
-                                        Dashboard
-                                    </Link>
-                                ) : (
-                                    <Link
-                                        href={route('login')}
-                                        className="rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-slate-800"
-                                    >
-                                        Login
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
-                {/* Content */}
-                <div className="relative mx-auto max-w-4xl px-4 pt-32 pb-20 sm:px-6 lg:px-8 z-10 flex-1 w-full">
-                    <div className="mb-10 text-center">
+                <div className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+                    <div className="mb-8 text-center">
                         <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
                             Top Spender <span className="text-mayang-500">Leaderboard</span>
                         </h1>
@@ -89,12 +96,32 @@ export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
                         )}
                     </div>
 
+                    {/* Kartu status login */}
+                    {period && myRank && (
+                        <div className="from-mayang-500 to-mayang-700 mb-8 flex items-center justify-between gap-4 rounded-2xl bg-gradient-to-r px-6 py-5 text-white shadow-lg">
+                            <div className="flex items-center gap-4">
+                                <div className="flex flex-col items-center justify-center rounded-xl bg-white/15 px-4 py-2">
+                                    <span className="text-[10px] font-semibold tracking-wide text-white/70 uppercase">Peringkatmu</span>
+                                    <span className="text-2xl font-black">{myRank.ranking ?? '—'}</span>
+                                </div>
+                                <div>
+                                    <p className="text-lg font-bold">{myRank.name}</p>
+                                    <p className="text-sm text-white/80">
+                                        {myRank.ranking ? 'Pertahankan posisimu, terus belanja!' : 'Belum ada transaksi di periode ini.'}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <span className="block text-[10px] font-semibold tracking-wide text-white/70 uppercase">Total Belanja</span>
+                                <span className="text-xl font-black">Rp {formatRupiah(myRank.total_spending)}</span>
+                            </div>
+                        </div>
+                    )}
+
                     {!period ? (
                         <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
                             <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-slate-100 text-slate-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="size-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <Trophy className="size-8" />
                             </div>
                             <h3 className="text-lg font-bold text-slate-900">Belum Ada Kompetisi</h3>
                             <p className="mt-2 text-slate-500">Saat ini belum ada periode kompetisi yang aktif.</p>
@@ -102,63 +129,56 @@ export default function Leaderboard({ period, leaderboard }: LeaderboardProps) {
                     ) : leaderboard.length === 0 ? (
                         <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
                             <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-slate-100 text-slate-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="size-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
+                                <Trophy className="size-8" />
                             </div>
                             <h3 className="text-lg font-bold text-slate-900">Belum Ada Transaksi</h3>
                             <p className="mt-2 text-slate-500">Jadilah yang pertama untuk memimpin leaderboard di periode ini!</p>
                         </div>
-                    ) : (
-                        <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                            <table className="w-full text-left">
-                                <thead className="border-b border-slate-200 bg-slate-50">
-                                    <tr>
-                                        <th className="px-6 py-4 text-xs font-bold tracking-wider text-slate-500 uppercase">Rank</th>
-                                        <th className="px-6 py-4 text-xs font-bold tracking-wider text-slate-500 uppercase">Nama Pelanggan</th>
-                                        <th className="px-6 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">Total Belanja</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100">
-                                    {leaderboard.map((entry) => (
-                                        <tr key={entry.ranking} className="transition-colors hover:bg-slate-50/80">
-                                            <td className="whitespace-nowrap px-6 py-5">
-                                                <div
-                                                    className={`flex size-8 items-center justify-center rounded-full text-sm font-bold shadow-sm ${
-                                                        entry.ranking === 1
-                                                            ? 'bg-amber-100 text-amber-600'
-                                                             : entry.ranking === 2
-                                                                ? 'bg-slate-200 text-slate-600'
-                                                                : entry.ranking === 3
-                                                                ? 'bg-orange-100 text-orange-700'
-                                                                : 'bg-slate-50 text-slate-500'
-                                                    }`}
-                                                >
-                                                    {entry.ranking}
-                                                </div>
-                                            </td>
-                                            <td className="whitespace-nowrap px-6 py-5">
-                                                <span className={`font-semibold ${entry.ranking <= 3 ? 'text-slate-900' : 'text-slate-700'}`}>
-                                                    {entry.name}
-                                                </span>
-                                            </td>
-                                            <td className="whitespace-nowrap px-6 py-5 text-right">
-                                                <span className="font-bold text-mayang-600">Rp {formatRupiah(entry.total_spending)}</span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                    ) : grouped.length > 0 ? (
+                        <div className="space-y-8">
+                            {grouped.map(({ reward, entries }) => (
+                                <div key={reward.id}>
+                                    <div className="mb-3 flex items-center gap-2 px-1">
+                                        <Gift className="text-mayang-500 size-4" />
+                                        <h2 className="text-sm font-bold tracking-wide text-slate-700">
+                                            {rankLabel(reward)}: <span className="text-mayang-600">{reward.title}</span>
+                                        </h2>
+                                    </div>
+                                    <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                                        {entries.map((entry) => (
+                                            <EntryRow key={entry.ranking} entry={entry} />
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+
+                            {others.length > 0 && (
+                                <div>
+                                    <div className="mb-3 flex items-center gap-2 px-1">
+                                        <h2 className="text-sm font-bold tracking-wide text-slate-700">Peringkat Lainnya</h2>
+                                    </div>
+                                    <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                                        {others.map((entry) => (
+                                            <EntryRow key={entry.ranking} entry={entry} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
+                    ) : (
+                        <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                            {leaderboard.map((entry) => (
+                                <EntryRow key={entry.ranking} entry={entry} />
+                            ))}
+                        </div>
+                    )}
+
+                    {period && leaderboard.length > 0 && (
+                        <p className="mt-6 text-center text-xs text-slate-400">Menampilkan peringkat 1&ndash;100 teratas periode aktif.</p>
                     )}
                 </div>
 
-                {/* Footer */}
-                <footer className="relative border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500 z-10 w-full mt-auto">
-                    <div className="mx-auto max-w-7xl px-4">
-                        <p>&copy; {new Date().getFullYear()} Mayang Modest Wear. All rights reserved.</p>
-                    </div>
-                </footer>
+                <PublicFooter />
             </div>
         </>
     );

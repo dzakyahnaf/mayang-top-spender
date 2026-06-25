@@ -62,34 +62,34 @@ export default function TransactionHistory({ transactions }: Props) {
                     </div>
                 )}
 
-                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
+                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-slate-100 dark:divide-slate-800/50">
-                            <thead className="bg-slate-50/50 dark:bg-slate-950/20">
+                        <table className="min-w-full divide-y divide-slate-200/30 dark:divide-zinc-800/50">
+                            <thead className="border-b border-slate-200/50 bg-slate-50/60 dark:border-zinc-800/80 dark:bg-zinc-950/40">
                                 <tr>
-                                    <th className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                         Tanggal
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                         Customer
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                         Nominal Belanja
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                         Periode
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                         Aksi
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100 bg-transparent dark:divide-slate-800/50">
+                            <tbody className="divide-y divide-slate-200/30 bg-transparent dark:divide-zinc-800/50">
                                 {transactions.data.map((t) => {
                                     const isToday = new Date(t.created_at).toDateString() === today;
                                     return (
-                                        <tr key={t.id} className="transition-colors hover:bg-slate-50/30 dark:hover:bg-slate-950/10">
-                                            <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-slate-600 dark:text-slate-300">
+                                        <tr key={t.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 transition-all duration-200">
+                                            <td className="dark:text-zinc-350 px-6 py-4 text-sm font-medium whitespace-nowrap text-slate-600">
                                                 {new Date(t.created_at).toLocaleDateString('id-ID', {
                                                     day: 'numeric',
                                                     month: 'short',
@@ -99,21 +99,21 @@ export default function TransactionHistory({ transactions }: Props) {
                                                 })}
                                             </td>
                                             <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">{t.customer.name}</td>
-                                            <td className="px-6 py-4 text-sm font-semibold text-slate-950 dark:text-slate-100">
-                                                <span>{formatRupiah(t.amount)}</span>
+                                            <td className="px-6 py-4 text-sm font-semibold text-slate-950 dark:text-zinc-100">
+                                                <span className="text-base font-bold">{formatRupiah(t.amount)}</span>
                                                 {t.original_amount && (
-                                                    <span className="ml-2 inline-flex items-center rounded-md bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800 ring-1 ring-amber-600/20 ring-inset dark:bg-amber-950/30 dark:text-amber-300">
+                                                    <span className="ml-2.5 inline-flex items-center rounded-xl border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
                                                         Edited (sebelumnya: {formatRupiah(t.original_amount)})
                                                     </span>
                                                 )}
                                             </td>
-                                            <td className="dark:text-slate-450 px-6 py-4 text-sm text-slate-500">{t.period.name}</td>
+                                            <td className="px-6 py-4 text-sm text-slate-500 dark:text-zinc-400">{t.period.name}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 {isToday ? (
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        className="text-mayang-600 hover:text-mayang-700 hover:bg-mayang-500/10 gap-1 rounded-xl"
+                                                        className="text-mayang-600 hover:text-mayang-700 hover:bg-mayang-500/10 gap-1 rounded-xl transition-all duration-200"
                                                         asChild
                                                     >
                                                         <Link href={route('kasir.transaksi.edit', t.id)}>
@@ -122,7 +122,7 @@ export default function TransactionHistory({ transactions }: Props) {
                                                         </Link>
                                                     </Button>
                                                 ) : (
-                                                    <span className="text-xs text-slate-400 italic">Tidak dapat diedit</span>
+                                                    <span className="dark:text-zinc-550 text-xs text-slate-400 italic">Tidak dapat diedit</span>
                                                 )}
                                             </td>
                                         </tr>
@@ -130,7 +130,7 @@ export default function TransactionHistory({ transactions }: Props) {
                                 })}
                                 {transactions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                                        <td colSpan={5} className="px-6 py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada transaksi yang tercatat.
                                         </td>
                                     </tr>
@@ -146,10 +146,10 @@ export default function TransactionHistory({ transactions }: Props) {
                             <Link
                                 key={i}
                                 href={link.url || '#'}
-                                className={`inline-flex items-center justify-center rounded-xl border border-transparent px-4 py-2 text-sm font-semibold transition-all ${
+                                className={`inline-flex items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                                     link.active
-                                        ? 'from-mayang-500 to-mayang-600 shadow-mayang-500/15 bg-gradient-to-r text-white shadow-md'
-                                        : 'border-slate-100 bg-white text-slate-700 shadow-sm hover:border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+                                        ? 'from-mayang-500 to-mayang-600 shadow-mayang-500/20 border-transparent bg-gradient-to-r text-white shadow-md'
+                                        : 'dark:text-zinc-350 border-slate-200/80 bg-white/60 text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:bg-zinc-800/50'
                                 } ${!link.url ? 'pointer-events-none opacity-40' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />

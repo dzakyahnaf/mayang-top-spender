@@ -34,7 +34,7 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Daftar Member" description="Daftarkan dirimu sebagai member Mayang Modest Wear">
+        <AuthLayout title="Daftar Member" description="Daftarkan dirimu sebagai bagian dari program top spender berhadiah Umroh!">
             <Head title="Daftar" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
@@ -53,7 +53,7 @@ export default function Register() {
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Nama lengkap"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.name} />
                     </div>
@@ -72,7 +72,7 @@ export default function Register() {
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
                             placeholder="email@contoh.com"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -90,7 +90,7 @@ export default function Register() {
                             onChange={(e) => setData('phone', e.target.value)}
                             disabled={processing}
                             placeholder="08xxxxxxxxxx"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.phone} />
                     </div>
@@ -109,7 +109,7 @@ export default function Register() {
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
                             placeholder="Minimal 8 karakter"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -128,14 +128,14 @@ export default function Register() {
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
                             placeholder="Ulangi password"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
 
                     <Button
                         type="submit"
-                        className="mt-4 w-full rounded-xl bg-mayang-500 font-bold text-white shadow-sm transition-all hover:bg-mayang-600 hover:shadow-md"
+                        className="bg-mayang-500 hover:bg-mayang-600 mt-4 w-full rounded-xl font-bold text-white shadow-sm transition-all hover:shadow-md"
                         tabIndex={6}
                         disabled={processing}
                     >
@@ -146,7 +146,7 @@ export default function Register() {
 
                 <div className="text-center text-sm text-slate-500">
                     Sudah punya akun?{' '}
-                    <TextLink href={route('login')} className="font-semibold text-mayang-600 hover:text-mayang-700" tabIndex={7}>
+                    <TextLink href={route('login')} className="text-mayang-600 hover:text-mayang-700 font-semibold" tabIndex={7}>
                         Login
                     </TextLink>
                 </div>

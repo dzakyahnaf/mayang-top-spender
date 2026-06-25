@@ -41,11 +41,11 @@ export default function CustomerIndex({ customers, period }: Props) {
                     )}
                 </div>
 
-                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
+                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-100 bg-slate-50/50 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-slate-800/50 dark:bg-slate-950/20 dark:text-slate-400">
+                                <tr className="border-b border-slate-200/30 bg-slate-50/60 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
                                     <th className="px-6 py-4">Nama</th>
                                     <th className="px-6 py-4">Email</th>
                                     <th className="px-6 py-4">Nomor HP</th>
@@ -53,13 +53,13 @@ export default function CustomerIndex({ customers, period }: Props) {
                                     {period && <th className="px-6 py-4 text-right">Total Belanja</th>}
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50">
+                            <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                                 {customers.data.map((c) => (
-                                    <tr key={c.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-50/5 text-sm transition-colors">
+                                    <tr key={c.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200">
                                         <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">{c.name}</td>
-                                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{c.email}</td>
-                                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{c.phone}</td>
-                                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                                        <td className="dark:text-zinc-350 px-6 py-4 text-slate-600">{c.email}</td>
+                                        <td className="dark:text-zinc-350 px-6 py-4 text-slate-600">{c.phone}</td>
+                                        <td className="px-6 py-4 font-medium text-slate-500 dark:text-zinc-400">
                                             {new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                                         </td>
                                         {period && (
@@ -71,7 +71,7 @@ export default function CustomerIndex({ customers, period }: Props) {
                                 ))}
                                 {customers.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={period ? 5 : 4} className="py-12 text-center text-slate-500 dark:text-slate-400">
+                                        <td colSpan={period ? 5 : 4} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada customer terdaftar.
                                         </td>
                                     </tr>
@@ -87,10 +87,10 @@ export default function CustomerIndex({ customers, period }: Props) {
                             <Link
                                 key={i}
                                 href={link.url || '#'}
-                                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all ${
+                                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                                     link.active
                                         ? 'from-mayang-500 to-mayang-600 border-mayang-500 shadow-mayang-500/20 bg-gradient-to-r text-white shadow-md'
-                                        : 'border-slate-100 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800'
+                                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-300 dark:hover:bg-zinc-800/50'
                                 } ${!link.url ? 'pointer-events-none opacity-40' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />

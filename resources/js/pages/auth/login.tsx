@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
+        <AuthLayout title="Masuk" description="Masuk dengan email/nomor telepon terdaftar">
             <Head title="Log in" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -55,7 +55,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -68,7 +68,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             {canResetPassword && (
                                 <TextLink
                                     href={route('password.request')}
-                                    className="ml-auto text-sm text-mayang-600 hover:text-mayang-700"
+                                    className="text-mayang-600 hover:text-mayang-700 ml-auto text-sm"
                                     tabIndex={5}
                                 >
                                     Forgot password?
@@ -84,7 +84,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm outline-none transition-all focus:border-mayang-500 focus:ring-4 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -94,7 +94,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             id="remember"
                             name="remember"
                             tabIndex={3}
-                            className="border-slate-300 data-[state=checked]:border-mayang-500 data-[state=checked]:bg-mayang-500"
+                            className="data-[state=checked]:border-mayang-500 data-[state=checked]:bg-mayang-500 border-slate-300"
                         />
                         <Label htmlFor="remember" className="text-sm font-medium text-slate-700">
                             Remember me
@@ -103,7 +103,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                     <Button
                         type="submit"
-                        className="mt-4 w-full rounded-xl bg-mayang-500 font-bold text-white shadow-sm transition-all hover:bg-mayang-600 hover:shadow-md"
+                        className="bg-mayang-500 hover:bg-mayang-600 mt-4 w-full rounded-xl font-bold text-white shadow-sm transition-all hover:shadow-md"
                         tabIndex={4}
                         disabled={processing}
                     >
@@ -114,7 +114,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                 <div className="text-center text-sm text-slate-500">
                     Don't have an account?{' '}
-                    <TextLink href={route('register')} className="font-semibold text-mayang-600 hover:text-mayang-700" tabIndex={5}>
+                    <TextLink href={route('register')} className="text-mayang-600 hover:text-mayang-700 font-semibold" tabIndex={5}>
                         Sign up
                     </TextLink>
                 </div>

@@ -16,6 +16,7 @@ class Transaction extends Model
         'cashier_id',
         'amount',
         'notes',
+        'receipt_photo',
         'original_amount',
         'edited_by',
         'edited_at',

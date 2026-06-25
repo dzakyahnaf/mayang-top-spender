@@ -43,7 +43,10 @@ function ResetPasswordForm({ cashierId, onClose }: { cashierId: number; onClose:
     };
 
     return (
-        <form onSubmit={handleSubmit} className="border-mayang-100 bg-mayang-500/5 dark:border-mayang-900/30 mt-4 space-y-4 rounded-2xl border p-5">
+        <form
+            onSubmit={handleSubmit}
+            className="mt-4 space-y-4 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-lg dark:border-zinc-800/80 dark:bg-zinc-950/80"
+        >
             <div className="text-mayang-600 dark:text-mayang-400 flex items-center gap-2">
                 <KeyRound className="h-4.5 w-4.5" />
                 <h4 className="text-sm font-bold">Reset Password Akun</h4>
@@ -58,7 +61,7 @@ function ResetPasswordForm({ cashierId, onClose }: { cashierId: number; onClose:
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
                     placeholder="Masukkan password baru"
-                    className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50"
+                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-4.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-900/40"
                 />
                 <InputError message={errors.password} />
             </div>
@@ -72,19 +75,19 @@ function ResetPasswordForm({ cashierId, onClose }: { cashierId: number; onClose:
                     value={data.password_confirmation}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
                     placeholder="Konfirmasi password baru"
-                    className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl bg-white/50"
+                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-4.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-900/40"
                 />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 pt-1.5">
                 <Button
                     type="submit"
                     size="sm"
-                    className="bg-mayang-600 hover:bg-mayang-700 rounded-xl font-semibold text-white"
+                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 rounded-xl bg-gradient-to-r font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
                     disabled={processing}
                 >
                     {processing ? 'Menyimpan...' : 'Simpan Password'}
                 </Button>
-                <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={onClose}>
+                <Button type="button" variant="outline" size="sm" className="dark:border-zinc-850 rounded-xl border-slate-200" onClick={onClose}>
                     Batal
                 </Button>
             </div>
@@ -115,7 +118,7 @@ export default function KasirIndex({ cashiers }: Props) {
                     </div>
                     <Button
                         asChild
-                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 self-start rounded-xl bg-gradient-to-r font-bold text-white shadow-md sm:self-auto"
+                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full rounded-xl bg-gradient-to-r px-5 py-5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                     >
                         <Link href={route('admin.kasir.create')} className="flex items-center gap-1.5">
                             <Plus className="h-4 w-4" />
@@ -130,34 +133,42 @@ export default function KasirIndex({ cashiers }: Props) {
                     </div>
                 )}
 
-                <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white/50 shadow-xl backdrop-blur-md dark:border-slate-800/50 dark:bg-slate-900/40">
+                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-100 bg-slate-50/50 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-slate-800/50 dark:bg-slate-950/20 dark:text-slate-400">
+                                <tr className="border-b border-slate-200/30 bg-slate-50/60 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
                                     <th className="px-6 py-4">Nama Kasir</th>
                                     <th className="px-6 py-4">Email</th>
                                     <th className="px-6 py-4">Tanggal Dibuat</th>
                                     <th className="px-6 py-4 text-right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50">
+                            <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                                 {cashiers.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="py-12 text-center text-slate-500 dark:text-slate-400">
+                                        <td colSpan={4} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada data kasir terdaftar.
                                         </td>
                                     </tr>
                                 ) : (
                                     cashiers.map((cashier) => (
-                                        <tr key={cashier.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-50/5 text-sm transition-colors">
+                                        <tr
+                                            key={cashier.id}
+                                            className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200"
+                                        >
                                             <td className="px-6 py-4.5 font-bold text-slate-900 dark:text-white">{cashier.name}</td>
-                                            <td className="px-6 py-4.5 text-slate-600 dark:text-slate-300">{cashier.email}</td>
-                                            <td className="px-6 py-4.5 text-slate-500 dark:text-slate-400">{formatDate(cashier.created_at)}</td>
+                                            <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">{cashier.email}</td>
+                                            <td className="px-6 py-4.5 text-slate-500 dark:text-zinc-400">{formatDate(cashier.created_at)}</td>
                                             <td className="px-6 py-4.5">
                                                 <div className="flex flex-col items-end gap-2">
                                                     <div className="flex items-center justify-end gap-2">
-                                                        <Button variant="outline" size="sm" className="flex items-center gap-1 rounded-xl" asChild>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            className="flex items-center gap-1 rounded-xl border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                                                            asChild
+                                                        >
                                                             <Link href={route('admin.kasir.edit', cashier.id)}>
                                                                 <Edit2 className="h-3.5 w-3.5" />
                                                                 Edit
@@ -166,16 +177,16 @@ export default function KasirIndex({ cashiers }: Props) {
                                                         <Button
                                                             variant="secondary"
                                                             size="sm"
-                                                            className="flex items-center gap-1 rounded-xl"
+                                                            className="bg-mayang-500/10 text-mayang-600 hover:bg-mayang-500/20 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/20 flex items-center gap-1 rounded-xl border transition-all duration-200"
                                                             onClick={() => setResetPasswordId(resetPasswordId === cashier.id ? null : cashier.id)}
                                                         >
                                                             <KeyRound className="h-3.5 w-3.5" />
                                                             Reset Password
                                                         </Button>
                                                         <Button
-                                                            variant="destructive"
+                                                            variant="ghost"
                                                             size="sm"
-                                                            className="flex items-center gap-1 rounded-xl"
+                                                            className="flex items-center gap-1 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 transition-all duration-200 hover:bg-rose-500/20 hover:text-rose-700"
                                                             onClick={() => handleDelete(cashier.id)}
                                                         >
                                                             <Trash2 className="h-3.5 w-3.5" />
