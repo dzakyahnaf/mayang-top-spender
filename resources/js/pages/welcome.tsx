@@ -17,8 +17,8 @@ export default function Welcome() {
     return (
         <>
             <Head title="Welcome" />
-            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative min-h-screen overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
-                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
+            <div className="from-mayang-50 to-mayang-100/70 selection:bg-mayang-500 relative min-h-screen overflow-x-hidden bg-gradient-to-br via-white font-sans text-slate-900 selection:text-white">
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.16)_0%,_rgba(27,174,185,0)_70%)]" />
 
                 <PublicNavbar current="" />
 
@@ -110,9 +110,9 @@ export default function Welcome() {
                             ].map((item) => (
                                 <div
                                     key={item.step}
-                                    className="hover:shadow-mayang-500/5 rounded-2xl border border-slate-200 bg-white p-8 transition-shadow hover:shadow-lg"
+                                    className="hover:border-mayang-200 hover:shadow-mayang-500/10 group rounded-2xl border border-slate-200 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-xl"
                                 >
-                                    <div className="bg-mayang-50 text-mayang-500 mb-6 flex size-14 items-center justify-center rounded-xl text-2xl font-black">
+                                    <div className="from-mayang-500 to-mayang-600 shadow-mayang-500/30 mb-6 flex size-14 items-center justify-center rounded-xl bg-gradient-to-br text-2xl font-black text-white shadow-lg transition-transform group-hover:scale-105">
                                         {item.step}
                                     </div>
                                     <h3 className="mb-3 text-xl font-bold text-slate-900">{item.title}</h3>

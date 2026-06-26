@@ -60,7 +60,7 @@ export default function HadiahIndex({ rewards }: Props) {
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-left">
                             <thead>
-                                <tr className="border-b border-slate-200/30 bg-slate-50/60 text-xs font-bold tracking-wider text-slate-500 uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
+                                <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
                                     <th className="px-6 py-4">Peringkat</th>
                                     <th className="px-6 py-4">Hadiah</th>
                                     <th className="px-6 py-4">Keterangan</th>

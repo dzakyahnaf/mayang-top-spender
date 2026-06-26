@@ -28,7 +28,7 @@ class LeaderboardController extends Controller
                 WHERE t.period_id = ?
                 GROUP BY c.id, c.name
                 ORDER BY SUM(t.amount) DESC
-                LIMIT 100
+                LIMIT 50
             ', [$period->id]);
 
             $user = auth()->user();

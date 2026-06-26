@@ -65,21 +65,21 @@ export default function TransactionHistory({ transactions }: Props) {
                 <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-slate-200/30 dark:divide-zinc-800/50">
-                            <thead className="border-b border-slate-200/50 bg-slate-50/60 dark:border-zinc-800/80 dark:bg-zinc-950/40">
+                            <thead className="border-mayang-100/70 bg-mayang-50/70 border-b dark:border-zinc-800/80 dark:bg-zinc-950/40">
                                 <tr>
-                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Tanggal
                                     </th>
-                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Customer
                                     </th>
-                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Nominal Belanja
                                     </th>
-                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Periode
                                     </th>
-                                    <th className="px-6 py-4.5 text-left text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Aksi
                                     </th>
                                 </tr>

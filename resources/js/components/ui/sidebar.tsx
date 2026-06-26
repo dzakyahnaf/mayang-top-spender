@@ -281,13 +281,13 @@ const SidebarInset = React.forwardRef<HTMLDivElement, React.ComponentProps<'main
         <main
             ref={ref}
             className={cn(
-                'relative flex min-h-svh flex-1 flex-col bg-gradient-to-br from-slate-50 via-white to-mayang-50/20 dark:from-zinc-950 dark:via-zinc-900/60 dark:to-mayang-950/20',
+                'relative flex min-h-svh flex-1 flex-col bg-gradient-to-br from-mayang-50 via-white to-mayang-100/60 dark:from-zinc-950 dark:via-zinc-900/60 dark:to-mayang-950/20',
                 'peer-data-[variant=inset]:min-h-[calc(100svh-(--spacing(4)))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:border-slate-200/50 md:peer-data-[variant=inset]:dark:border-zinc-800/50',
                 className,
             )}
             {...props}
         >
-            <div className="absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.06)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.12)_0%,_rgba(27,174,185,0)_70%)] pointer-events-none" />
             {children}
         </main>
     );

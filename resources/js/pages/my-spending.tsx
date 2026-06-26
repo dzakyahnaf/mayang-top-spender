@@ -34,9 +34,9 @@ export default function MySpending({ customer, transactions, totalSpending }: My
         <>
             <Head title="Belanjaanku" />
 
-            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
+            <div className="from-mayang-50 to-mayang-100/70 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-white font-sans text-slate-900 selection:text-white">
                 {/* Spotlight Glow */}
-                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.16)_0%,_rgba(27,174,185,0)_70%)]" />
 
                 {/* Clean Navbar */}
                 <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-sm transition-all duration-300">
@@ -87,7 +87,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                         {/* Card Informasi Member */}
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
                             <div className="mb-6 flex items-center gap-4">
-                                <div className="bg-mayang-50 text-mayang-500 flex size-14 items-center justify-center rounded-xl">
+                                <div className="from-mayang-500 to-mayang-600 shadow-mayang-500/30 flex size-14 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path
                                             strokeLinecap="round"
@@ -118,29 +118,32 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                 </div>
                             </div>
 
-                            <div className="border-mayang-200 bg-mayang-50 mt-6 flex flex-col items-center justify-between gap-4 rounded-xl border p-6 sm:flex-row">
-                                <div>
-                                    <p className="text-mayang-700 text-sm font-semibold">Total Belanja Terakumulasi</p>
-                                    <p className="text-mayang-600 text-xs">Semua transaksi yang tercatat atas namamu.</p>
+                            <div className="from-mayang-500 to-mayang-700 shadow-mayang-500/25 relative mt-6 flex flex-col items-center justify-between gap-4 overflow-hidden rounded-2xl bg-gradient-to-br p-6 text-white shadow-lg sm:flex-row">
+                                <div className="absolute -top-6 -right-4 size-32 rounded-full bg-white/10" />
+                                <div className="relative z-10">
+                                    <p className="text-sm font-semibold text-white/90">Total Belanja Terakumulasi</p>
+                                    <p className="text-xs text-white/70">Semua transaksi yang tercatat atas namamu.</p>
                                 </div>
-                                <p className="text-mayang-600 text-4xl font-black tracking-tight">Rp {formatRupiah(totalSpending)}</p>
+                                <p className="relative z-10 text-4xl font-black tracking-tight">Rp {formatRupiah(totalSpending)}</p>
                             </div>
                         </div>
 
                         {/* Riwayat Belanja */}
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                            <div className="border-b border-slate-100 bg-white px-8 py-6">
+                            <div className="border-mayang-100 from-mayang-50 border-b bg-gradient-to-r to-transparent px-8 py-6">
                                 <h2 className="text-xl font-bold text-slate-900">Riwayat Transaksi</h2>
                                 <p className="mt-1 text-sm text-slate-500">Daftar transaksi terakhirmu di Mayang Modest Wear.</p>
                             </div>
 
                             {transactions.length > 0 ? (
                                 <table className="w-full text-left">
-                                    <thead className="border-b border-slate-100 bg-slate-50">
+                                    <thead className="border-mayang-100 bg-mayang-50/70 border-b">
                                         <tr>
-                                            <th className="px-8 py-4 text-xs font-bold tracking-wider text-slate-500 uppercase">Tanggal</th>
-                                            <th className="px-8 py-4 text-left text-xs font-bold tracking-wider text-slate-500 uppercase">Periode</th>
-                                            <th className="px-8 py-4 text-right text-xs font-bold tracking-wider text-slate-500 uppercase">
+                                            <th className="text-mayang-700 px-8 py-4 text-xs font-bold tracking-wider uppercase">Tanggal</th>
+                                            <th className="text-mayang-700 px-8 py-4 text-left text-xs font-bold tracking-wider uppercase">
+                                                Periode
+                                            </th>
+                                            <th className="text-mayang-700 px-8 py-4 text-right text-xs font-bold tracking-wider uppercase">
                                                 Nominal
                                             </th>
                                         </tr>
@@ -190,7 +193,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                 </div>
 
                 {/* Footer */}
-                <footer className="relative z-10 mt-auto w-full border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500">
+                <footer className="from-mayang-600 to-mayang-700 relative z-10 mt-auto w-full bg-gradient-to-br py-12 text-center text-sm text-white/70">
                     <div className="mx-auto max-w-7xl px-4">
                         <p>&copy; {new Date().getFullYear()} Mayang Modest Wear. All rights reserved.</p>
                     </div>

@@ -1,7 +1,7 @@
 import PublicFooter from '@/components/public-footer';
 import PublicNavbar from '@/components/public-navbar';
 import { Head } from '@inertiajs/react';
-import { Gift, Trophy } from 'lucide-react';
+import { Gift, Plane, Trophy } from 'lucide-react';
 
 interface Reward {
     id: number;
@@ -76,8 +76,8 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
     return (
         <>
             <Head title="Leaderboard" />
-            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
-                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
+            <div className="from-mayang-50 to-mayang-100/70 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-white font-sans text-slate-900 selection:text-white">
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.16)_0%,_rgba(27,174,185,0)_70%)]" />
 
                 <PublicNavbar current="leaderboard" />
 
@@ -136,21 +136,36 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                         </div>
                     ) : grouped.length > 0 ? (
                         <div className="space-y-8">
-                            {grouped.map(({ reward, entries }) => (
-                                <div key={reward.id}>
-                                    <div className="mb-3 flex items-center gap-2 px-1">
-                                        <Gift className="text-mayang-500 size-4" />
-                                        <h2 className="text-sm font-bold tracking-wide text-slate-700">
-                                            {rankLabel(reward)}: <span className="text-mayang-600">{reward.title}</span>
-                                        </h2>
+                            {grouped.map(({ reward, entries }) => {
+                                const isUmroh = reward.rank_start === 1 && reward.rank_end === 1;
+                                return (
+                                    <div key={reward.id}>
+                                        <div className={`mb-3 flex items-center gap-2 px-1 ${isUmroh ? '' : ''}`}>
+                                            {isUmroh ? <Plane className="size-4 text-amber-500" /> : <Gift className="text-mayang-500 size-4" />}
+                                            <h2 className="text-sm font-bold tracking-wide text-slate-700">
+                                                {rankLabel(reward)}:{' '}
+                                                <span className={isUmroh ? 'text-amber-600' : 'text-mayang-600'}>{reward.title}</span>
+                                                {isUmroh && (
+                                                    <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black tracking-wide text-amber-700 uppercase">
+                                                        Grand Prize
+                                                    </span>
+                                                )}
+                                            </h2>
+                                        </div>
+                                        <div
+                                            className={`divide-y overflow-hidden rounded-2xl border shadow-sm ${
+                                                isUmroh
+                                                    ? 'divide-amber-100 border-amber-200 bg-gradient-to-br from-amber-50 to-white'
+                                                    : 'divide-slate-100 border-slate-200 bg-white'
+                                            }`}
+                                        >
+                                            {entries.map((entry) => (
+                                                <EntryRow key={entry.ranking} entry={entry} />
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                                        {entries.map((entry) => (
-                                            <EntryRow key={entry.ranking} entry={entry} />
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
 
                             {others.length > 0 && (
                                 <div>
@@ -174,7 +189,7 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                     )}
 
                     {period && leaderboard.length > 0 && (
-                        <p className="mt-6 text-center text-xs text-slate-400">Menampilkan peringkat 1&ndash;100 teratas periode aktif.</p>
+                        <p className="mt-6 text-center text-xs text-slate-400">Menampilkan Top 50 spender periode aktif.</p>
                     )}
                 </div>
 

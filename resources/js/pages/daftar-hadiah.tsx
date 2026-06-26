@@ -1,7 +1,7 @@
 import PublicFooter from '@/components/public-footer';
 import PublicNavbar from '@/components/public-navbar';
 import { Head, Link } from '@inertiajs/react';
-import { Gift, Trophy } from 'lucide-react';
+import { Gift, Plane, Trophy } from 'lucide-react';
 
 interface Reward {
     id: number;
@@ -21,8 +21,8 @@ export default function DaftarHadiah({ rewards }: Props) {
     return (
         <>
             <Head title="Daftar Hadiah" />
-            <div className="from-mayang-50 to-mayang-100/40 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-slate-50 font-sans text-slate-900 selection:text-white">
-                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.08)_0%,_rgba(27,174,185,0)_70%)]" />
+            <div className="from-mayang-50 to-mayang-100/70 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-white font-sans text-slate-900 selection:text-white">
+                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.16)_0%,_rgba(27,174,185,0)_70%)]" />
 
                 <PublicNavbar current="daftar-hadiah" />
 
@@ -46,27 +46,39 @@ export default function DaftarHadiah({ rewards }: Props) {
                         </div>
                     ) : (
                         <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                            {rewards.map((reward, index) => (
-                                <div
-                                    key={reward.id}
-                                    className={`flex items-center gap-4 px-6 py-5 ${index !== 0 ? 'border-t border-slate-100' : ''} ${
-                                        reward.rank_start === 1 ? 'from-mayang-50 bg-gradient-to-r to-transparent' : ''
-                                    }`}
-                                >
+                            {rewards.map((reward, index) => {
+                                const isUmroh = reward.rank_start === 1 && reward.rank_end === 1;
+                                return (
                                     <div
-                                        className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${
-                                            reward.rank_start === 1 ? 'bg-amber-100 text-amber-600' : 'bg-mayang-500/10 text-mayang-600'
+                                        key={reward.id}
+                                        className={`flex items-center gap-4 px-6 py-5 ${index !== 0 ? 'border-t border-slate-100' : ''} ${
+                                            isUmroh ? 'bg-gradient-to-r from-amber-50 to-transparent' : ''
                                         }`}
                                     >
-                                        <Trophy className="size-6" />
+                                        <div
+                                            className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${
+                                                isUmroh ? 'bg-amber-100 text-amber-600' : 'bg-mayang-500/10 text-mayang-600'
+                                            }`}
+                                        >
+                                            {isUmroh ? <Plane className="size-6" /> : <Trophy className="size-6" />}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xs font-bold tracking-wide text-slate-400 uppercase">{rankLabel(reward)}</span>
+                                                {isUmroh && (
+                                                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black tracking-wide text-amber-700 uppercase">
+                                                        Grand Prize
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className={`truncate text-lg font-bold ${isUmroh ? 'text-amber-800' : 'text-slate-900'}`}>
+                                                {reward.title}
+                                            </p>
+                                            {reward.description && <p className="truncate text-sm text-slate-500">{reward.description}</p>}
+                                        </div>
                                     </div>
-                                    <div className="min-w-0 flex-1">
-                                        <span className="text-xs font-bold tracking-wide text-slate-400 uppercase">{rankLabel(reward)}</span>
-                                        <p className="truncate text-lg font-bold text-slate-900">{reward.title}</p>
-                                        {reward.description && <p className="truncate text-sm text-slate-500">{reward.description}</p>}
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     )}
 
