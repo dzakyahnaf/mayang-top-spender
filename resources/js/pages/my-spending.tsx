@@ -17,8 +17,10 @@ interface MySpendingProps {
     totalSpending: number;
 }
 
-function formatRupiah(amount: number): string {
-    return new Intl.NumberFormat('id-ID').format(amount);
+// Coin system: 1 Coin = Rp 5 belanja. Raw rupiah stays in the DB; only the
+// displayed value is divided by 5.
+function formatCoin(amount: number): string {
+    return new Intl.NumberFormat('id-ID').format(Math.floor(amount / 5)) + ' Coin';
 }
 
 function formatDate(dateString: string): string {
@@ -121,10 +123,10 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                             <div className="from-mayang-500 to-mayang-700 shadow-mayang-500/25 relative mt-6 flex flex-col items-center justify-between gap-4 overflow-hidden rounded-2xl bg-gradient-to-br p-6 text-white shadow-lg sm:flex-row">
                                 <div className="absolute -top-6 -right-4 size-32 rounded-full bg-white/10" />
                                 <div className="relative z-10">
-                                    <p className="text-sm font-semibold text-white/90">Total Belanja Terakumulasi</p>
+                                    <p className="text-sm font-semibold text-white/90">Total Coin Terkumpul</p>
                                     <p className="text-xs text-white/70">Semua transaksi yang tercatat atas namamu.</p>
                                 </div>
-                                <p className="relative z-10 text-4xl font-black tracking-tight">Rp {formatRupiah(totalSpending)}</p>
+                                <p className="relative z-10 text-4xl font-black tracking-tight">{formatCoin(totalSpending)}</p>
                             </div>
                         </div>
 
@@ -143,9 +145,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                             <th className="text-mayang-700 px-8 py-4 text-left text-xs font-bold tracking-wider uppercase">
                                                 Periode
                                             </th>
-                                            <th className="text-mayang-700 px-8 py-4 text-right text-xs font-bold tracking-wider uppercase">
-                                                Nominal
-                                            </th>
+                                            <th className="text-mayang-700 px-8 py-4 text-right text-xs font-bold tracking-wider uppercase">Coin</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-100">
@@ -160,7 +160,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                                     </span>
                                                 </td>
                                                 <td className="text-mayang-600 px-8 py-5 text-right text-sm font-bold whitespace-nowrap">
-                                                    Rp {formatRupiah(t.amount)}
+                                                    {formatCoin(t.amount)}
                                                 </td>
                                             </tr>
                                         ))}

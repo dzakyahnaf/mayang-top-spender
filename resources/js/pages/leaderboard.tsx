@@ -34,8 +34,10 @@ function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-function formatRupiah(amount: number): string {
-    return new Intl.NumberFormat('id-ID').format(amount);
+// Coin system: 1 Coin = Rp 5 belanja. Raw rupiah stays in the DB; only the
+// displayed value is divided by 5.
+function formatCoin(amount: number): string {
+    return new Intl.NumberFormat('id-ID').format(Math.floor(amount / 5)) + ' Coin';
 }
 
 function rankLabel(r: Reward): string {
@@ -56,7 +58,7 @@ function EntryRow({ entry }: { entry: Entry }) {
                 {entry.ranking}
             </div>
             <span className={`flex-1 truncate font-semibold ${entry.ranking <= 3 ? 'text-slate-900' : 'text-slate-700'}`}>{entry.name}</span>
-            <span className="text-mayang-600 shrink-0 font-bold">Rp {formatRupiah(entry.total_spending)}</span>
+            <span className="text-mayang-600 shrink-0 font-bold">{formatCoin(entry.total_spending)}</span>
         </div>
     );
 }
@@ -112,8 +114,8 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                                 </div>
                             </div>
                             <div className="text-right">
-                                <span className="block text-[10px] font-semibold tracking-wide text-white/70 uppercase">Total Belanja</span>
-                                <span className="text-xl font-black">Rp {formatRupiah(myRank.total_spending)}</span>
+                                <span className="block text-[10px] font-semibold tracking-wide text-white/70 uppercase">Total Coin</span>
+                                <span className="text-xl font-black">{formatCoin(myRank.total_spending)}</span>
                             </div>
                         </div>
                     )}

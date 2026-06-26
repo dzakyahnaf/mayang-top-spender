@@ -17,7 +17,9 @@ interface Props {
     topSpenders: TopSpender[];
 }
 
-const formatRupiah = (amount: number) => new Intl.NumberFormat('id-ID').format(amount);
+const formatNumber = (value: number) => new Intl.NumberFormat('id-ID').format(value);
+// Coin system: 1 Coin = Rp 5 belanja. Only spending values are divided by 5.
+const formatCoin = (amount: number) => new Intl.NumberFormat('id-ID').format(Math.floor(amount / 5)) + ' Coin';
 const formatDate = (date: string) =>
     new Date(date).toLocaleDateString('id-ID', {
         day: 'numeric',
@@ -66,7 +68,7 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                             </div>
                         </CardHeader>
                         <CardContent className="pt-2">
-                            <div className="text-3xl font-black text-slate-900 dark:text-white">{formatRupiah(totalCustomers)}</div>
+                            <div className="text-3xl font-black text-slate-900 dark:text-white">{formatNumber(totalCustomers)}</div>
                             <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Jumlah member terdaftar</p>
                         </CardContent>
                     </Card>
@@ -83,7 +85,7 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                         </CardHeader>
                         <CardContent className="pt-2">
                             <div className="text-3xl font-black text-slate-900 dark:text-white">
-                                {periodStats ? formatRupiah(periodStats.total_transactions) : '-'}
+                                {periodStats ? formatNumber(periodStats.total_transactions) : '-'}
                             </div>
                             <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Selama periode aktif berjalan</p>
                         </CardContent>
@@ -92,18 +94,16 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                     {/* Total Nominal */}
                     <Card className="relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:col-span-2 lg:col-span-1 dark:border-zinc-800/50 dark:bg-zinc-900/60">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
-                                Total Nominal Belanja
-                            </CardTitle>
+                            <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">Total Coin</CardTitle>
                             <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center rounded-xl border">
                                 <Wallet className="h-5 w-5" />
                             </div>
                         </CardHeader>
                         <CardContent className="pt-2">
                             <div className="text-mayang-600 dark:text-mayang-400 text-3xl font-black">
-                                {periodStats ? `Rp ${formatRupiah(periodStats.total_nominal)}` : '-'}
+                                {periodStats ? formatCoin(periodStats.total_nominal) : '-'}
                             </div>
-                            <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Omzet transaksi terakumulasi</p>
+                            <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Total coin terkumpul periode ini</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -132,7 +132,7 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                                         <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
                                             <th className="px-6 py-4">Rank</th>
                                             <th className="px-6 py-4">Nama Customer</th>
-                                            <th className="px-6 py-4 text-right">Total Belanja</th>
+                                            <th className="px-6 py-4 text-right">Total Coin</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
@@ -162,7 +162,7 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                                                     </td>
                                                     <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">{spender.name}</td>
                                                     <td className="text-mayang-600 dark:text-mayang-400 px-6 py-4 text-right text-base font-black">
-                                                        Rp {formatRupiah(spender.total_spending)}
+                                                        {formatCoin(spender.total_spending)}
                                                     </td>
                                                 </tr>
                                             );

@@ -13,7 +13,7 @@ const sections = [
         ],
     },
     {
-        title: '2. Perhitungan Poin & Peringkat',
+        title: '2. Perhitungan Coin & Peringkat',
         items: [
             'Total belanja dihitung berdasarkan nominal transaksi (Rupiah) yang dicatat oleh kasir selama periode kompetisi yang aktif.',
             'Hanya transaksi yang dilakukan selama periode program berlangsung yang dihitung.',
