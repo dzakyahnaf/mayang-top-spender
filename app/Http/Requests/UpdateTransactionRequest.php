@@ -14,7 +14,7 @@ class UpdateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => ['required', 'numeric', 'gt:0'],
+            'amount' => ['required', 'numeric', 'gt:0', 'max:100000000'],
             'notes' => ['nullable', 'string', 'max:500'],
         ];
     }
@@ -24,6 +24,7 @@ class UpdateTransactionRequest extends FormRequest
         return [
             'amount.required' => 'Nominal belanja harus diisi.',
             'amount.gt' => 'Nominal belanja harus lebih dari Rp 0.',
+            'amount.max' => 'Nominal belanja melebihi batas wajar.',
         ];
     }
 }

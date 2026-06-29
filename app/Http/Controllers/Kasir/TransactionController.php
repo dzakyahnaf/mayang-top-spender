@@ -36,7 +36,7 @@ class TransactionController extends Controller
 
         $receiptPath = null;
         if ($request->hasFile('receipt_photo')) {
-            $receiptPath = $request->file('receipt_photo')->store('receipts', 'public');
+            $receiptPath = $request->file('receipt_photo')->store('receipts', 'local');
         }
 
         Transaction::create([

@@ -15,7 +15,7 @@ class StoreTransactionRequest extends FormRequest
     {
         return [
             'customer_id' => ['required', 'exists:customers,id'],
-            'amount' => ['required', 'numeric', 'gt:0'],
+            'amount' => ['required', 'numeric', 'gt:0', 'max:100000000'],
             'notes' => ['nullable', 'string', 'max:500'],
             'receipt_photo' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
         ];
@@ -28,6 +28,7 @@ class StoreTransactionRequest extends FormRequest
             'customer_id.exists' => 'Customer tidak ditemukan.',
             'amount.required' => 'Nominal belanja harus diisi.',
             'amount.gt' => 'Nominal belanja harus lebih dari Rp 0.',
+            'amount.max' => 'Nominal belanja melebihi batas wajar.',
         ];
     }
 }

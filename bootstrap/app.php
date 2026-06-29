@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // App sits behind Nginx on the same host. Trust the proxy so request->ip()
+        // and the request scheme (X-Forwarded-Proto) reflect the real client —
+        // required for correct IP-based rate limiting and secure-cookie/HTTPS detection.
+        $middleware->trustProxies(at: '*');
+
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

@@ -40,6 +40,8 @@ class CashierController extends Controller
 
     public function edit(User $kasir): Response
     {
+        abort_unless($kasir->isKasir(), 404);
+
         return Inertia::render('admin/kasir/edit', [
             'cashier' => $kasir,
         ]);
@@ -47,6 +49,8 @@ class CashierController extends Controller
 
     public function update(UpdateCashierRequest $request, User $kasir): RedirectResponse
     {
+        abort_unless($kasir->isKasir(), 404);
+
         $data = $request->safe()->except('password');
 
         if ($request->filled('password')) {
@@ -61,6 +65,8 @@ class CashierController extends Controller
 
     public function destroy(User $kasir): RedirectResponse
     {
+        abort_unless($kasir->isKasir(), 404);
+
         $kasir->delete();
 
         return redirect()->route('admin.kasir.index')
@@ -69,6 +75,8 @@ class CashierController extends Controller
 
     public function resetPassword(Request $request, User $kasir): RedirectResponse
     {
+        abort_unless($kasir->isKasir(), 404);
+
         $request->validate([
             'password' => ['required', 'string', 'min:8'],
         ]);
