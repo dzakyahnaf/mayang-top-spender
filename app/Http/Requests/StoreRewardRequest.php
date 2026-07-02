@@ -11,6 +11,13 @@ class StoreRewardRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'sort_order' => $this->input('sort_order') ?? 0,
+        ]);
+    }
+
     public function rules(): array
     {
         return [
@@ -18,7 +25,7 @@ class StoreRewardRequest extends FormRequest
             'rank_end' => ['required', 'integer', 'gte:rank_start'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:500'],
-            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'sort_order' => ['required', 'integer', 'min:0'],
         ];
     }
 
