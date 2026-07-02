@@ -48,6 +48,7 @@ export default function CreateTransaction({ period }: Props) {
     });
 
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [displayAmount, setDisplayAmount] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const searchCustomers = useCallback((keyword: string) => {
@@ -106,6 +107,7 @@ export default function CreateTransaction({ period }: Props) {
                 setSelected(null);
                 setQuery('');
                 setPreviewUrl(null);
+                setDisplayAmount('');
                 if (fileInputRef.current) fileInputRef.current.value = '';
             },
         });
@@ -238,12 +240,15 @@ export default function CreateTransaction({ period }: Props) {
                                     <CircleDollarSign className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                     <Input
                                         id="amount"
-                                        type="number"
-                                        value={data.amount}
-                                        onChange={(e) => setData('amount', e.target.value)}
-                                        min="1"
-                                        step="1"
-                                        placeholder="Contoh: 150000"
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={displayAmount}
+                                        onChange={(e) => {
+                                            const raw = e.target.value.replace(/\D/g, '');
+                                            setDisplayAmount(raw ? raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '');
+                                            setData('amount', raw);
+                                        }}
+                                        placeholder="Contoh: 150.000"
                                         className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
