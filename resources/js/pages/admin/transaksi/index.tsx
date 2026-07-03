@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
 import { Calendar, Edit2, FileText, Trash2 } from 'lucide-react';
 
 interface Transaction {
@@ -32,8 +32,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 const formatRupiah = (val: number) => new Intl.NumberFormat('id-ID').format(val);
 
 export default function TransactionIndex({ transactions, periods, filters }: Props) {
-    const { flash } = usePage<SharedData>().props;
-
     function filterByPeriod(periodId: string) {
         router.get(route('admin.transaksi.index'), periodId ? { period_id: periodId } : {}, { preserveState: true });
     }
@@ -72,12 +70,6 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                         </div>
                     </div>
                 </div>
-
-                {flash?.success && (
-                    <div className="border-mayang-100 bg-mayang-5/50 text-mayang-800 dark:text-mayang-300 dark:border-mayang-900/30 border p-4 text-sm font-semibold">
-                        {flash.success}
-                    </div>
-                )}
 
                 <div className="overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">

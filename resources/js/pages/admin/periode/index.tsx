@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
 import { CheckCircle2, Edit2, Plus, Trash2 } from 'lucide-react';
 
 interface Period {
@@ -25,8 +25,6 @@ const formatDate = (date: string) =>
     });
 
 export default function PeriodeIndex({ periods }: Props) {
-    const { flash } = usePage<SharedData>().props;
-
     const breadcrumbs: BreadcrumbItem[] = [{ title: 'Periode', href: '/admin/periode' }];
 
     const handleActivate = (id: number) => {
@@ -60,12 +58,6 @@ export default function PeriodeIndex({ periods }: Props) {
                         </Link>
                     </Button>
                 </div>
-
-                {flash?.success && (
-                    <div className="border-mayang-100 bg-mayang-50/50 text-mayang-800 dark:text-mayang-300 dark:border-mayang-900/30 border p-4 text-sm font-semibold">
-                        {flash.success}
-                    </div>
-                )}
 
                 <div className="overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">

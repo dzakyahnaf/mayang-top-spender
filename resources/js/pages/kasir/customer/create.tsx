@@ -3,15 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 import { UserPlus2 } from 'lucide-react';
 import { FormEvent } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Daftarkan Customer', href: '/kasir/customer/create' }];
 
 export default function CreateCustomer() {
-    const { flash } = usePage<SharedData>().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -31,23 +30,6 @@ export default function CreateCustomer() {
                     <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Daftarkan Customer Baru</h1>
                     <p className="mt-1 text-sm text-slate-500">Daftarkan akun customer baru ke dalam database sistem.</p>
                 </div>
-
-                {flash?.success && (
-                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 border p-4 duration-300">
-                        <div className="flex items-center gap-3">
-                            <div className="bg-mayang-500 flex h-8 w-8 items-center justify-center rounded-full text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </div>
-                            <p className="text-mayang-800 dark:text-mayang-300 text-sm font-semibold">{flash.success}</p>
-                        </div>
-                    </div>
-                )}
 
                 <div className="overflow-hidden border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <form onSubmit={submit} className="max-w-2xl space-y-6">

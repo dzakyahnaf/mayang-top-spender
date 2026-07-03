@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 import { Camera, CircleDollarSign, Landmark, NotebookText, Search, UserCheck2, X } from 'lucide-react';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -28,7 +28,6 @@ interface Props {
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Input Transaksi', href: '/kasir/transaksi' }];
 
 export default function CreateTransaction({ period }: Props) {
-    const { flash } = usePage<SharedData>().props;
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Customer[]>([]);
     const [selected, setSelected] = useState<Customer | null>(null);
@@ -121,23 +120,6 @@ export default function CreateTransaction({ period }: Props) {
                     <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Input Transaksi</h1>
                     <p className="mt-1 text-sm text-slate-500">Catat transaksi baru untuk kompetisi Top Spender.</p>
                 </div>
-
-                {flash?.success && (
-                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 border p-4 duration-300">
-                        <div className="flex items-center gap-3">
-                            <div className="bg-mayang-500 flex h-8 w-8 items-center justify-center rounded-full text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </div>
-                            <p className="text-mayang-800 dark:text-mayang-300 text-sm font-semibold">{flash.success}</p>
-                        </div>
-                    </div>
-                )}
 
                 {!period ? (
                     <div className=" border border-amber-200 bg-amber-50 p-6 dark:border-amber-900/30 dark:bg-amber-950/10">
