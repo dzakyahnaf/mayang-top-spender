@@ -54,7 +54,7 @@ class TransactionController extends Controller
 
     public function history(Request $request): Response
     {
-        $transactions = Transaction::with(['customer', 'period'])
+        $transactions = Transaction::with(['customer', 'period' => fn ($q) => $q->withTrashed()])
             ->where('cashier_id', $request->user()->id)
             ->orderByDesc('created_at')
             ->paginate(20);
@@ -68,7 +68,7 @@ class TransactionController extends Controller
     {
         Gate::authorize('update', $transaction);
 
-        $transaction->load(['customer', 'period']);
+        $transaction->load(['customer', 'period' => fn ($q) => $q->withTrashed()]);
 
         return Inertia::render('kasir/transaksi/edit', [
             'transaction' => $transaction,

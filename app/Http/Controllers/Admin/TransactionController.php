@@ -16,7 +16,7 @@ class TransactionController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Transaction::with(['customer', 'cashier', 'period']);
+        $query = Transaction::with(['customer', 'cashier', 'period' => fn ($q) => $q->withTrashed()]);
 
         if ($request->filled('period_id')) {
             $query->where('period_id', $request->period_id);
@@ -38,7 +38,7 @@ class TransactionController extends Controller
 
     public function edit(Transaction $transaction): Response
     {
-        $transaction->load(['customer', 'period']);
+        $transaction->load(['customer', 'period' => fn ($q) => $q->withTrashed()]);
 
         return Inertia::render('admin/transaksi/edit', [
             'transaction' => $transaction,

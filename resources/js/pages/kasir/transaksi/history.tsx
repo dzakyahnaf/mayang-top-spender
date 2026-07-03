@@ -11,7 +11,7 @@ interface Transaction {
     notes: string | null;
     created_at: string;
     customer: { name: string };
-    period: { name: string };
+    period: { name: string } | null;
 }
 
 interface PaginatedData {
@@ -107,7 +107,7 @@ export default function TransactionHistory({ transactions }: Props) {
                                                     </span>
                                                 )}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-slate-500 dark:text-zinc-400">{t.period.name}</td>
+                                            <td className="px-6 py-4 text-sm text-slate-500 dark:text-zinc-400">{t.period?.name ?? '-'}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 {isToday ? (
                                                     <Button

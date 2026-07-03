@@ -12,7 +12,7 @@ interface MySpendingProps {
         created_at: string;
         period: {
             name: string;
-        };
+        } | null;
     }>;
     totalSpending: number;
 }
@@ -156,7 +156,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                                 </td>
                                                 <td className="px-8 py-5 text-sm whitespace-nowrap">
                                                     <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
-                                                        {t.period.name}
+                                                        {t.period?.name ?? '-'}
                                                     </span>
                                                 </td>
                                                 <td className="text-mayang-600 px-8 py-5 text-right text-sm font-bold whitespace-nowrap">

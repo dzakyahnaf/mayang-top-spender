@@ -19,7 +19,7 @@ class MySpendingController extends Controller
         $totalSpending = 0;
 
         if ($customer) {
-            $transactions = Transaction::with('period')
+            $transactions = Transaction::with(['period' => fn ($query) => $query->withTrashed()])
                 ->where('customer_id', $customer->id)
                 ->orderByDesc('created_at')
                 ->get();

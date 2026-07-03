@@ -14,7 +14,7 @@ interface Props {
         amount: number;
         notes: string | null;
         customer: { name: string };
-        period: { name: string };
+        period: { name: string } | null;
     };
 }
 
@@ -65,7 +65,7 @@ export default function EditTransaction({ transaction }: Props) {
                                 <h3 className="text-base font-bold text-slate-900 dark:text-white">Detail Transaksi</h3>
                                 <p className="text-xs text-slate-500">
                                     Customer: <strong className="text-slate-900 dark:text-white">{transaction.customer.name}</strong> • Periode:{' '}
-                                    <strong className="text-slate-900 dark:text-white">{transaction.period.name}</strong>
+                                    <strong className="text-slate-900 dark:text-white">{transaction.period?.name ?? '-'}</strong>
                                 </p>
                             </div>
                         </div>
