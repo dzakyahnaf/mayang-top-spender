@@ -55,7 +55,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -84,7 +84,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -103,7 +103,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                     <Button
                         type="submit"
-                        className="bg-mayang-500 hover:bg-mayang-600 mt-4 w-full rounded-xl font-bold text-white shadow-sm transition-all hover:shadow-md"
+                        className="bg-mayang-500 hover:bg-mayang-600 mt-4 w-full py-5 text-xs font-bold tracking-[0.2em] text-white uppercase transition-all"
                         tabIndex={4}
                         disabled={processing}
                     >

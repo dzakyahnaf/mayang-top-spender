@@ -31,12 +31,12 @@ export default function PeriodeCreate() {
             <div className="max-w-4xl space-y-6 p-6 font-sans">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Tambah Periode</h1>
+                        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Tambah Periode</h1>
                         <p className="mt-1 text-sm text-slate-500">Buat periode kompetisi Top Spender baru.</p>
                     </div>
                     <Button
                         variant="outline"
-                        className="flex items-center gap-1.5 rounded-xl border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                        className="flex items-center gap-1.5 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
                         asChild
                     >
                         <Link href={route('admin.periode.index')}>
@@ -46,10 +46,10 @@ export default function PeriodeCreate() {
                     </Button>
                 </div>
 
-                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                <div className="overflow-hidden border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
                         <div className="flex items-center gap-2 border-b border-slate-100 pb-4 dark:border-zinc-800/80">
-                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-10 w-10 items-center justify-center rounded-xl">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-10 w-10 items-center justify-center">
                                 <CalendarPlus className="h-5 w-5" />
                             </div>
                             <div>
@@ -67,7 +67,7 @@ export default function PeriodeCreate() {
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Contoh: Periode Januari 2026"
-                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                             />
                             <InputError message={errors.name} />
                         </div>
@@ -82,7 +82,7 @@ export default function PeriodeCreate() {
                                     type="date"
                                     value={data.start_date}
                                     onChange={(e) => setData('start_date', e.target.value)}
-                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                 />
                                 <InputError message={errors.start_date} />
                             </div>
@@ -96,7 +96,7 @@ export default function PeriodeCreate() {
                                     type="date"
                                     value={data.end_date}
                                     onChange={(e) => setData('end_date', e.target.value)}
-                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                 />
                                 <InputError message={errors.end_date} />
                             </div>
@@ -106,7 +106,7 @@ export default function PeriodeCreate() {
                             <Button
                                 type="submit"
                                 disabled={processing}
-                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full rounded-xl bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
+                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                             >
                                 {processing ? 'Menyimpan...' : 'Simpan Periode'}
                             </Button>

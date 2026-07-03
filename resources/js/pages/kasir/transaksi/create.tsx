@@ -118,12 +118,12 @@ export default function CreateTransaction({ period }: Props) {
             <Head title="Input Transaksi" />
             <div className="max-w-4xl space-y-6 p-6 font-sans">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Input Transaksi</h1>
+                    <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Input Transaksi</h1>
                     <p className="mt-1 text-sm text-slate-500">Catat transaksi baru untuk kompetisi Top Spender.</p>
                 </div>
 
                 {flash?.success && (
-                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 rounded-2xl border p-4 duration-300">
+                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 border p-4 duration-300">
                         <div className="flex items-center gap-3">
                             <div className="bg-mayang-500 flex h-8 w-8 items-center justify-center rounded-full text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -140,7 +140,7 @@ export default function CreateTransaction({ period }: Props) {
                 )}
 
                 {!period ? (
-                    <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-900/30 dark:bg-amber-950/10">
+                    <div className=" border border-amber-200 bg-amber-50 p-6 dark:border-amber-900/30 dark:bg-amber-950/10">
                         <div className="flex gap-3">
                             <svg
                                 className="h-6 w-6 flex-shrink-0 text-amber-600 dark:text-amber-500"
@@ -164,9 +164,9 @@ export default function CreateTransaction({ period }: Props) {
                         </div>
                     </div>
                 ) : (
-                    <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
-                        <div className="from-mayang-500/10 to-mayang-600/5 border-mayang-500/10 dark:border-mayang-500/10 mb-6 flex items-center gap-3 rounded-2xl border bg-gradient-to-r p-4">
-                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-9 w-9 items-center justify-center rounded-xl">
+                    <div className="overflow-hidden border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                        <div className="from-mayang-500/10 to-mayang-600/5 border-mayang-500/10 dark:border-mayang-500/10 mb-6 flex items-center gap-3 border bg-gradient-to-r p-4">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-9 w-9 items-center justify-center">
                                 <Landmark className="h-5 w-5" />
                             </div>
                             <p className="text-mayang-700 dark:text-mayang-400 text-sm font-semibold">
@@ -193,16 +193,16 @@ export default function CreateTransaction({ period }: Props) {
                                             setData('customer_id', '');
                                         }}
                                         placeholder="Ketik nama, nomor HP, atau email..."
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
                                 {showDropdown && (
-                                    <ul className="absolute z-10 mt-2 max-h-60 w-full space-y-1 overflow-auto rounded-2xl border border-slate-200/50 bg-white/95 p-2 shadow-2xl backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/95">
+                                    <ul className="absolute z-10 mt-2 max-h-60 w-full space-y-1 overflow-auto border border-slate-200/50 bg-white/95 p-2 shadow-2xl backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/95">
                                         {results.map((c) => (
                                             <li
                                                 key={c.id}
                                                 onClick={() => selectCustomer(c)}
-                                                className="hover:bg-mayang-50/80 cursor-pointer rounded-xl border-b border-slate-50/50 px-4 py-3 transition-colors last:border-0 dark:border-zinc-900/30 dark:hover:bg-zinc-900/60"
+                                                className="hover:bg-mayang-50/80 cursor-pointer border-b border-slate-50/50 px-4 py-3 transition-colors last:border-0 dark:border-zinc-900/30 dark:hover:bg-zinc-900/60"
                                             >
                                                 <div className="font-bold text-slate-900 dark:text-white">{c.name}</div>
                                                 <div className="mt-0.5 text-xs text-slate-500 dark:text-zinc-400">
@@ -216,8 +216,8 @@ export default function CreateTransaction({ period }: Props) {
                             </div>
 
                             {selected && (
-                                <div className="flex items-start gap-3 rounded-2xl border border-slate-200/50 bg-slate-50/40 p-5 dark:border-zinc-800/50 dark:bg-zinc-950/30">
-                                    <div className="bg-mayang-500/10 text-mayang-600 mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl">
+                                <div className="flex items-start gap-3 border border-slate-200/50 bg-slate-50/40 p-5 dark:border-zinc-800/50 dark:bg-zinc-950/30">
+                                    <div className="bg-mayang-500/10 text-mayang-600 mt-0.5 flex h-10 w-10 items-center justify-center">
                                         <UserCheck2 className="h-5 w-5" />
                                     </div>
                                     <div>
@@ -249,7 +249,7 @@ export default function CreateTransaction({ period }: Props) {
                                             setData('amount', raw);
                                         }}
                                         placeholder="Contoh: 150.000"
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
                                 <InputError message={errors.amount} />
@@ -267,7 +267,7 @@ export default function CreateTransaction({ period }: Props) {
                                         onChange={(e) => setData('notes', e.target.value)}
                                         rows={3}
                                         placeholder="Cth: Pembelian gamis & jilbab"
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 flex min-h-[85px] w-full rounded-xl border border-slate-200 bg-white/60 py-2.5 pr-3 pl-10 text-sm transition-all duration-300 placeholder:text-slate-400 focus-visible:ring-4 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:placeholder:text-zinc-500"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 flex min-h-[85px] w-full border border-slate-200 bg-white/60 py-2.5 pr-3 pl-10 text-sm transition-all duration-300 placeholder:text-slate-400 focus-visible:ring-4 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:placeholder:text-zinc-500"
                                     />
                                 </div>
                             </div>
@@ -284,13 +284,13 @@ export default function CreateTransaction({ period }: Props) {
                                         accept="image/*"
                                         capture="environment"
                                         onChange={handleFileChange}
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 block w-full rounded-xl border border-slate-200 bg-white/60 px-4 py-3 text-sm text-slate-500 transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:bg-slate-200 focus-visible:ring-4 focus-visible:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 block w-full border border-slate-200 bg-white/60 px-4 py-3 text-sm text-slate-500 transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:bg-slate-200 focus-visible:ring-4 focus-visible:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                     <Camera className="absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                 </div>
                                 {previewUrl && (
                                     <div className="relative mt-2 inline-block">
-                                        <img src={previewUrl} alt="Preview struk" className="h-32 rounded-xl border border-slate-200 object-cover shadow-sm" />
+                                        <img src={previewUrl} alt="Preview struk" className="h-32 border border-slate-200 object-cover shadow-sm" />
                                         <button
                                             type="button"
                                             onClick={removeFile}
@@ -307,7 +307,7 @@ export default function CreateTransaction({ period }: Props) {
                                 <Button
                                     type="submit"
                                     disabled={processing || !selected}
-                                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full rounded-xl bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
+                                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                                 >
                                     {processing ? 'Menyimpan...' : 'Submit Transaksi'}
                                 </Button>

@@ -51,7 +51,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             name="email"
                             autoComplete="email"
                             value={data.email}
-                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl border-white/10 bg-white/5 text-white placeholder-slate-500"
+                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 border-white/10 bg-white/5 text-white placeholder-slate-500"
                             readOnly
                             onChange={(e) => setData('email', e.target.value)}
                         />
@@ -68,7 +68,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             name="password"
                             autoComplete="new-password"
                             value={data.password}
-                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl border-white/10 bg-white/5 text-white placeholder-slate-500"
+                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 border-white/10 bg-white/5 text-white placeholder-slate-500"
                             autoFocus
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password Baru"
@@ -86,7 +86,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             name="password_confirmation"
                             autoComplete="new-password"
                             value={data.password_confirmation}
-                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl border-white/10 bg-white/5 text-white placeholder-slate-500"
+                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 border-white/10 bg-white/5 text-white placeholder-slate-500"
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             placeholder="Konfirmasi Password Baru"
                         />
@@ -95,7 +95,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                     <Button
                         type="submit"
-                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 mt-2 w-full rounded-xl bg-gradient-to-r font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
+                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 mt-2 w-full bg-gradient-to-r font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
                         disabled={processing}
                     >
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}

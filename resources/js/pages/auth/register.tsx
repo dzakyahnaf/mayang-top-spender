@@ -53,7 +53,7 @@ export default function Register() {
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Nama lengkap"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.name} />
                     </div>
@@ -72,7 +72,7 @@ export default function Register() {
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
                             placeholder="email@contoh.com"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -90,7 +90,7 @@ export default function Register() {
                             onChange={(e) => setData('phone', e.target.value)}
                             disabled={processing}
                             placeholder="08xxxxxxxxxx"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.phone} />
                     </div>
@@ -109,7 +109,7 @@ export default function Register() {
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
                             placeholder="Minimal 8 karakter"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -128,14 +128,14 @@ export default function Register() {
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
                             placeholder="Ulangi password"
-                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm transition-all outline-none focus:ring-4"
+                            className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
 
                     <Button
                         type="submit"
-                        className="bg-mayang-500 hover:bg-mayang-600 mt-4 w-full rounded-xl font-bold text-white shadow-sm transition-all hover:shadow-md"
+                        className="bg-mayang-500 hover:bg-mayang-600 mt-4 w-full py-5 text-xs font-bold tracking-[0.2em] text-white uppercase transition-all"
                         tabIndex={6}
                         disabled={processing}
                     >

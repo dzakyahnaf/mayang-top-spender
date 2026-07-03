@@ -28,12 +28,12 @@ export default function CreateCustomer() {
             <Head title="Daftarkan Customer Baru" />
             <div className="max-w-4xl space-y-6 p-6 font-sans">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Daftarkan Customer Baru</h1>
+                    <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Daftarkan Customer Baru</h1>
                     <p className="mt-1 text-sm text-slate-500">Daftarkan akun customer baru ke dalam database sistem.</p>
                 </div>
 
                 {flash?.success && (
-                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 rounded-2xl border p-4 duration-300">
+                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 border p-4 duration-300">
                         <div className="flex items-center gap-3">
                             <div className="bg-mayang-500 flex h-8 w-8 items-center justify-center rounded-full text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -49,10 +49,10 @@ export default function CreateCustomer() {
                     </div>
                 )}
 
-                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                <div className="overflow-hidden border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <form onSubmit={submit} className="max-w-2xl space-y-6">
                         <div className="flex items-center gap-2 border-b border-slate-100 pb-4 dark:border-zinc-800/80">
-                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-10 w-10 items-center justify-center rounded-xl">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-10 w-10 items-center justify-center">
                                 <UserPlus2 className="h-5 w-5" />
                             </div>
                             <div>
@@ -70,7 +70,7 @@ export default function CreateCustomer() {
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Nama lengkap customer"
-                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                             />
                             <InputError message={errors.name} />
                         </div>
@@ -85,7 +85,7 @@ export default function CreateCustomer() {
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 placeholder="customer@email.com"
-                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                             />
                             <InputError message={errors.email} />
                         </div>
@@ -100,7 +100,7 @@ export default function CreateCustomer() {
                                 value={data.phone}
                                 onChange={(e) => setData('phone', e.target.value)}
                                 placeholder="08xxxxxxxxxx"
-                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 rounded-xl border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                             />
                             <InputError message={errors.phone} />
                         </div>
@@ -109,7 +109,7 @@ export default function CreateCustomer() {
                             <Button
                                 type="submit"
                                 disabled={processing}
-                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full rounded-xl bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
+                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                             >
                                 {processing ? 'Menyimpan...' : 'Daftarkan Customer'}
                             </Button>

@@ -34,9 +34,11 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard Admin" />
             <div className="space-y-8 p-6 font-sans">
+                <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Dashboard</h1>
+
                 {/* Active Period Banner */}
                 {period && (
-                    <div className="border-mayang-500/20 from-mayang-500/15 via-mayang-500/5 dark:border-mayang-500/20 dark:from-mayang-950/40 relative overflow-hidden rounded-3xl border bg-gradient-to-r to-transparent p-6 shadow-lg backdrop-blur-md dark:to-transparent">
+                    <div className="border-mayang-500/20 from-mayang-500/15 via-mayang-500/5 dark:border-mayang-500/20 dark:from-mayang-950/40 relative overflow-hidden border bg-gradient-to-r to-transparent p-6 shadow-lg backdrop-blur-md dark:to-transparent">
                         <div className="absolute top-0 right-0 translate-x-4 -translate-y-4 opacity-5 dark:opacity-10">
                             <Calendar className="text-mayang-500 h-40 w-40" />
                         </div>
@@ -58,12 +60,12 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                 {/* Metrics Grid */}
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {/* Total Customers */}
-                    <Card className="relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                    <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-zinc-800/50 dark:bg-zinc-900/60">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                 Total Customer
                             </CardTitle>
-                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center rounded-xl border">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
                                 <Users className="h-5 w-5" />
                             </div>
                         </CardHeader>
@@ -74,12 +76,12 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                     </Card>
 
                     {/* Total Transactions */}
-                    <Card className="relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                    <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-zinc-800/50 dark:bg-zinc-900/60">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
                                 Total Transaksi
                             </CardTitle>
-                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center rounded-xl border">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
                                 <ClipboardList className="h-5 w-5" />
                             </div>
                         </CardHeader>
@@ -92,10 +94,10 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                     </Card>
 
                     {/* Total Nominal */}
-                    <Card className="relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:col-span-2 lg:col-span-1 dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                    <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:col-span-2 lg:col-span-1 dark:border-zinc-800/50 dark:bg-zinc-900/60">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">Total Coin</CardTitle>
-                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center rounded-xl border">
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
                                 <Wallet className="h-5 w-5" />
                             </div>
                         </CardHeader>
@@ -109,7 +111,7 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                 </div>
 
                 {/* Top 5 Spenders Table */}
-                <Card className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                <Card className="overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <CardHeader className="border-b border-slate-200/40 px-6 py-5 dark:border-zinc-800/80">
                         <div className="flex items-center gap-2">
                             <div className="from-mayang-500 to-mayang-600 shadow-mayang-500/20 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr text-white shadow-md">

@@ -36,12 +36,12 @@ export default function HadiahIndex({ rewards }: Props) {
             <div className="space-y-6 p-6 font-sans">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Kelola Hadiah</h1>
+                        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Kelola Hadiah</h1>
                         <p className="mt-1 text-sm text-slate-500">Atur daftar hadiah berdasarkan rentang peringkat leaderboard.</p>
                     </div>
                     <Button
                         asChild
-                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 self-start rounded-xl bg-gradient-to-r font-bold text-white shadow-md sm:self-auto"
+                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 self-start bg-gradient-to-r font-bold text-white shadow-md sm:self-auto"
                     >
                         <Link href={route('admin.hadiah.create')} className="flex items-center gap-1.5">
                             <Plus className="h-4 w-4" />
@@ -51,12 +51,12 @@ export default function HadiahIndex({ rewards }: Props) {
                 </div>
 
                 {flash?.success && (
-                    <div className="border-mayang-100 bg-mayang-50/50 text-mayang-800 dark:text-mayang-300 dark:border-mayang-900/30 rounded-2xl border p-4 text-sm font-semibold">
+                    <div className="border-mayang-100 bg-mayang-50/50 text-mayang-800 dark:text-mayang-300 dark:border-mayang-900/30 border p-4 text-sm font-semibold">
                         {flash.success}
                     </div>
                 )}
 
-                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                <div className="overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-left">
                             <thead>
@@ -92,7 +92,7 @@ export default function HadiahIndex({ rewards }: Props) {
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
-                                                        className="flex items-center gap-1 rounded-xl border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                                                        className="flex items-center gap-1 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
                                                         asChild
                                                     >
                                                         <Link href={route('admin.hadiah.edit', reward.id)}>
@@ -103,7 +103,7 @@ export default function HadiahIndex({ rewards }: Props) {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        className="flex items-center gap-1 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-600 transition-all duration-200 hover:bg-rose-500/20 hover:text-rose-700"
+                                                        className="flex items-center gap-1 border border-rose-500/20 bg-rose-500/10 text-rose-600 transition-all duration-200 hover:bg-rose-500/20 hover:text-rose-700"
                                                         onClick={() => handleDelete(reward.id)}
                                                     >
                                                         <Trash2 className="h-3.5 w-3.5" />

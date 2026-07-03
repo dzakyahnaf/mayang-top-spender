@@ -1,4 +1,6 @@
+import PublicFooter from '@/components/public-footer';
 import { Head, Link } from '@inertiajs/react';
+import { CircleUser, History, LogOut } from 'lucide-react';
 
 interface MySpendingProps {
     customer: {
@@ -36,116 +38,105 @@ export default function MySpending({ customer, transactions, totalSpending }: My
         <>
             <Head title="Belanjaanku" />
 
-            <div className="from-mayang-50 to-mayang-100/70 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-white font-sans text-slate-900 selection:text-white">
-                {/* Spotlight Glow */}
-                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.16)_0%,_rgba(27,174,185,0)_70%)]" />
-
-                {/* Clean Navbar */}
-                <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-sm transition-all duration-300">
+            <div className="selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-white font-sans text-slate-900 selection:text-white">
+                {/* Navbar */}
+                <nav className="fixed top-0 left-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-sm">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex h-20 items-center justify-between">
-                            <Link href="/" className="flex items-center gap-3 transition hover:opacity-80">
-                                <div className="bg-mayang-500 flex size-10 items-center justify-center rounded-xl shadow-sm">
+                        <div className="flex h-20 items-center justify-between gap-4">
+                            <Link href="/" className="flex shrink-0 items-center gap-3 transition hover:opacity-80">
+                                <div className="bg-mayang-500 flex size-10 items-center justify-center">
                                     <img src="/MayangCollection_Logo Icon_White.png" alt="Mayang Logo" className="size-6 object-contain" />
                                 </div>
-                                <span className="text-xl font-bold tracking-tight text-slate-900">
-                                    Mayang <span className="text-mayang-500 font-black">Top Spender</span>
+                                <span className="hidden flex-col leading-none sm:flex">
+                                    <span className="font-display text-lg font-bold tracking-wide text-slate-900">MAYANG</span>
+                                    <span className="text-mayang-600 text-[10px] font-bold tracking-[0.35em] uppercase">Top Spender</span>
                                 </span>
                             </Link>
-                            <div className="flex items-center gap-6">
+                            <div className="flex shrink-0 items-center gap-3">
                                 <Link
                                     href={route('leaderboard')}
-                                    className="hover:text-mayang-600 text-sm font-semibold text-slate-600 transition-colors"
+                                    className="hover:text-mayang-600 border-b-2 border-transparent pb-1 text-xs font-bold tracking-[0.15em] text-slate-600 uppercase transition-colors"
                                 >
                                     Leaderboard
-                                </Link>
-                                <Link
-                                    href={route('dashboard')}
-                                    className="bg-mayang-500 hover:bg-mayang-600 rounded-full px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all"
-                                >
-                                    Dashboard
                                 </Link>
                                 <Link
                                     method="post"
                                     href={route('logout')}
                                     as="button"
-                                    className="cursor-pointer rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-slate-800"
+                                    className="flex cursor-pointer items-center gap-2 border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold tracking-[0.15em] text-slate-700 uppercase transition-all hover:border-slate-900 hover:text-slate-900"
                                 >
-                                    Logout
+                                    <LogOut className="size-3.5" />
+                                    Keluar
                                 </Link>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                <div className="relative z-10 mx-auto w-full max-w-4xl flex-1 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
-                    <div className="mb-10 text-center">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-                            Cek <span className="text-mayang-500">Belanjaanku</span>
+                <div className="relative z-10 mx-auto w-full max-w-4xl flex-1 px-4 pt-36 pb-20 sm:px-6 lg:px-8">
+                    <div className="mb-12 text-center">
+                        <p className="mb-3 text-xs font-bold tracking-[0.3em] text-slate-400 uppercase">Akun Saya</p>
+                        <h1 className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
+                            Cek <span className="text-mayang-500 italic">Belanjaanku</span>
                         </h1>
                     </div>
 
-                    <div className="mt-8 space-y-8">
+                    <div className="space-y-10">
                         {/* Card Informasi Member */}
-                        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
-                            <div className="mb-6 flex items-center gap-4">
-                                <div className="from-mayang-500 to-mayang-600 shadow-mayang-500/30 flex size-14 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        />
-                                    </svg>
-                                </div>
+                        <div className="border border-slate-200 bg-white">
+                            <div className="flex items-center gap-3 border-b border-slate-200 px-8 py-6">
+                                <CircleUser className="text-mayang-600 size-5" />
                                 <div>
-                                    <h2 className="text-2xl font-bold text-slate-900">Informasi Member</h2>
-                                    <p className="text-sm text-slate-500">Detail akun dan total transaksimu.</p>
+                                    <h2 className="text-lg font-bold text-slate-900">Informasi Member</h2>
+                                    <p className="text-xs text-slate-500">Detail akun dan total transaksimu.</p>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 gap-6 rounded-xl border border-slate-100 bg-slate-50 p-6 sm:grid-cols-3">
-                                <div>
-                                    <p className="text-xs font-bold tracking-wider text-slate-400 uppercase">Nama</p>
+                            <div className="grid grid-cols-1 divide-y divide-slate-100 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                                <div className="px-8 py-6">
+                                    <p className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Nama</p>
                                     <p className="mt-1 text-lg font-bold text-slate-900">{customer.name}</p>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold tracking-wider text-slate-400 uppercase">Email</p>
-                                    <p className="mt-1 text-lg font-bold text-slate-900">{customer.email}</p>
+                                <div className="px-8 py-6">
+                                    <p className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Email</p>
+                                    <p className="mt-1 truncate text-lg font-bold text-slate-900">{customer.email}</p>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold tracking-wider text-slate-400 uppercase">Nomor HP</p>
+                                <div className="px-8 py-6">
+                                    <p className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Nomor HP</p>
                                     <p className="mt-1 text-lg font-bold text-slate-900">{customer.phone || '-'}</p>
                                 </div>
                             </div>
 
-                            <div className="from-mayang-500 to-mayang-700 shadow-mayang-500/25 relative mt-6 flex flex-col items-center justify-between gap-4 overflow-hidden rounded-2xl bg-gradient-to-br p-6 text-white shadow-lg sm:flex-row">
-                                <div className="absolute -top-6 -right-4 size-32 rounded-full bg-white/10" />
-                                <div className="relative z-10">
+                            <div className="bg-mayang-900 flex flex-col items-center justify-between gap-4 px-8 py-6 text-white sm:flex-row">
+                                <div>
                                     <p className="text-sm font-semibold text-white/90">Total Coin Terkumpul</p>
-                                    <p className="text-xs text-white/70">Semua transaksi yang tercatat atas namamu.</p>
+                                    <p className="text-xs text-white/60">Semua transaksi yang tercatat atas namamu.</p>
                                 </div>
-                                <p className="relative z-10 text-4xl font-black tracking-tight">{formatCoin(totalSpending)}</p>
+                                <p className="font-display text-3xl font-bold tracking-tight">{formatCoin(totalSpending)}</p>
                             </div>
                         </div>
 
                         {/* Riwayat Belanja */}
-                        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                            <div className="border-mayang-100 from-mayang-50 border-b bg-gradient-to-r to-transparent px-8 py-6">
-                                <h2 className="text-xl font-bold text-slate-900">Riwayat Transaksi</h2>
-                                <p className="mt-1 text-sm text-slate-500">Daftar transaksi terakhirmu di Mayang Modest Wear.</p>
+                        <div className="border border-slate-200 bg-white">
+                            <div className="flex items-center gap-3 border-b border-slate-200 px-8 py-6">
+                                <History className="text-mayang-600 size-5" />
+                                <div>
+                                    <h2 className="text-lg font-bold text-slate-900">Riwayat Transaksi</h2>
+                                    <p className="text-xs text-slate-500">Daftar transaksi terakhirmu di Mayang Modest Wear.</p>
+                                </div>
                             </div>
 
                             {transactions.length > 0 ? (
                                 <table className="w-full text-left">
-                                    <thead className="border-mayang-100 bg-mayang-50/70 border-b">
+                                    <thead className="border-b border-slate-200 bg-slate-50">
                                         <tr>
-                                            <th className="text-mayang-700 px-8 py-4 text-xs font-bold tracking-wider uppercase">Tanggal</th>
-                                            <th className="text-mayang-700 px-8 py-4 text-left text-xs font-bold tracking-wider uppercase">
+                                            <th className="px-8 py-4 text-xs font-bold tracking-[0.2em] text-slate-500 uppercase">Tanggal</th>
+                                            <th className="px-8 py-4 text-left text-xs font-bold tracking-[0.2em] text-slate-500 uppercase">
                                                 Periode
                                             </th>
-                                            <th className="text-mayang-700 px-8 py-4 text-right text-xs font-bold tracking-wider uppercase">Coin</th>
+                                            <th className="px-8 py-4 text-right text-xs font-bold tracking-[0.2em] text-slate-500 uppercase">
+                                                Coin
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-100">
@@ -154,11 +145,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                                 <td className="px-8 py-5 text-sm font-medium whitespace-nowrap text-slate-900">
                                                     {formatDate(t.created_at)}
                                                 </td>
-                                                <td className="px-8 py-5 text-sm whitespace-nowrap">
-                                                    <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
-                                                        {t.period?.name ?? '-'}
-                                                    </span>
-                                                </td>
+                                                <td className="px-8 py-5 text-sm whitespace-nowrap text-slate-600">{t.period?.name ?? '-'}</td>
                                                 <td className="text-mayang-600 px-8 py-5 text-right text-sm font-bold whitespace-nowrap">
                                                     {formatCoin(t.amount)}
                                                 </td>
@@ -168,23 +155,10 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                                 </table>
                             ) : (
                                 <div className="px-8 py-16 text-center">
-                                    <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-slate-50 text-slate-400">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="size-8"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                                            />
-                                        </svg>
+                                    <div className="mx-auto mb-4 flex size-16 items-center justify-center bg-slate-50 text-slate-400">
+                                        <History className="size-7" />
                                     </div>
-                                    <p className="text-lg font-medium text-slate-900">Belum ada riwayat belanja.</p>
+                                    <p className="text-lg font-bold text-slate-900">Belum ada riwayat belanja.</p>
                                     <p className="mt-1 text-sm text-slate-500">Silakan belanja di toko dan berikan nomor HP/Email ke kasir.</p>
                                 </div>
                             )}
@@ -192,12 +166,7 @@ export default function MySpending({ customer, transactions, totalSpending }: My
                     </div>
                 </div>
 
-                {/* Footer */}
-                <footer className="from-mayang-600 to-mayang-700 relative z-10 mt-auto w-full bg-gradient-to-br py-12 text-center text-sm text-white/70">
-                    <div className="mx-auto max-w-7xl px-4">
-                        <p>&copy; {new Date().getFullYear()} Mayang Modest Wear. All rights reserved.</p>
-                    </div>
-                </footer>
+                <PublicFooter />
             </div>
         </>
     );

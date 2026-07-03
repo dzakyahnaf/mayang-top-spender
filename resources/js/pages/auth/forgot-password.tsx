@@ -42,7 +42,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             autoFocus
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
-                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 rounded-xl border-white/10 bg-white/5 text-white placeholder-slate-500"
+                            className="focus-visible:ring-mayang-500/30 focus-visible:border-mayang-500 border-white/10 bg-white/5 text-white placeholder-slate-500"
                         />
 
                         <InputError message={errors.email} />
@@ -50,7 +50,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                     <div className="my-6 flex items-center justify-start">
                         <Button
-                            className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full rounded-xl bg-gradient-to-r font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
+                            className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full bg-gradient-to-r font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
                             disabled={processing}
                         >
                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}

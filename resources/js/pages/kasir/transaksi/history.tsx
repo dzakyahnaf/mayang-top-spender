@@ -36,17 +36,17 @@ export default function TransactionHistory({ transactions }: Props) {
             <Head title="History Transaksi" />
             <div className="space-y-6 p-6 font-sans">
                 <div className="flex items-center gap-3">
-                    <div className="bg-mayang-500/10 text-mayang-600 flex h-10 w-10 items-center justify-center rounded-xl">
+                    <div className="bg-mayang-500/10 text-mayang-600 flex h-10 w-10 items-center justify-center">
                         <History className="h-5 w-5" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">History Transaksi Saya</h1>
+                        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">History Transaksi Saya</h1>
                         <p className="mt-1 text-sm text-slate-500">Daftar transaksi yang baru saja Anda catat hari ini dan sebelumnya.</p>
                     </div>
                 </div>
 
                 {flash?.success && (
-                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 rounded-2xl border p-4 duration-300">
+                    <div className="bg-mayang-50 border-mayang-100 dark:bg-mayang-950/20 dark:border-mayang-900/30 animate-in fade-in slide-in-from-top-2 mb-6 border p-4 duration-300">
                         <div className="flex items-center gap-3">
                             <div className="bg-mayang-500 flex h-8 w-8 items-center justify-center rounded-full text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -62,7 +62,7 @@ export default function TransactionHistory({ transactions }: Props) {
                     </div>
                 )}
 
-                <div className="overflow-hidden rounded-3xl border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                <div className="overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                             <thead className="border-mayang-100/70 bg-mayang-50/70 border-b dark:border-zinc-800/80 dark:bg-zinc-950/40">
@@ -102,7 +102,7 @@ export default function TransactionHistory({ transactions }: Props) {
                                             <td className="px-6 py-4 text-sm font-semibold text-slate-950 dark:text-zinc-100">
                                                 <span className="text-base font-bold">{formatRupiah(t.amount)}</span>
                                                 {t.original_amount && (
-                                                    <span className="ml-2.5 inline-flex items-center rounded-xl border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
+                                                    <span className="ml-2.5 inline-flex items-center border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
                                                         Edited (sebelumnya: {formatRupiah(t.original_amount)})
                                                     </span>
                                                 )}
@@ -113,7 +113,7 @@ export default function TransactionHistory({ transactions }: Props) {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        className="text-mayang-600 hover:text-mayang-700 hover:bg-mayang-500/10 gap-1 rounded-xl transition-all duration-200"
+                                                        className="text-mayang-600 hover:text-mayang-700 hover:bg-mayang-500/10 gap-1 transition-all duration-200"
                                                         asChild
                                                     >
                                                         <Link href={route('kasir.transaksi.edit', t.id)}>
@@ -146,7 +146,7 @@ export default function TransactionHistory({ transactions }: Props) {
                             <Link
                                 key={i}
                                 href={link.url || '#'}
-                                className={`inline-flex items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                                className={`inline-flex items-center justify-center border px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                                     link.active
                                         ? 'from-mayang-500 to-mayang-600 shadow-mayang-500/20 border-transparent bg-gradient-to-r text-white shadow-md'
                                         : 'dark:text-zinc-350 border-slate-200/80 bg-white/60 text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:bg-zinc-800/50'

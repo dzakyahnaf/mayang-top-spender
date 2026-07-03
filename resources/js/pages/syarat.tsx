@@ -58,30 +58,29 @@ export default function Syarat() {
     return (
         <>
             <Head title="Syarat & Ketentuan" />
-            <div className="from-mayang-50 to-mayang-100/70 selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-gradient-to-br via-white font-sans text-slate-900 selection:text-white">
-                <div className="pointer-events-none absolute top-0 left-1/2 z-0 h-[600px] w-full max-w-7xl -translate-x-1/2 bg-[radial-gradient(circle_at_top,_rgba(27,174,185,0.16)_0%,_rgba(27,174,185,0)_70%)]" />
-
+            <div className="selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-white font-sans text-slate-900 selection:text-white">
                 <PublicNavbar current="syarat" />
 
-                <div className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-4 pt-32 pb-20 sm:px-6 lg:px-8">
-                    <div className="mb-10 text-center">
-                        <div className="bg-mayang-500/10 text-mayang-600 mx-auto mb-5 flex size-16 items-center justify-center rounded-2xl">
+                <div className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-4 pt-36 pb-20 sm:px-6 lg:px-8">
+                    <div className="mb-12 text-center">
+                        <div className="bg-mayang-500/10 text-mayang-600 mx-auto mb-6 flex size-16 items-center justify-center">
                             <ScrollText className="size-8" />
                         </div>
-                        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-                            Syarat & <span className="text-mayang-500">Ketentuan</span>
+                        <p className="mb-3 text-xs font-bold tracking-[0.3em] text-slate-400 uppercase">Mayang Top Spender</p>
+                        <h1 className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
+                            Syarat & <span className="text-mayang-500 italic">Ketentuan</span>
                         </h1>
-                        <p className="mx-auto mt-4 max-w-xl text-lg text-slate-600">Ketentuan keikutsertaan program Mayang Top Spender.</p>
+                        <p className="mx-auto mt-5 max-w-xl text-lg text-slate-600">Ketentuan keikutsertaan program Mayang Top Spender.</p>
                     </div>
 
-                    <div className="space-y-5">
+                    <div className="divide-y divide-slate-200 border-y border-slate-200">
                         {sections.map((section) => (
-                            <div key={section.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="mb-4 text-lg font-bold text-slate-900">{section.title}</h2>
-                                <ul className="space-y-2.5">
+                            <div key={section.title} className="bg-white py-8">
+                                <h2 className="font-display mb-5 text-xl font-bold text-slate-900">{section.title}</h2>
+                                <ul className="space-y-3">
                                     {section.items.map((item, i) => (
-                                        <li key={i} className="flex gap-3 text-sm leading-relaxed text-slate-600">
-                                            <span className="bg-mayang-500 mt-2 size-1.5 shrink-0 rounded-full" />
+                                        <li key={i} className="flex gap-4 text-sm leading-relaxed text-slate-600">
+                                            <span className="bg-mayang-500 mt-2 size-1.5 shrink-0" />
                                             <span>{item}</span>
                                         </li>
                                     ))}

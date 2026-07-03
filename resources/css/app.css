@@ -6,13 +6,26 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+    font-family: 'Lunea Sans';
+    src: url('/fonts/lunea-sans.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 @theme {
     --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        'Albert Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Lunea Sans', 'Playfair Display', 'Times New Roman', serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
+
+    --color-gold-400: #d4af5f;
+    --color-gold-500: #b3852f;
+    --color-gold-600: #94690f;
 
     --color-mayang-50: #eef5f6;
     --color-mayang-100: #d1e0e3;
@@ -112,7 +125,7 @@
     --chart-3: hsl(188, 73%, 20%);
     --chart-4: hsl(43, 74%, 66%);
     --chart-5: hsl(27, 87%, 67%);
-    --radius: 0.5rem;
+    --radius: 0rem;
     --sidebar-background: hsl(187, 33%, 95%);
     --sidebar-foreground: hsl(188, 40%, 22%);
     --sidebar-primary: hsl(186, 75%, 33%);

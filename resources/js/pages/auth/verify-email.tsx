@@ -32,7 +32,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
             <form onSubmit={submit} className="space-y-6 text-center">
                 <Button
                     disabled={processing}
-                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full rounded-xl bg-gradient-to-r font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
+                    className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 w-full bg-gradient-to-r font-bold text-white shadow-lg transition-all hover:-translate-y-0.5"
                 >
                     {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                     Kirim Ulang Email Verifikasi
