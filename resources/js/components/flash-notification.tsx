@@ -1,22 +1,24 @@
 import { type SharedData } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { CheckCircle2, X, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function FlashNotification() {
-    const { flash } = usePage<SharedData>().props;
     const [visible, setVisible] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
     useEffect(() => {
-        if (flash?.success) {
-            setMessage({ type: 'success', text: flash.success });
-            setVisible(true);
-        } else if (flash?.error) {
-            setMessage({ type: 'error', text: flash.error });
-            setVisible(true);
-        }
-    }, [flash?.success, flash?.error]);
+        return router.on('success', (event) => {
+            const flash = (event.detail.page.props as SharedData).flash;
+            if (flash?.success) {
+                setMessage({ type: 'success', text: flash.success });
+                setVisible(true);
+            } else if (flash?.error) {
+                setMessage({ type: 'error', text: flash.error });
+                setVisible(true);
+            }
+        });
+    }, []);
 
     useEffect(() => {
         if (!visible) return;
