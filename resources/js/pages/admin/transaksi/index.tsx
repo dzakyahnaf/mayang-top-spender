@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Calendar, Edit2, FileText, Trash2 } from 'lucide-react';
+import { Edit2, FileText, Search, Trash2, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Transaction {
     id: number;
@@ -15,13 +17,22 @@ interface Transaction {
     period: { name: string };
 }
 
+interface Filters {
+    q?: string;
+    period_id?: string;
+    cashier_id?: string;
+    date_from?: string;
+    date_to?: string;
+}
+
 interface Props {
     transactions: {
         data: Transaction[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
     };
     periods: Array<{ id: number; name: string }>;
-    filters: { period_id?: string };
+    cashiers: Array<{ id: number; name: string }>;
+    filters: Filters;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -31,9 +42,36 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const formatRupiah = (val: number) => new Intl.NumberFormat('id-ID').format(val);
 
-export default function TransactionIndex({ transactions, periods, filters }: Props) {
-    function filterByPeriod(periodId: string) {
-        router.get(route('admin.transaksi.index'), periodId ? { period_id: periodId } : {}, { preserveState: true });
+const selectClass =
+    'focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none border border-slate-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:ring-4 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200';
+
+export default function TransactionIndex({ transactions, periods, cashiers, filters }: Props) {
+    const [search, setSearch] = useState(filters.q ?? '');
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        const timer = setTimeout(() => applyFilters({ q: search }), 400);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [search]);
+
+    function applyFilters(next: Partial<Filters>) {
+        const merged: Filters = { ...filters, q: search, ...next };
+        const params: Record<string, string> = {};
+        (Object.keys(merged) as Array<keyof Filters>).forEach((key) => {
+            if (merged[key]) params[key] = merged[key] as string;
+        });
+
+        router.get(route('admin.transaksi.index'), params, { preserveState: true, preserveScroll: true, replace: true });
+    }
+
+    function resetFilters() {
+        setSearch('');
+        router.get(route('admin.transaksi.index'), {}, { preserveState: true, preserveScroll: true, replace: true });
     }
 
     function deleteTransaction(id: number) {
@@ -42,22 +80,32 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
         }
     }
 
+    const isFiltering = Boolean(filters.q || filters.period_id || filters.cashier_id || filters.date_from || filters.date_to);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Semua Transaksi" />
             <div className="space-y-6 p-6 font-sans">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Daftar Transaksi</h1>
-                        <p className="mt-1 text-sm text-slate-500">Riwayat seluruh transaksi yang dimasukkan oleh kasir.</p>
+                <div>
+                    <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Daftar Transaksi</h1>
+                    <p className="mt-1 text-sm text-slate-500">Riwayat seluruh transaksi yang dimasukkan oleh kasir.</p>
+                </div>
+
+                {/* Filter bar */}
+                <div className="space-y-3 border border-slate-200/50 bg-white/70 p-4 shadow-sm backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                    <div className="relative">
+                        <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
+                        <Input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Cari nama atau nomor HP customer..."
+                            className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/80 py-5 pl-10 dark:border-zinc-800 dark:bg-zinc-900/80"
+                        />
                     </div>
 
-                    <div className="relative inline-block w-full sm:w-64">
-                        <select
-                            value={filters.period_id || ''}
-                            onChange={(e) => filterByPeriod(e.target.value)}
-                            className="focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none border border-slate-200 bg-white/80 px-4 py-2.5 pr-10 text-sm font-semibold text-slate-700 shadow-sm focus:ring-4 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200"
-                        >
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                        <select value={filters.period_id || ''} onChange={(e) => applyFilters({ period_id: e.target.value })} className={selectClass}>
                             <option value="">Semua Periode</option>
                             {periods.map((p) => (
                                 <option key={p.id} value={p.id}>
@@ -65,9 +113,42 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                                 </option>
                             ))}
                         </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-                            <Calendar className="h-4 w-4" />
-                        </div>
+
+                        <select value={filters.cashier_id || ''} onChange={(e) => applyFilters({ cashier_id: e.target.value })} className={selectClass}>
+                            <option value="">Semua Kasir</option>
+                            {cashiers.map((c) => (
+                                <option key={c.id} value={c.id}>
+                                    {c.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <input
+                            type="date"
+                            value={filters.date_from || ''}
+                            onChange={(e) => applyFilters({ date_from: e.target.value })}
+                            aria-label="Dari tanggal"
+                            className={selectClass}
+                        />
+
+                        <input
+                            type="date"
+                            value={filters.date_to || ''}
+                            onChange={(e) => applyFilters({ date_to: e.target.value })}
+                            aria-label="Sampai tanggal"
+                            className={selectClass}
+                        />
+
+                        {isFiltering && (
+                            <button
+                                type="button"
+                                onClick={resetFilters}
+                                className="flex items-center justify-center gap-1.5 border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                            >
+                                <X className="h-3.5 w-3.5" />
+                                Reset Filter
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -146,7 +227,7 @@ export default function TransactionIndex({ transactions, periods, filters }: Pro
                                 {transactions.data.length === 0 && (
                                     <tr>
                                         <td colSpan={5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
-                                            Belum ada data transaksi tercatat.
+                                            {isFiltering ? 'Tidak ada transaksi yang cocok dengan filter.' : 'Belum ada data transaksi tercatat.'}
                                         </td>
                                     </tr>
                                 )}
