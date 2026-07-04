@@ -22,7 +22,20 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'login' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_users_can_authenticate_using_their_phone_number()
+    {
+        $user = User::factory()->create(['phone' => '081234567890']);
+
+        $response = $this->post('/login', [
+            'login' => $user->phone,
             'password' => 'password',
         ]);
 
@@ -35,8 +48,18 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $this->post('/login', [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'wrong-password',
+        ]);
+
+        $this->assertGuest();
+    }
+
+    public function test_users_can_not_authenticate_with_unregistered_phone_number()
+    {
+        $this->post('/login', [
+            'login' => '089999999999',
+            'password' => 'password',
         ]);
 
         $this->assertGuest();

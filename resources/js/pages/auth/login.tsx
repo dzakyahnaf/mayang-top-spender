@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
 interface LoginForm {
-    email: string;
+    login: string;
     password: string;
     remember: boolean;
 }
@@ -23,7 +23,7 @@ interface LoginProps {
 
 export default function Login({ status, canResetPassword }: LoginProps) {
     const { data, setData, post, processing, errors, reset } = useForm<LoginForm>({
-        email: '',
+        login: '',
         password: '',
         remember: false,
     });
@@ -42,22 +42,22 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email" className="text-sm font-bold text-slate-700">
-                            Email address
+                        <Label htmlFor="login" className="text-sm font-bold text-slate-700">
+                            Email atau Nomor HP
                         </Label>
                         <Input
-                            id="email"
-                            type="email"
+                            id="login"
+                            type="text"
                             required
                             autoFocus
                             tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+                            autoComplete="username"
+                            value={data.login}
+                            onChange={(e) => setData('login', e.target.value)}
+                            placeholder="email@example.com atau 08xxxxxxxxxx"
                             className="focus:border-mayang-500 focus:ring-mayang-500/10 focus-visible:ring-mayang-500/10 block w-full border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all outline-none focus:ring-4"
                         />
-                        <InputError message={errors.email} />
+                        <InputError message={errors.login} />
                     </div>
 
                     <div className="grid gap-2">

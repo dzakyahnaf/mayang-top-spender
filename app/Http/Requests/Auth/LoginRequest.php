@@ -28,9 +28,26 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'login' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string'],
         ];
+    }
+
+    /**
+     * Determine whether the given login identifier is an email address or a phone number,
+     * and normalize it accordingly, without ever trusting attacker-controlled array input.
+     *
+     * @return array{0: 'email'|'phone', 1: string}
+     */
+    protected function resolveIdentifier(): array
+    {
+        $login = trim((string) $this->validated('login'));
+
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            return ['email', Str::lower($login)];
+        }
+
+        return ['phone', preg_replace('/[\s\-()]/', '', $login)];
     }
 
     /**
@@ -42,11 +59,18 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        [$field, $value] = $this->resolveIdentifier();
+
+        $credentials = [
+            $field => $value,
+            'password' => (string) $this->validated('password'),
+        ];
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'login' => __('auth.failed'),
             ]);
         }
 
@@ -69,7 +93,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
+            'login' => __('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -81,6 +105,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('login')).'|'.$this->ip());
     }
 }
