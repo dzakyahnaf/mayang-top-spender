@@ -37,7 +37,7 @@ export default function EditTransaction({ transaction }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Transaksi" />
-            <div className="max-w-4xl space-y-6 p-6 font-sans">
+            <div className="w-full space-y-6 p-6 font-sans">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Edit Transaksi</h1>
