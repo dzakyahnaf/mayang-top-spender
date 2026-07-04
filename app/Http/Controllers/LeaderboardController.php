@@ -33,7 +33,7 @@ class LeaderboardController extends Controller
 
             $user = auth()->user();
 
-            if ($user) {
+            if ($user && $user->isCustomer()) {
                 $myRank = $this->resolveMyRank($period->id, $user->email, $user->name);
             }
         }
