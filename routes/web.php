@@ -61,7 +61,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::resource('hadiah', AdminRewardController::class)->except(['show']);
 
-    Route::get('/customer', [AdminCustomerController::class, 'index'])->name('customer.index');
+    Route::resource('customer', AdminCustomerController::class)->except(['show']);
 });
 
 // Kasir routes
