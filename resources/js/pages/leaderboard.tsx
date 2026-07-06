@@ -44,6 +44,8 @@ function rankLabel(r: Reward): string {
     return r.rank_start === r.rank_end ? `Peringkat ${r.rank_start}` : `Peringkat ${r.rank_start}-${r.rank_end}`;
 }
 
+const HEADER_BG = '/Leaderboard-bg.jpg';
+
 const HEXAGON = 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)';
 
 const medalStyles: Record<number, { ring: string; face: string }> = {
@@ -96,20 +98,25 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
             <div className="selection:bg-mayang-500 relative flex min-h-screen flex-col justify-between overflow-x-hidden bg-white font-sans text-slate-900 selection:text-white">
                 <PublicNavbar current="leaderboard" />
 
-                {/* Header band teal gelap */}
-                <div className="bg-mayang-900 relative w-full pt-36 pb-16 text-center text-white">
-                    <p className="mb-3 text-xs font-bold tracking-[0.3em] text-white/60 uppercase">Mayang Top Spender</p>
-                    <h1 className="font-display px-4 text-4xl font-bold tracking-tight uppercase sm:text-6xl">
-                        Papan <span className="text-mayang-300">Peringkat</span>
-                    </h1>
-                    {period && (
-                        <div className="mt-6 inline-flex flex-col items-center gap-1">
-                            <span className="font-display text-lg font-bold">{period.name}</span>
-                            <span className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">
-                                {formatDate(period.start_date)} &mdash; {formatDate(period.end_date)}
-                            </span>
-                        </div>
-                    )}
+                {/* Header band dengan foto + overlay gelap */}
+                <div className="relative w-full overflow-hidden pt-36 pb-16 text-center text-white">
+                    <img src={HEADER_BG} alt="" className="absolute inset-0 h-full w-full object-cover" aria-hidden="true" />
+                    <div className="bg-mayang-900/85 absolute inset-0" aria-hidden="true" />
+
+                    <div className="relative z-10">
+                        <p className="mb-3 text-xs font-bold tracking-[0.3em] text-white/60 uppercase">Mayang Top Spender</p>
+                        <h1 className="font-display px-4 text-4xl font-bold tracking-tight uppercase sm:text-6xl">
+                            Papan <span className="text-mayang-300">Peringkat</span>
+                        </h1>
+                        {period && (
+                            <div className="mt-6 inline-flex flex-col items-center gap-1">
+                                <span className="font-display text-lg font-bold">{period.name}</span>
+                                <span className="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">
+                                    {formatDate(period.start_date)} &mdash; {formatDate(period.end_date)}
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-4 pt-10 pb-20 sm:px-6 lg:px-8">
