@@ -15,6 +15,7 @@ class Transaction extends Model
         'customer_id',
         'period_id',
         'cashier_id',
+        'staff_id',
         'amount',
         'notes',
         'receipt_photo',
@@ -55,5 +56,10 @@ class Transaction extends Model
     public function photos(): HasMany
     {
         return $this->hasMany(TransactionPhoto::class);
+    }
+
+    public function staff(): BelongsTo
+    {
+        return $this->belongsTo(CashierStaff::class, 'staff_id');
     }
 }

@@ -16,6 +16,7 @@ interface Props {
         customer: { name: string; email: string; phone: string };
         period: { name: string } | null;
         cashier: { name: string } | null;
+        staff: { name: string } | null;
         editor: { name: string } | null;
         photos: Array<{ id: number }>;
     };
@@ -111,8 +112,13 @@ export default function ShowTransaction({ transaction }: Props) {
                             </div>
 
                             <div>
-                                <p className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Dicatat Oleh</p>
+                                <p className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Akun Outlet</p>
                                 <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">{transaction.cashier?.name ?? '-'}</p>
+                            </div>
+
+                            <div>
+                                <p className="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Nama Kasir</p>
+                                <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">{transaction.staff?.name ?? '-'}</p>
                             </div>
 
                             {transaction.editor && (

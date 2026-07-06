@@ -13,6 +13,7 @@ interface Transaction {
     notes: string | null;
     created_at: string;
     customer: { name: string };
+    staff: { name: string } | null;
     period: { name: string } | null;
 }
 
@@ -159,6 +160,9 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                         Customer
                                     </th>
                                     <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
+                                        Nama Kasir
+                                    </th>
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Nominal Belanja
                                     </th>
                                     <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
@@ -184,6 +188,7 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                                 })}
                                             </td>
                                             <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">{t.customer.name}</td>
+                                            <td className="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">{t.staff?.name ?? '-'}</td>
                                             <td className="px-6 py-4 text-sm font-semibold text-slate-950 dark:text-zinc-100">
                                                 <span className="text-base font-bold">{formatRupiah(t.amount)}</span>
                                                 {t.original_amount && (
@@ -220,7 +225,7 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                 })}
                                 {transactions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={6} className="px-6 py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             {isFiltering
                                                 ? 'Tidak ada transaksi yang cocok dengan filter.'
                                                 : 'Belum ada transaksi yang tercatat.'}

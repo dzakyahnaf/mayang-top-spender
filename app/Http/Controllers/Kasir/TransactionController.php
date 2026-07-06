@@ -22,12 +22,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransactionController extends Controller
 {
-    public function create(): Response
+    public function create(Request $request): Response
     {
         $period = Period::getActive();
 
         return Inertia::render('kasir/transaksi/create', [
             'period' => $period,
+            'staff' => $request->user()->staff()->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -43,6 +44,7 @@ class TransactionController extends Controller
             'customer_id' => $request->customer_id,
             'period_id' => $period->id,
             'cashier_id' => $request->user()->id,
+            'staff_id' => $request->staff_id,
             'amount' => $request->amount,
             'notes' => $request->notes,
         ]);
@@ -99,7 +101,7 @@ class TransactionController extends Controller
     {
         $search = trim((string) $request->get('q', ''));
 
-        $query = Transaction::with(['customer', 'period' => fn ($q) => $q->withTrashed()])
+        $query = Transaction::with(['customer', 'staff', 'period' => fn ($q) => $q->withTrashed()])
             ->where('cashier_id', $request->user()->id);
 
         if ($request->filled('period_id')) {
@@ -135,7 +137,7 @@ class TransactionController extends Controller
     {
         Gate::authorize('view', $transaction);
 
-        $transaction->load(['customer', 'period' => fn ($q) => $q->withTrashed(), 'cashier', 'editor', 'photos']);
+        $transaction->load(['customer', 'period' => fn ($q) => $q->withTrashed(), 'cashier', 'staff', 'editor', 'photos']);
 
         return Inertia::render('kasir/transaksi/show', [
             'transaction' => $transaction,

@@ -19,7 +19,7 @@ class TransactionController extends Controller
     {
         $search = trim((string) $request->get('q', ''));
 
-        $query = Transaction::with(['customer', 'cashier', 'period' => fn ($q) => $q->withTrashed()]);
+        $query = Transaction::with(['customer', 'cashier', 'staff', 'period' => fn ($q) => $q->withTrashed()]);
 
         if ($request->filled('period_id')) {
             $query->where('period_id', $request->period_id);

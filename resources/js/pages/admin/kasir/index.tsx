@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { Edit2, KeyRound, Plus, Trash2 } from 'lucide-react';
+import { Edit2, KeyRound, Plus, Trash2, Users } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 interface Cashier {
@@ -165,6 +165,17 @@ export default function KasirIndex({ cashiers }: Props) {
                                                             <Link href={route('admin.kasir.edit', cashier.id)}>
                                                                 <Edit2 className="h-3.5 w-3.5" />
                                                                 Edit
+                                                            </Link>
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            className="flex items-center gap-1 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                                                            asChild
+                                                        >
+                                                            <Link href={route('admin.kasir.staff.index', cashier.id)}>
+                                                                <Users className="h-3.5 w-3.5" />
+                                                                Kelola Staff
                                                             </Link>
                                                         </Button>
                                                         <Button

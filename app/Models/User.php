@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Customer::class, 'registered_by');
     }
+
+    public function staff(): HasMany
+    {
+        return $this->hasMany(CashierStaff::class);
+    }
 }

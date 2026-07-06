@@ -14,6 +14,7 @@ interface Transaction {
     created_at: string;
     customer: { name: string };
     cashier: { name: string } | null;
+    staff: { name: string } | null;
     period: { name: string };
 }
 
@@ -216,7 +217,10 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                             </div>
                                         </td>
                                         <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">
-                                            {t.cashier?.name || <span className="text-slate-400 dark:text-zinc-600">-</span>}
+                                            <div className="flex flex-col">
+                                                <span>{t.cashier?.name || <span className="text-slate-400 dark:text-zinc-600">-</span>}</span>
+                                                {t.staff && <span className="mt-0.5 text-[11px] text-slate-400 dark:text-zinc-500">{t.staff.name}</span>}
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4.5">
                                             <div className="flex items-center justify-end gap-2">

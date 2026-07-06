@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CashierController;
+use App\Http\Controllers\Admin\CashierStaffController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PeriodController;
@@ -53,6 +54,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::resource('kasir', CashierController::class)->except(['show']);
     Route::put('/kasir/{kasir}/reset-password', [CashierController::class, 'resetPassword'])->name('kasir.reset-password');
+
+    Route::get('/kasir/{kasir}/staff', [CashierStaffController::class, 'index'])->name('kasir.staff.index');
+    Route::post('/kasir/{kasir}/staff', [CashierStaffController::class, 'store'])->name('kasir.staff.store');
+    Route::delete('/kasir/{kasir}/staff/{staff}', [CashierStaffController::class, 'destroy'])->name('kasir.staff.destroy');
 
     Route::get('/transaksi', [AdminTransactionController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{transaction}/edit', [AdminTransactionController::class, 'edit'])->name('transaksi.edit');

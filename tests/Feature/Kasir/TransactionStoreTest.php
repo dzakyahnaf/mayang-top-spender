@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Kasir;
 
+use App\Models\CashierStaff;
 use App\Models\Customer;
 use App\Models\Period;
 use App\Models\Transaction;
@@ -30,11 +31,13 @@ class TransactionStoreTest extends TestCase
         Storage::fake('local');
 
         $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
         $this->activePeriod();
         $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
 
         $response = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
             'customer_id' => $customer->id,
+            'staff_id' => $staff->id,
             'amount' => 150000,
             'receipt_photos' => [
                 UploadedFile::fake()->image('struk1.jpg', 2000, 2000)->size(4000),
@@ -46,6 +49,7 @@ class TransactionStoreTest extends TestCase
         $response->assertRedirect(route('kasir.transaksi.create'));
 
         $transaction = Transaction::firstOrFail();
+        $this->assertSame($staff->id, $transaction->staff_id);
         $this->assertCount(3, $transaction->photos);
 
         foreach ($transaction->photos as $photo) {
@@ -59,11 +63,13 @@ class TransactionStoreTest extends TestCase
         Storage::fake('local');
 
         $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
         $this->activePeriod();
         $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
 
         $response = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
             'customer_id' => $customer->id,
+            'staff_id' => $staff->id,
             'amount' => 150000,
             'receipt_photos' => [
                 UploadedFile::fake()->image('struk1.jpg'),
@@ -82,11 +88,13 @@ class TransactionStoreTest extends TestCase
         Storage::fake('local');
 
         $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
         $this->activePeriod();
         $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
 
         $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
             'customer_id' => $customer->id,
+            'staff_id' => $staff->id,
             'amount' => 150000,
             'receipt_photos' => [
                 UploadedFile::fake()->image('struk-besar.jpg', 3000, 2000),
@@ -101,5 +109,23 @@ class TransactionStoreTest extends TestCase
 
         $this->assertLessThanOrEqual(1600, $width);
         $this->assertLessThanOrEqual(1600, $height);
+    }
+
+    public function test_kasir_cannot_use_another_outlets_staff_id()
+    {
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $otherKasir = User::factory()->create(['role' => 'kasir']);
+        $otherStaff = CashierStaff::create(['user_id' => $otherKasir->id, 'name' => 'Budi']);
+        $this->activePeriod();
+        $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
+
+        $response = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
+            'customer_id' => $customer->id,
+            'staff_id' => $otherStaff->id,
+            'amount' => 150000,
+        ]);
+
+        $response->assertSessionHasErrors('staff_id');
+        $this->assertDatabaseCount('transactions', 0);
     }
 }

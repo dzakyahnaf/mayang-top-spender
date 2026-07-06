@@ -21,13 +21,19 @@ interface Period {
     end_date: string;
 }
 
+interface Staff {
+    id: number;
+    name: string;
+}
+
 interface Props {
     period: Period | null;
+    staff: Staff[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Input Transaksi', href: '/kasir/transaksi' }];
 
-export default function CreateTransaction({ period }: Props) {
+export default function CreateTransaction({ period, staff }: Props) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Customer[]>([]);
     const [selected, setSelected] = useState<Customer | null>(null);
@@ -36,11 +42,13 @@ export default function CreateTransaction({ period }: Props) {
 
     const { data, setData, post, processing, errors, reset } = useForm<{
         customer_id: string;
+        staff_id: string;
         amount: string;
         notes: string;
         receipt_photos: File[];
     }>({
         customer_id: '',
+        staff_id: '',
         amount: '',
         notes: '',
         receipt_photos: [],
@@ -213,6 +221,32 @@ export default function CreateTransaction({ period }: Props) {
                             )}
 
                             <div className="space-y-2">
+                                <Label htmlFor="staff_id" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                    Nama Kasir
+                                </Label>
+                                {staff.length === 0 ? (
+                                    <p className="border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-900/30 dark:bg-amber-950/10 dark:text-amber-300">
+                                        Belum ada nama staff terdaftar untuk akun ini. Hubungi admin untuk menambahkan staff terlebih dahulu.
+                                    </p>
+                                ) : (
+                                    <select
+                                        id="staff_id"
+                                        value={data.staff_id}
+                                        onChange={(e) => setData('staff_id', e.target.value)}
+                                        className="focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none border border-slate-200 bg-white/60 px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 focus:ring-4 focus:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:text-zinc-200"
+                                    >
+                                        <option value="">Pilih nama kasir...</option>
+                                        {staff.map((s) => (
+                                            <option key={s.id} value={s.id}>
+                                                {s.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+                                <InputError message={errors.staff_id} />
+                            </div>
+
+                            <div className="space-y-2">
                                 <Label htmlFor="amount" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                                     Nominal Belanja (Rp)
                                 </Label>
@@ -294,7 +328,7 @@ export default function CreateTransaction({ period }: Props) {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    disabled={processing || !selected}
+                                    disabled={processing || !selected || !data.staff_id}
                                     className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                                 >
                                     {processing ? 'Menyimpan...' : 'Submit Transaksi'}
