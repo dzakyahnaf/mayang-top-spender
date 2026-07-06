@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { Camera, CircleDollarSign, Landmark, NotebookText, Search, UserCheck2, X } from 'lucide-react';
+import { Camera, Landmark, UserCheck2, X } from 'lucide-react';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 interface Customer {
@@ -38,15 +38,16 @@ export default function CreateTransaction({ period }: Props) {
         customer_id: string;
         amount: string;
         notes: string;
-        receipt_photo: File | null;
+        receipt_photos: File[];
     }>({
         customer_id: '',
         amount: '',
         notes: '',
-        receipt_photo: null,
+        receipt_photos: [],
     });
 
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const MAX_PHOTOS = 3;
+    const [previews, setPreviews] = useState<string[]>([]);
     const [displayAmount, setDisplayAmount] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -81,20 +82,18 @@ export default function CreateTransaction({ period }: Props) {
         setResults([]);
     }
 
-    function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0] ?? null;
-        setData('receipt_photo', file);
-        if (file) {
-            setPreviewUrl(URL.createObjectURL(file));
-        } else {
-            setPreviewUrl(null);
-        }
+    function handleFilesChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const newFiles = Array.from(e.target.files ?? []);
+        const files = [...data.receipt_photos, ...newFiles].slice(0, MAX_PHOTOS);
+        setData('receipt_photos', files);
+        setPreviews(files.map((file) => URL.createObjectURL(file)));
+        if (fileInputRef.current) fileInputRef.current.value = '';
     }
 
-    function removeFile() {
-        setData('receipt_photo', null);
-        setPreviewUrl(null);
-        if (fileInputRef.current) fileInputRef.current.value = '';
+    function removePhoto(index: number) {
+        const files = data.receipt_photos.filter((_, i) => i !== index);
+        setData('receipt_photos', files);
+        setPreviews((prev) => prev.filter((_, i) => i !== index));
     }
 
     function submit(e: FormEvent) {
@@ -105,7 +104,7 @@ export default function CreateTransaction({ period }: Props) {
                 reset();
                 setSelected(null);
                 setQuery('');
-                setPreviewUrl(null);
+                setPreviews([]);
                 setDisplayAmount('');
                 if (fileInputRef.current) fileInputRef.current.value = '';
             },
@@ -164,7 +163,6 @@ export default function CreateTransaction({ period }: Props) {
                                     Cari Customer
                                 </Label>
                                 <div className="relative">
-                                    <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                     <Input
                                         id="search"
                                         type="text"
@@ -175,7 +173,7 @@ export default function CreateTransaction({ period }: Props) {
                                             setData('customer_id', '');
                                         }}
                                         placeholder="Ketik nama, nomor HP, atau email..."
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
                                 {showDropdown && (
@@ -219,7 +217,6 @@ export default function CreateTransaction({ period }: Props) {
                                     Nominal Belanja (Rp)
                                 </Label>
                                 <div className="relative">
-                                    <CircleDollarSign className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                     <Input
                                         id="amount"
                                         type="text"
@@ -231,7 +228,7 @@ export default function CreateTransaction({ period }: Props) {
                                             setData('amount', raw);
                                         }}
                                         placeholder="Contoh: 150.000"
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 pl-10 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                     />
                                 </div>
                                 <InputError message={errors.amount} />
@@ -242,47 +239,56 @@ export default function CreateTransaction({ period }: Props) {
                                     Catatan (opsional)
                                 </Label>
                                 <div className="relative">
-                                    <NotebookText className="absolute top-3.5 left-3.5 h-4 w-4 text-slate-400 dark:text-zinc-500" />
                                     <textarea
                                         id="notes"
                                         value={data.notes}
                                         onChange={(e) => setData('notes', e.target.value)}
                                         rows={3}
                                         placeholder="Cth: Pembelian gamis & jilbab"
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 flex min-h-[85px] w-full border border-slate-200 bg-white/60 py-2.5 pr-3 pl-10 text-sm transition-all duration-300 placeholder:text-slate-400 focus-visible:ring-4 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:placeholder:text-zinc-500"
+                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 flex min-h-[85px] w-full border border-slate-200 bg-white/60 px-3 py-2.5 text-sm transition-all duration-300 placeholder:text-slate-400 focus-visible:ring-4 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:placeholder:text-zinc-500"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="receipt_photo" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                    Foto Struk (opsional)
+                                    Foto Struk (opsional, maks {MAX_PHOTOS} foto)
                                 </Label>
-                                <div className="relative">
-                                    <input
-                                        ref={fileInputRef}
-                                        id="receipt_photo"
-                                        type="file"
-                                        accept="image/*"
-                                        capture="environment"
-                                        onChange={handleFileChange}
-                                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 block w-full border border-slate-200 bg-white/60 px-4 py-3 text-sm text-slate-500 transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:bg-slate-200 focus-visible:ring-4 focus-visible:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40"
-                                    />
-                                    <Camera className="absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
-                                </div>
-                                {previewUrl && (
-                                    <div className="relative mt-2 inline-block">
-                                        <img src={previewUrl} alt="Preview struk" className="h-32 border border-slate-200 object-cover shadow-sm" />
-                                        <button
-                                            type="button"
-                                            onClick={removeFile}
-                                            className="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm transition-colors hover:bg-rose-600"
-                                        >
-                                            <X className="size-3.5" />
-                                        </button>
+                                {data.receipt_photos.length < MAX_PHOTOS && (
+                                    <div className="relative">
+                                        <input
+                                            ref={fileInputRef}
+                                            id="receipt_photo"
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            onChange={handleFilesChange}
+                                            className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 block w-full border border-slate-200 bg-white/60 px-4 py-3 text-sm text-slate-500 transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:bg-slate-200 focus-visible:ring-4 focus-visible:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                        />
+                                        <Camera className="absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                                     </div>
                                 )}
-                                <InputError message={errors.receipt_photo} />
+                                {previews.length > 0 && (
+                                    <div className="mt-2 flex flex-wrap gap-3">
+                                        {previews.map((url, index) => (
+                                            <div key={url} className="relative inline-block">
+                                                <img
+                                                    src={url}
+                                                    alt={`Preview struk ${index + 1}`}
+                                                    className="h-32 w-32 border border-slate-200 object-cover shadow-sm"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removePhoto(index)}
+                                                    className="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm transition-colors hover:bg-rose-600"
+                                                >
+                                                    <X className="size-3.5" />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                <InputError message={errors.receipt_photos} />
                             </div>
 
                             <div className="pt-2">

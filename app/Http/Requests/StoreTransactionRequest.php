@@ -17,7 +17,8 @@ class StoreTransactionRequest extends FormRequest
             'customer_id' => ['required', 'exists:customers,id'],
             'amount' => ['required', 'numeric', 'gt:0', 'max:100000000'],
             'notes' => ['nullable', 'string', 'max:500'],
-            'receipt_photo' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'receipt_photos' => ['nullable', 'array', 'max:3'],
+            'receipt_photos.*' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:8192'],
         ];
     }
 
@@ -29,6 +30,9 @@ class StoreTransactionRequest extends FormRequest
             'amount.required' => 'Nominal belanja harus diisi.',
             'amount.gt' => 'Nominal belanja harus lebih dari Rp 0.',
             'amount.max' => 'Nominal belanja melebihi batas wajar.',
+            'receipt_photos.max' => 'Maksimal 3 foto struk per transaksi.',
+            'receipt_photos.*.image' => 'File harus berupa gambar.',
+            'receipt_photos.*.max' => 'Ukuran tiap foto maksimal 8MB.',
         ];
     }
 }
