@@ -221,7 +221,7 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
 
                             {leaderboard.length > 0 && (
                                 <p className="mt-8 text-center text-xs font-medium tracking-[0.15em] text-slate-400 uppercase">
-                                    Menampilkan To  
+                                    
                                 </p>
                             )}
 
