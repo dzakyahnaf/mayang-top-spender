@@ -105,49 +105,69 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                     </div>
 
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                        <select value={filters.period_id || ''} onChange={(e) => applyFilters({ period_id: e.target.value })} className={selectClass}>
-                            <option value="">Semua Periode</option>
-                            {periods.map((p) => (
-                                <option key={p.id} value={p.id}>
-                                    {p.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Periode</label>
+                            <select
+                                value={filters.period_id || ''}
+                                onChange={(e) => applyFilters({ period_id: e.target.value })}
+                                className={selectClass}
+                            >
+                                <option value="">Semua Periode</option>
+                                {periods.map((p) => (
+                                    <option key={p.id} value={p.id}>
+                                        {p.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                        <select value={filters.cashier_id || ''} onChange={(e) => applyFilters({ cashier_id: e.target.value })} className={selectClass}>
-                            <option value="">Semua Kasir</option>
-                            {cashiers.map((c) => (
-                                <option key={c.id} value={c.id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Kasir</label>
+                            <select
+                                value={filters.cashier_id || ''}
+                                onChange={(e) => applyFilters({ cashier_id: e.target.value })}
+                                className={selectClass}
+                            >
+                                <option value="">Semua Kasir</option>
+                                {cashiers.map((c) => (
+                                    <option key={c.id} value={c.id}>
+                                        {c.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                        <input
-                            type="date"
-                            value={filters.date_from || ''}
-                            onChange={(e) => applyFilters({ date_from: e.target.value })}
-                            aria-label="Dari tanggal"
-                            className={selectClass}
-                        />
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Dari Tanggal</label>
+                            <input
+                                type="date"
+                                value={filters.date_from || ''}
+                                onChange={(e) => applyFilters({ date_from: e.target.value })}
+                                className={selectClass}
+                            />
+                        </div>
 
-                        <input
-                            type="date"
-                            value={filters.date_to || ''}
-                            onChange={(e) => applyFilters({ date_to: e.target.value })}
-                            aria-label="Sampai tanggal"
-                            className={selectClass}
-                        />
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Sampai Tanggal</label>
+                            <input
+                                type="date"
+                                value={filters.date_to || ''}
+                                onChange={(e) => applyFilters({ date_to: e.target.value })}
+                                className={selectClass}
+                            />
+                        </div>
 
                         {isFiltering && (
-                            <button
-                                type="button"
-                                onClick={resetFilters}
-                                className="flex items-center justify-center gap-1.5 border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
-                            >
-                                <X className="h-3.5 w-3.5" />
-                                Reset Filter
-                            </button>
+                            <div className="flex items-end">
+                                <button
+                                    type="button"
+                                    onClick={resetFilters}
+                                    className="flex w-full items-center justify-center gap-1.5 border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+                                >
+                                    <X className="h-3.5 w-3.5" />
+                                    Reset Filter
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>

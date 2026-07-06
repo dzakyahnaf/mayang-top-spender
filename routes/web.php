@@ -69,6 +69,9 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     Route::get('/transaksi', [KasirTransactionController::class, 'create'])->name('transaksi.create');
     Route::post('/transaksi', [KasirTransactionController::class, 'store'])->name('transaksi.store');
     Route::get('/transaksi/history', [KasirTransactionController::class, 'history'])->name('transaksi.history');
+    Route::get('/transaksi/{transaction}', [KasirTransactionController::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/{transaction}/receipt', [KasirTransactionController::class, 'receipt'])->name('transaksi.receipt');
+    Route::get('/transaksi/{transaction}/photos/{photo}', [KasirTransactionController::class, 'receiptPhoto'])->name('transaksi.receipt-photo');
     Route::get('/transaksi/{transaction}/edit', [KasirTransactionController::class, 'edit'])->name('transaksi.edit');
     Route::put('/transaksi/{transaction}', [KasirTransactionController::class, 'update'])->name('transaksi.update');
 
