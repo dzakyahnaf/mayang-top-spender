@@ -1,7 +1,7 @@
 import PublicFooter from '@/components/public-footer';
 import PublicNavbar from '@/components/public-navbar';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight, Gift, Plane, Trophy } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface Reward {
     id: number;
@@ -122,9 +122,6 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                 <div className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-4 pt-10 pb-20 sm:px-6 lg:px-8">
                     {!period ? (
                         <div className="border border-slate-200 bg-white p-12 text-center">
-                            <div className="mx-auto mb-4 flex size-16 items-center justify-center bg-slate-100 text-slate-400">
-                                <Trophy className="size-8" />
-                            </div>
                             <h3 className="font-display text-xl font-bold text-slate-900">Belum Ada Kompetisi</h3>
                             <p className="mt-2 text-slate-500">Saat ini belum ada periode kompetisi yang aktif.</p>
                         </div>
@@ -132,7 +129,6 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                         <>
                             {/* Callout grand prize */}
                             <div className="border-gold-500 flex flex-wrap items-center justify-center gap-3 border-l-4 bg-slate-50 px-6 py-4 text-center">
-                                <Plane className="text-gold-600 size-5 shrink-0" />
                                 <p className="text-sm font-semibold text-slate-700">
                                     Peringkat 1 di akhir periode membawa pulang <strong className="text-gold-600">Paket Umrah</strong> — plus 1
                                     pemenang undian beruntung lainnya.
@@ -163,9 +159,6 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
 
                             {leaderboard.length === 0 ? (
                                 <div className="mt-8 border border-slate-200 bg-white p-12 text-center">
-                                    <div className="mx-auto mb-4 flex size-16 items-center justify-center bg-slate-100 text-slate-400">
-                                        <Trophy className="size-8" />
-                                    </div>
                                     <h3 className="font-display text-xl font-bold text-slate-900">Belum Ada Transaksi</h3>
                                     <p className="mt-2 text-slate-500">Jadilah yang pertama untuk memimpin leaderboard di periode ini!</p>
                                 </div>
@@ -180,11 +173,6 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                                                         isUmroh ? 'border-gold-500' : 'border-mayang-500'
                                                     }`}
                                                 >
-                                                    {isUmroh ? (
-                                                        <Plane className="text-gold-600 size-6 shrink-0" />
-                                                    ) : (
-                                                        <Gift className="text-mayang-500 size-6 shrink-0" />
-                                                    )}
                                                     <div>
                                                         <p className="text-[11px] font-bold tracking-[0.25em] text-slate-400 uppercase">
                                                             {rankLabel(reward)}
@@ -219,7 +207,6 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                                     {others.length > 0 && (
                                         <div>
                                             <div className="border-mayang-500 mb-4 flex items-center gap-3 border-l-4 py-1 pl-4">
-                                                <Trophy className="text-mayang-500 size-6 shrink-0" />
                                                 <h2 className="font-display text-xl font-bold text-slate-900 sm:text-2xl">Peringkat Lainnya</h2>
                                             </div>
                                             <div className="bg-mayang-50 border-mayang-200 divide-mayang-200/50 divide-y overflow-hidden border">
@@ -234,7 +221,7 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
 
                             {leaderboard.length > 0 && (
                                 <p className="mt-8 text-center text-xs font-medium tracking-[0.15em] text-slate-400 uppercase">
-                                    Menampilkan Top 50 spender periode aktif
+                                    Menampilkan To  
                                 </p>
                             )}
 
@@ -260,7 +247,6 @@ export default function Leaderboard({ period, leaderboard, rewards, myRank }: Le
                                         href={route('daftar-hadiah')}
                                         className="flex items-center justify-center gap-2 border border-white/40 bg-white/10 px-8 py-4 text-sm font-bold tracking-[0.15em] text-white uppercase backdrop-blur-sm transition-all hover:border-white hover:bg-white/20"
                                     >
-                                        <Gift className="size-4" />
                                         Lihat Daftar Hadiah
                                     </Link>
                                 </div>
