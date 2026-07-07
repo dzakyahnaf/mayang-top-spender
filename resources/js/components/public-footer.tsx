@@ -23,7 +23,7 @@ export default function PublicFooter() {
                             </span>
                         </div>
                         <p className="max-w-xs text-sm leading-relaxed text-white/60">
-                            Program loyalitas Mayang Modest Wear. Belanja, kumpulkan coin, dan raih hadiah utama Umroh.
+                            Program loyalitas Mayang Modest Wear. Belanja, kumpulkan coin, dan raih hadiah utama Umrah.
                         </p>
                     </div>
 

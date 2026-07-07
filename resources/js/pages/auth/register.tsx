@@ -34,7 +34,7 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Daftar Member" description="Daftarkan dirimu sebagai bagian dari program top spender berhadiah Umroh!">
+        <AuthLayout title="Daftar Member" description="Daftarkan dirimu sebagai bagian dari program top spender berhadiah Umrah!">
             <Head title="Daftar" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">

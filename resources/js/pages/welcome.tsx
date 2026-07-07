@@ -7,7 +7,7 @@ import { useState } from 'react';
 const HERO_IMG = '/MAYANG-bg-1.webp';
 const GALLERY_IMGS = [
     { src: '/hadiah-emas.webp', alt: 'Hadiah Emas Mayang Top Spender' },
-    { src: '/hadiah-umroh.webp', alt: 'Hadiah Umroh Mayang Top Spender' },
+    { src: '/hadiah-umroh.webp', alt: 'Hadiah Umrah Mayang Top Spender' },
     { src: '/hadiah-dapur.webp', alt: 'Hadiah Paket Alat Dapur Mayang Top Spender' },
 ];
 
@@ -46,7 +46,7 @@ export default function Welcome() {
                         </h1>
                         <p className="mb-4 max-w-2xl text-lg leading-relaxed text-white/85">
                             Di 27 tahun bersama Mayang, setiap transaksi selama periode program akan tercatat sebagai kesempatan meraih{' '}
-                            <strong className="text-white">Paket Umroh</strong>. Cek posisimu dan ikuti perkembangannya langsung disini.
+                            <strong className="text-white">Paket Umrah</strong>. Cek posisimu dan ikuti perkembangannya langsung disini.
                         </p>
                         <p className="mb-10 text-sm font-bold tracking-[0.2em] text-white/60 uppercase">1 Juli &ndash; 31 Desember 2026</p>
 
@@ -83,7 +83,7 @@ export default function Welcome() {
                         {[
                             { value: '27', label: 'Tahun Bersama Mayang' },
                             { value: '34', label: 'Outlet se-Jawa' },
-                            { value: 'Umroh', label: 'Hadiah Utama Periode Ini' },
+                            { value: 'Umrah', label: 'Hadiah Utama Periode Ini' },
                         ].map((stat) => (
                             <div key={stat.label} className="px-8 py-10 text-center">
                                 <p className="font-display text-4xl font-bold text-slate-900">{stat.value}</p>
