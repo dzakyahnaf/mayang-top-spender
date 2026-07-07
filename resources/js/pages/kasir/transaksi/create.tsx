@@ -222,7 +222,7 @@ export default function CreateTransaction({ period, staff }: Props) {
 
                             <div className="space-y-2">
                                 <Label htmlFor="staff_id" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                    Nama Kasir
+                                    Nama Kasir <span className="font-normal text-slate-400">(opsional)</span>
                                 </Label>
                                 {staff.length === 0 ? (
                                     <p className="border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-900/30 dark:bg-amber-950/10 dark:text-amber-300">
@@ -278,7 +278,7 @@ export default function CreateTransaction({ period, staff }: Props) {
                                         value={data.notes}
                                         onChange={(e) => setData('notes', e.target.value)}
                                         rows={3}
-                                        placeholder="Cth: Pembelian gamis & jilbab"
+                                        placeholder={staff.length === 0 ? 'Cth: Kasir Budi - Pembelian gamis & jilbab' : 'Cth: Pembelian gamis & jilbab'}
                                         className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 flex min-h-[85px] w-full border border-slate-200 bg-white/60 px-3 py-2.5 text-sm transition-all duration-300 placeholder:text-slate-400 focus-visible:ring-4 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800/80 dark:bg-zinc-950/40 dark:placeholder:text-zinc-500"
                                     />
                                 </div>
@@ -328,7 +328,7 @@ export default function CreateTransaction({ period, staff }: Props) {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    disabled={processing || !selected || !data.staff_id}
+                                    disabled={processing || !selected}
                                     className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                                 >
                                     {processing ? 'Menyimpan...' : 'Submit Transaksi'}
