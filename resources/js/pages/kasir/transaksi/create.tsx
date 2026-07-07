@@ -33,11 +33,61 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Input Transaksi', href: '/kasir/transaksi' }];
 
+/**
+ * Compress a single image file in the browser using the Canvas API.
+ * Resizes to max 1200px on the longest side and re-encodes as JPEG at 75% quality.
+ * Falls back to the original file if compression fails.
+ */
+function compressImage(file: File, maxDimension = 1200, quality = 0.75): Promise<File> {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+
+        img.onload = () => {
+            URL.revokeObjectURL(objectUrl);
+
+            const { width, height } = img;
+            const ratio = Math.min(1, maxDimension / Math.max(width, height));
+            const newWidth = Math.round(width * ratio);
+            const newHeight = Math.round(height * ratio);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) { resolve(file); return; }
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, newWidth, newHeight);
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+            canvas.toBlob(
+                (blob) => {
+                    if (!blob) { resolve(file); return; }
+                    const compressed = new File(
+                        [blob],
+                        file.name.replace(/\.[^.]+$/, '.jpg'),
+                        { type: 'image/jpeg' },
+                    );
+                    resolve(compressed);
+                },
+                'image/jpeg',
+                quality,
+            );
+        };
+
+        img.onerror = () => { URL.revokeObjectURL(objectUrl); resolve(file); };
+        img.src = objectUrl;
+    });
+}
+
 export default function CreateTransaction({ period, staff }: Props) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Customer[]>([]);
     const [selected, setSelected] = useState<Customer | null>(null);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [compressing, setCompressing] = useState(false);
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
     const { data, setData, post, processing, errors, reset } = useForm<{
@@ -90,12 +140,19 @@ export default function CreateTransaction({ period, staff }: Props) {
         setResults([]);
     }
 
-    function handleFilesChange(e: React.ChangeEvent<HTMLInputElement>) {
+    async function handleFilesChange(e: React.ChangeEvent<HTMLInputElement>) {
         const newFiles = Array.from(e.target.files ?? []);
-        const files = [...data.receipt_photos, ...newFiles].slice(0, MAX_PHOTOS);
+        const remaining = MAX_PHOTOS - data.receipt_photos.length;
+        const toProcess = newFiles.slice(0, remaining);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+
+        setCompressing(true);
+        const compressed = await Promise.all(toProcess.map((f) => compressImage(f)));
+        setCompressing(false);
+
+        const files = [...data.receipt_photos, ...compressed];
         setData('receipt_photos', files);
         setPreviews(files.map((file) => URL.createObjectURL(file)));
-        if (fileInputRef.current) fileInputRef.current.value = '';
     }
 
     function removePhoto(index: number) {
@@ -106,6 +163,7 @@ export default function CreateTransaction({ period, staff }: Props) {
 
     function submit(e: FormEvent) {
         e.preventDefault();
+        if (compressing) return;
         post(route('kasir.transaksi.store'), {
             forceFormData: true,
             onSuccess: () => {
@@ -328,10 +386,10 @@ export default function CreateTransaction({ period, staff }: Props) {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    disabled={processing || !selected}
+                                    disabled={processing || compressing || !selected}
                                     className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                                 >
-                                    {processing ? 'Menyimpan...' : 'Submit Transaksi'}
+                                    {compressing ? 'Mengompres foto...' : processing ? 'Menyimpan...' : 'Submit Transaksi'}
                                 </Button>
                             </div>
                         </form>
