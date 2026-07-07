@@ -80,7 +80,7 @@ export default function AdminDashboard({ period, totalCustomers, periodStats, to
                     <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-zinc-800/50 dark:bg-zinc-900/60">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
-                                Total Transaksi
+                                Jumlah Transaksi
                             </CardTitle>
                             <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
                                 <ClipboardList className="h-5 w-5" />
