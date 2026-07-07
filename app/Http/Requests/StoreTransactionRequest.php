@@ -17,7 +17,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'customer_id' => ['required', 'exists:customers,id'],
             'staff_id' => [
-                'nullable',
+                'required',
                 Rule::exists('cashier_staff', 'id')->where('user_id', $this->user()->id),
             ],
             'amount' => ['required', 'numeric', 'gt:0', 'max:100000000'],
@@ -32,6 +32,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'customer_id.required' => 'Customer harus dipilih.',
             'customer_id.exists' => 'Customer tidak ditemukan.',
+            'staff_id.required' => 'Nama kasir harus dipilih.',
             'staff_id.exists' => 'Nama kasir tidak valid.',
             'amount.required' => 'Nominal belanja harus diisi.',
             'amount.gt' => 'Nominal belanja harus lebih dari Rp 0.',

@@ -280,7 +280,7 @@ export default function CreateTransaction({ period, staff }: Props) {
 
                             <div className="space-y-2">
                                 <Label htmlFor="staff_id" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                    Nama Kasir <span className="font-normal text-slate-400">(opsional)</span>
+                                    Nama Kasir
                                 </Label>
                                 {staff.length === 0 ? (
                                     <p className="border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-900/30 dark:bg-amber-950/10 dark:text-amber-300">
@@ -386,7 +386,7 @@ export default function CreateTransaction({ period, staff }: Props) {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    disabled={processing || compressing || !selected}
+                                    disabled={processing || compressing || !selected || (staff.length > 0 && !data.staff_id)}
                                     className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
                                 >
                                     {compressing ? 'Mengompres foto...' : processing ? 'Menyimpan...' : 'Submit Transaksi'}
