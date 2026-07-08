@@ -22,6 +22,18 @@ class CustomerController extends Controller
         $search = trim((string) $request->get('q', ''));
         $status = $request->get('status'); // spending | no_spending | null
 
+        $allowedSorts = ['ranking', 'name', 'total_spending', 'created_at'];
+        $sort = in_array($request->get('sort'), $allowedSorts, true) ? $request->get('sort') : ($period ? 'ranking' : 'created_at');
+        $direction = $request->get('direction') === 'asc' ? 'asc' : ($request->get('direction') === 'desc' ? 'desc' : null);
+
+        if ($direction === null) {
+            $direction = $sort === 'ranking' ? 'asc' : 'desc';
+        }
+
+        if (! $period && in_array($sort, ['ranking', 'total_spending'], true)) {
+            $sort = 'created_at';
+        }
+
         // Rank map for the active period, matching the public leaderboard ordering.
         $rankMap = collect();
         if ($period) {
@@ -63,24 +75,32 @@ class CustomerController extends Controller
                 }
             });
 
-        $rankedIds = $rankMap->keys()->all();
+        if ($sort === 'ranking') {
+            $rankedIds = $rankMap->keys()->all();
 
-        if ($period && $rankedIds !== []) {
-            $cases = [];
-            $bindings = [];
+            if ($rankedIds !== []) {
+                $cases = [];
+                $bindings = [];
 
-            foreach ($rankedIds as $position => $customerId) {
-                $cases[] = 'WHEN customers.id = ? THEN ?';
-                $bindings[] = $customerId;
-                $bindings[] = $position;
+                foreach ($rankedIds as $position => $customerId) {
+                    $cases[] = 'WHEN customers.id = ? THEN ?';
+                    $bindings[] = $customerId;
+                    $bindings[] = $position;
+                }
+
+                $bindings[] = count($rankedIds);
+
+                $query->orderByRaw('CASE '.implode(' ', $cases).' ELSE ? END '.strtoupper($direction), $bindings);
             }
 
-            $bindings[] = count($rankedIds);
-
-            $query->orderByRaw('CASE '.implode(' ', $cases).' ELSE ? END', $bindings);
+            $query->orderByDesc('created_at');
+        } elseif ($sort === 'total_spending') {
+            $query->orderBy('total_spending', $direction)->orderByDesc('created_at');
+        } else {
+            $query->orderBy($sort, $direction);
         }
 
-        $customers = $query->orderByDesc('created_at')
+        $customers = $query
             ->paginate(20)
             ->withQueryString()
             ->through(function ($customer) use ($rankMap) {
@@ -95,6 +115,8 @@ class CustomerController extends Controller
             'filters' => [
                 'q' => $search,
                 'status' => $status,
+                'sort' => $sort,
+                'direction' => $direction,
             ],
         ]);
     }

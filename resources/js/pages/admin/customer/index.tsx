@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Edit2, Plus, Search, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Edit2, Plus, Search, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface Customer {
@@ -23,8 +23,17 @@ interface Props {
         from: number | null;
     };
     period: { name: string } | null;
-    filters: { q: string; status: string | null };
+    filters: { q: string; status: string | null; sort: string; direction: 'asc' | 'desc' };
 }
+
+type SortColumn = 'ranking' | 'name' | 'total_spending' | 'created_at';
+
+const defaultDirection: Record<SortColumn, 'asc' | 'desc'> = {
+    ranking: 'asc',
+    name: 'asc',
+    total_spending: 'desc',
+    created_at: 'desc',
+};
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/admin/dashboard' },
@@ -65,14 +74,48 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
-    function applyFilters(next: { q?: string; status?: string }) {
+    function applyFilters(next: { q?: string; status?: string; sort?: string; direction?: string }) {
         const params: Record<string, string> = {};
         const q = next.q !== undefined ? next.q : search;
         const status = next.status !== undefined ? next.status : (filters.status ?? '');
+        const sort = next.sort !== undefined ? next.sort : filters.sort;
+        const direction = next.direction !== undefined ? next.direction : filters.direction;
         if (q) params.q = q;
         if (status) params.status = status;
+        if (sort) params.sort = sort;
+        if (direction) params.direction = direction;
 
         router.get(route('admin.customer.index'), params, { preserveState: true, preserveScroll: true, replace: true });
+    }
+
+    function toggleSort(column: SortColumn) {
+        if (filters.sort === column) {
+            applyFilters({ sort: column, direction: filters.direction === 'asc' ? 'desc' : 'asc' });
+        } else {
+            applyFilters({ sort: column, direction: defaultDirection[column] });
+        }
+    }
+
+    function SortIcon({ column }: { column: SortColumn }) {
+        if (filters.sort !== column) {
+            return <ArrowUpDown className="h-3 w-3 opacity-40" />;
+        }
+        return filters.direction === 'asc' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />;
+    }
+
+    function SortableHeader({ column, label, className = '' }: { column: SortColumn; label: string; className?: string }) {
+        return (
+            <th className={`px-6 py-4 ${className}`}>
+                <button
+                    type="button"
+                    onClick={() => toggleSort(column)}
+                    className={`flex items-center gap-1 hover:text-slate-900 dark:hover:text-white ${className.includes('text-right') ? 'ml-auto' : ''}`}
+                >
+                    {label}
+                    <SortIcon column={column} />
+                </button>
+            </th>
+        );
     }
 
     const handleDelete = (id: number) => {
@@ -141,12 +184,12 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                             <thead>
                                 <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
                                     <th className="px-6 py-4">No.</th>
-                                    {period && <th className="px-6 py-4">Peringkat</th>}
-                                    <th className="px-6 py-4">Nama</th>
+                                    {period && <SortableHeader column="ranking" label="Peringkat" />}
+                                    <SortableHeader column="name" label="Nama" />
                                     <th className="px-6 py-4">Email</th>
                                     <th className="px-6 py-4">Nomor HP</th>
-                                    <th className="px-6 py-4">Tanggal Daftar</th>
-                                    {period && <th className="px-6 py-4 text-right">Total Belanja</th>}
+                                    <SortableHeader column="created_at" label="Tanggal Daftar" />
+                                    {period && <SortableHeader column="total_spending" label="Total Belanja" className="text-right" />}
                                     <th className="px-6 py-4 text-right">Aksi</th>
                                 </tr>
                             </thead>
