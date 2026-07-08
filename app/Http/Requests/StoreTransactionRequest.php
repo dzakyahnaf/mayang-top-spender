@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreTransactionRequest extends FormRequest
 {
@@ -16,10 +15,7 @@ class StoreTransactionRequest extends FormRequest
     {
         return [
             'customer_id' => ['required', 'exists:customers,id'],
-            'staff_id' => [
-                'required',
-                Rule::exists('cashier_staff', 'id')->where('user_id', $this->user()->id),
-            ],
+            'staff_id' => ['required', 'exists:cashier_staff,id'],
             'amount' => ['required', 'numeric', 'gt:0', 'max:100000000'],
             'notes' => ['nullable', 'string', 'max:500'],
             'receipt_photos' => ['nullable', 'array', 'max:3'],

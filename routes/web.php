@@ -86,6 +86,7 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     Route::post('/customer', [KasirCustomerController::class, 'store'])->name('customer.store');
 
     Route::get('/api/customers/search', [KasirTransactionController::class, 'searchCustomers'])->name('api.customers.search');
+    Route::get('/api/staff/search', [KasirTransactionController::class, 'searchStaff'])->name('api.staff.search');
 });
 
 require __DIR__.'/settings.php';

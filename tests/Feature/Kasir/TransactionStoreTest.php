@@ -111,7 +111,7 @@ class TransactionStoreTest extends TestCase
         $this->assertLessThanOrEqual(1600, $height);
     }
 
-    public function test_kasir_cannot_use_another_outlets_staff_id()
+    public function test_kasir_can_use_another_outlets_staff_id()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
         $otherKasir = User::factory()->create(['role' => 'kasir']);
@@ -122,6 +122,24 @@ class TransactionStoreTest extends TestCase
         $response = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
             'customer_id' => $customer->id,
             'staff_id' => $otherStaff->id,
+            'amount' => 150000,
+        ]);
+
+        $response->assertRedirect(route('kasir.transaksi.create'));
+
+        $transaction = Transaction::firstOrFail();
+        $this->assertSame($otherStaff->id, $transaction->staff_id);
+    }
+
+    public function test_nonexistent_staff_id_is_rejected()
+    {
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $this->activePeriod();
+        $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
+
+        $response = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
+            'customer_id' => $customer->id,
+            'staff_id' => 999999,
             'amount' => 150000,
         ]);
 

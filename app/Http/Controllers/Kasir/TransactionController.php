@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kasir;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Models\CashierStaff;
 use App\Models\Customer;
 use App\Models\Period;
 use App\Models\Transaction;
@@ -22,13 +23,12 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransactionController extends Controller
 {
-    public function create(Request $request): Response
+    public function create(): Response
     {
         $period = Period::getActive();
 
         return Inertia::render('kasir/transaksi/create', [
             'period' => $period,
-            'staff' => $request->user()->staff()->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -204,5 +204,21 @@ class TransactionController extends Controller
             ->get(['id', 'name', 'email', 'phone']);
 
         return response()->json($customers);
+    }
+
+    public function searchStaff(Request $request): JsonResponse
+    {
+        $keyword = $request->get('q', '');
+
+        if (strlen($keyword) < 2) {
+            return response()->json([]);
+        }
+
+        $staff = CashierStaff::query()
+            ->where('name', 'LIKE', "%{$keyword}%")
+            ->limit(10)
+            ->get(['id', 'name']);
+
+        return response()->json($staff);
     }
 }
