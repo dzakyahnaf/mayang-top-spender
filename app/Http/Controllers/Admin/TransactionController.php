@@ -7,19 +7,21 @@ use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Period;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransactionController extends Controller
 {
-    public function index(Request $request): Response
+    private function filteredQuery(Request $request): Builder
     {
         $search = trim((string) $request->get('q', ''));
 
-        $query = Transaction::with(['customer', 'cashier', 'staff', 'period' => fn ($q) => $q->withTrashed()]);
+        $query = Transaction::query();
 
         if ($request->filled('period_id')) {
             $query->where('period_id', $request->period_id);
@@ -48,6 +50,13 @@ class TransactionController extends Controller
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
+        return $query;
+    }
+
+    public function index(Request $request): Response
+    {
+        $query = $this->filteredQuery($request)->with(['customer', 'cashier', 'staff', 'period' => fn ($q) => $q->withTrashed()]);
+
         $transactions = $query->orderByDesc('created_at')->paginate(20)->withQueryString();
         $periods = Period::orderByDesc('created_at')->get();
         $cashiers = User::where('role', 'kasir')->orderBy('name')->get(['id', 'name']);
@@ -58,6 +67,81 @@ class TransactionController extends Controller
             'cashiers' => $cashiers,
             'filters' => $request->only(['period_id', 'cashier_id', 'q', 'date_from', 'date_to']),
         ]);
+    }
+
+    public function export(Request $request): StreamedResponse
+    {
+        $query = $this->filteredQuery($request)->with(['customer', 'cashier', 'staff', 'period']);
+
+        $filename = 'laporan-transaksi-'.now()->format('Y-m-d-His').'.csv';
+
+        return response()->streamDownload(function () use ($query) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['No', 'Tanggal', 'Customer', 'Telepon', 'Outlet', 'Nama Kasir', 'Nominal (Rp)', 'Coin', 'Catatan', 'Periode']);
+
+            $no = 1;
+            $query->chunkById(200, function ($transactions) use ($handle, &$no) {
+                foreach ($transactions as $transaction) {
+                    fputcsv($handle, [
+                        $no++,
+                        $transaction->created_at->format('d/m/Y H:i'),
+                        $transaction->customer->name ?? '-',
+                        $transaction->customer->phone ?? '-',
+                        $transaction->cashier->name ?? '-',
+                        $transaction->staff->name ?? '-',
+                        $transaction->amount,
+                        intdiv((int) $transaction->amount, 5),
+                        $transaction->notes ?? '-',
+                        $transaction->period->name ?? '-',
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
+    }
+
+    public function exportRekap(Request $request): StreamedResponse
+    {
+        $query = Transaction::query();
+
+        if ($request->filled('period_id')) {
+            $query->where('period_id', $request->period_id);
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $rekap = $query->selectRaw('cashier_id, COUNT(*) as total_transaksi, SUM(amount) as total_nominal')
+            ->groupBy('cashier_id')
+            ->with('cashier:id,name')
+            ->get()
+            ->sortByDesc('total_nominal')
+            ->values();
+
+        $filename = 'rekap-outlet-'.now()->format('Y-m-d-His').'.csv';
+
+        return response()->streamDownload(function () use ($rekap) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['No', 'Outlet', 'Jumlah Transaksi', 'Total Nominal (Rp)', 'Total Coin']);
+
+            foreach ($rekap as $i => $row) {
+                fputcsv($handle, [
+                    $i + 1,
+                    $row->cashier->name ?? '-',
+                    $row->total_transaksi,
+                    $row->total_nominal,
+                    intdiv((int) $row->total_nominal, 5),
+                ]);
+            }
+
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
     }
 
     public function edit(Transaction $transaction): Response

@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Edit2, FileText, Search, Trash2, X } from 'lucide-react';
+import { ChevronDown, Download, Edit2, FileText, Search, Trash2, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface Transaction {
@@ -83,13 +84,42 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
 
     const isFiltering = Boolean(filters.q || filters.period_id || filters.cashier_id || filters.date_from || filters.date_to);
 
+    function exportUrl(routeName: string, withAllFilters: boolean) {
+        const source: Filters = withAllFilters ? { ...filters, q: search } : { period_id: filters.period_id, date_from: filters.date_from, date_to: filters.date_to };
+        const params: Record<string, string> = {};
+        (Object.keys(source) as Array<keyof Filters>).forEach((key) => {
+            if (source[key]) params[key] = source[key] as string;
+        });
+        return route(routeName, params);
+    }
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Semua Transaksi" />
             <div className="space-y-6 p-6 font-sans">
-                <div>
-                    <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Daftar Transaksi</h1>
-                    <p className="mt-1 text-sm text-slate-500">Riwayat seluruh transaksi yang dimasukkan oleh kasir.</p>
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Daftar Transaksi</h1>
+                        <p className="mt-1 text-sm text-slate-500">Riwayat seluruh transaksi yang dimasukkan oleh kasir.</p>
+                    </div>
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="flex items-center gap-2 border-slate-200 dark:border-zinc-800">
+                                <Download className="h-4 w-4" />
+                                Download Laporan
+                                <ChevronDown className="h-3.5 w-3.5" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                                <a href={exportUrl('admin.transaksi.export', true)}>Detail Transaksi (sesuai filter)</a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <a href={exportUrl('admin.transaksi.export-rekap', false)}>Rekap per Outlet</a>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
 
                 {/* Filter bar */}

@@ -60,6 +60,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/kasir/{kasir}/staff/{staff}', [CashierStaffController::class, 'destroy'])->name('kasir.staff.destroy');
 
     Route::get('/transaksi', [AdminTransactionController::class, 'index'])->name('transaksi.index');
+    Route::get('/transaksi/export', [AdminTransactionController::class, 'export'])->name('transaksi.export');
+    Route::get('/transaksi/export-rekap', [AdminTransactionController::class, 'exportRekap'])->name('transaksi.export-rekap');
     Route::get('/transaksi/{transaction}/edit', [AdminTransactionController::class, 'edit'])->name('transaksi.edit');
     Route::put('/transaksi/{transaction}', [AdminTransactionController::class, 'update'])->name('transaksi.update');
     Route::delete('/transaksi/{transaction}', [AdminTransactionController::class, 'destroy'])->name('transaksi.destroy');
