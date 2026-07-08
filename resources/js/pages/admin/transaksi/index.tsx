@@ -31,6 +31,7 @@ interface Props {
     transactions: {
         data: Transaction[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
+        from: number | null;
     };
     periods: Array<{ id: number; name: string }>;
     cashiers: Array<{ id: number; name: string }>;
@@ -208,6 +209,7 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                         <table className="w-full border-collapse text-left">
                             <thead>
                                 <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
+                                    <th className="px-6 py-4">No.</th>
                                     <th className="px-6 py-4">Tanggal & Waktu</th>
                                     <th className="px-6 py-4">Customer</th>
                                     <th className="px-6 py-4">Nominal Transaksi</th>
@@ -216,8 +218,11 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
-                                {transactions.data.map((t) => (
+                                {transactions.data.map((t, index) => (
                                     <tr key={t.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200">
+                                        <td className="px-6 py-4.5 font-medium text-slate-500 dark:text-zinc-400">
+                                            {(transactions.from ?? 1) + index}
+                                        </td>
                                         <td className="px-6 py-4.5 text-slate-500 dark:text-zinc-400">
                                             {new Date(t.created_at).toLocaleDateString('id-ID', {
                                                 day: 'numeric',
@@ -260,6 +265,17 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                                     className="flex items-center gap-1 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
                                                     asChild
                                                 >
+                                                    <Link href={route('admin.transaksi.show', t.id)}>
+                                                        <FileText className="h-3.5 w-3.5" />
+                                                        Detail
+                                                    </Link>
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="flex items-center gap-1 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
+                                                    asChild
+                                                >
                                                     <Link href={route('admin.transaksi.edit', t.id)}>
                                                         <Edit2 className="h-3.5 w-3.5" />
                                                         Edit
@@ -280,7 +296,7 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                 ))}
                                 {transactions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={6} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             {isFiltering ? 'Tidak ada transaksi yang cocok dengan filter.' : 'Belum ada data transaksi tercatat.'}
                                         </td>
                                     </tr>

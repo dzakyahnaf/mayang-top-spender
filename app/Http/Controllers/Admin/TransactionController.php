@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Period;
 use App\Models\Transaction;
+use App\Models\TransactionPhoto;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -142,6 +144,36 @@ class TransactionController extends Controller
 
             fclose($handle);
         }, $filename, ['Content-Type' => 'text/csv']);
+    }
+
+    public function show(Transaction $transaction): Response
+    {
+        Gate::authorize('view', $transaction);
+
+        $transaction->load(['customer', 'period' => fn ($q) => $q->withTrashed(), 'cashier', 'staff', 'editor', 'photos']);
+
+        return Inertia::render('admin/transaksi/show', [
+            'transaction' => $transaction,
+        ]);
+    }
+
+    public function receipt(Transaction $transaction): StreamedResponse
+    {
+        Gate::authorize('view', $transaction);
+
+        abort_unless($transaction->receipt_photo && Storage::disk('local')->exists($transaction->receipt_photo), 404);
+
+        return Storage::disk('local')->response($transaction->receipt_photo);
+    }
+
+    public function receiptPhoto(Transaction $transaction, TransactionPhoto $photo): StreamedResponse
+    {
+        Gate::authorize('view', $transaction);
+
+        abort_unless($photo->transaction_id === $transaction->id, 404);
+        abort_unless(Storage::disk('local')->exists($photo->path), 404);
+
+        return Storage::disk('local')->response($photo->path);
     }
 
     public function edit(Transaction $transaction): Response
