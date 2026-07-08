@@ -20,6 +20,7 @@ interface Props {
     customers: {
         data: Customer[];
         links: Array<{ url: string | null; label: string; active: boolean }>;
+        from: number | null;
     };
     period: { name: string } | null;
     filters: { q: string; status: string | null };
@@ -139,6 +140,7 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                         <table className="w-full border-collapse text-left">
                             <thead>
                                 <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
+                                    <th className="px-6 py-4">No.</th>
                                     {period && <th className="px-6 py-4">Peringkat</th>}
                                     <th className="px-6 py-4">Nama</th>
                                     <th className="px-6 py-4">Email</th>
@@ -149,8 +151,11 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
-                                {customers.data.map((c) => (
+                                {customers.data.map((c, index) => (
                                     <tr key={c.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200">
+                                        <td className="px-6 py-4 font-medium text-slate-500 dark:text-zinc-400">
+                                            {(customers.from ?? 1) + index}
+                                        </td>
                                         {period && (
                                             <td className="px-6 py-4">
                                                 <RankBadge ranking={c.ranking} />
@@ -195,7 +200,7 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                                 ))}
                                 {customers.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={period ? 7 : 5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={period ? 8 : 6} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             {isFiltering ? 'Tidak ada customer yang cocok dengan pencarian.' : 'Belum ada customer terdaftar.'}
                                         </td>
                                     </tr>

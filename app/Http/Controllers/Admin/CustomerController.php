@@ -35,7 +35,7 @@ class CustomerController extends Controller
             $rankMap = collect($rankRows)->pluck('ranking', 'customer_id');
         }
 
-        $customers = Customer::query()
+        $query = Customer::query()
             ->when($period, function ($query) use ($period) {
                 $query->addSelect([
                     'total_spending' => DB::table('transactions')
@@ -61,8 +61,26 @@ class CustomerController extends Controller
                 } else {
                     $query->whereNotExists($existsQuery);
                 }
-            })
-            ->orderByDesc('created_at')
+            });
+
+        $rankedIds = $rankMap->keys()->all();
+
+        if ($period && $rankedIds !== []) {
+            $cases = [];
+            $bindings = [];
+
+            foreach ($rankedIds as $position => $customerId) {
+                $cases[] = 'WHEN customers.id = ? THEN ?';
+                $bindings[] = $customerId;
+                $bindings[] = $position;
+            }
+
+            $bindings[] = count($rankedIds);
+
+            $query->orderByRaw('CASE '.implode(' ', $cases).' ELSE ? END', $bindings);
+        }
+
+        $customers = $query->orderByDesc('created_at')
             ->paginate(20)
             ->withQueryString()
             ->through(function ($customer) use ($rankMap) {
