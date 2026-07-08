@@ -53,6 +53,7 @@ export default function HadiahIndex({ rewards }: Props) {
                         <table className="w-full border-collapse text-left">
                             <thead>
                                 <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
+                                    <th className="px-6 py-4">No.</th>
                                     <th className="px-6 py-4">Peringkat</th>
                                     <th className="px-6 py-4">Hadiah</th>
                                     <th className="px-6 py-4">Keterangan</th>
@@ -62,16 +63,17 @@ export default function HadiahIndex({ rewards }: Props) {
                             <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                                 {rewards.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada data hadiah.
                                         </td>
                                     </tr>
                                 ) : (
-                                    rewards.map((reward) => (
+                                    rewards.map((reward, index) => (
                                         <tr
                                             key={reward.id}
                                             className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200"
                                         >
+                                            <td className="px-6 py-4.5 font-medium text-slate-500 dark:text-zinc-400">{index + 1}</td>
                                             <td className="px-6 py-4.5">
                                                 <span className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/20 inline-flex rounded-full border px-3 py-1 text-xs font-bold">
                                                     {rankLabel(reward)}

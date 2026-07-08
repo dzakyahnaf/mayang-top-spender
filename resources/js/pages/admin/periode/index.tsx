@@ -64,6 +64,7 @@ export default function PeriodeIndex({ periods }: Props) {
                         <table className="w-full border-collapse text-left">
                             <thead>
                                 <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
+                                    <th className="px-6 py-4">No.</th>
                                     <th className="px-6 py-4">Nama Periode</th>
                                     <th className="px-6 py-4">Tanggal Mulai</th>
                                     <th className="px-6 py-4">Tanggal Selesai</th>
@@ -74,16 +75,17 @@ export default function PeriodeIndex({ periods }: Props) {
                             <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                                 {periods.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={6} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada data periode kompetisi.
                                         </td>
                                     </tr>
                                 ) : (
-                                    periods.map((period) => (
+                                    periods.map((period, index) => (
                                         <tr
                                             key={period.id}
                                             className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200"
                                         >
+                                            <td className="px-6 py-4.5 font-medium text-slate-500 dark:text-zinc-400">{index + 1}</td>
                                             <td className="px-6 py-4.5 font-bold text-slate-900 dark:text-white">{period.name}</td>
                                             <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">{formatDate(period.start_date)}</td>
                                             <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">{formatDate(period.end_date)}</td>
