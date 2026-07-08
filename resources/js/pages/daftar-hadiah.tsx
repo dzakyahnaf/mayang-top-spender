@@ -20,14 +20,19 @@ interface Props {
     rewards: Reward[];
 }
 
-const rankLabel = (r: Reward) => (r.rank_start === r.rank_end ? `Peringkat ${r.rank_start}` : `Peringkat ${r.rank_start}-${r.rank_end}`);
 const isGrandPrize = (r: Reward) => r.rank_start === 1 && r.rank_end === 1;
+const isLottery = (r: Reward) => r.rank_start === 0 && r.rank_end === 0;
+
+const rankLabel = (r: Reward) => {
+    if (isLottery(r)) return 'Undian';
+    return r.rank_start === r.rank_end ? `Peringkat ${r.rank_start}` : `Peringkat ${r.rank_start}-${r.rank_end}`;
+};
 
 // Overlap check: does this reward's rank range touch the given [from, to] bracket?
 const overlaps = (r: Reward, from: number, to: number) => r.rank_start <= to && r.rank_end >= from;
 
 function rewardImage(r: Reward): string | null {
-    if (isGrandPrize(r)) return UMROH_IMG;
+    if (isGrandPrize(r) || isLottery(r)) return UMROH_IMG;
     if (overlaps(r, 2, 3)) return GOLD_IMG;
     if (overlaps(r, 4, 5)) return MICROWAVE_IMG;
     if (overlaps(r, 6, 7)) return PANCI_IMG;
@@ -65,6 +70,7 @@ export default function DaftarHadiah({ rewards }: Props) {
                             {/* Hadiah bergambar, disusun ke bawah dengan gaya seragam */}
                             {pictured.map((reward) => {
                                 const grand = isGrandPrize(reward);
+                                const lottery = isLottery(reward);
                                 return (
                                     <div
                                         key={reward.id}
@@ -81,10 +87,15 @@ export default function DaftarHadiah({ rewards }: Props) {
                                                     <span className="text-[11px] font-bold tracking-[0.25em] text-white uppercase">Grand Prize</span>
                                                 </div>
                                             )}
+                                            {lottery && (
+                                                <div className="bg-mayang-500 absolute top-0 left-0 px-4 py-2">
+                                                    <span className="text-[11px] font-bold tracking-[0.25em] text-white uppercase">Bonus Undian</span>
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="flex flex-col justify-center bg-white p-8 sm:p-10">
                                             <div className={`mb-4 flex items-center gap-2 ${grand ? 'text-gold-600' : 'text-mayang-600'}`}>
-                                                {grand ? <Plane className="size-5" /> : <Trophy className="size-5" />}
+                                                {grand || lottery ? <Plane className="size-5" /> : <Trophy className="size-5" />}
                                                 <span className="text-xs font-bold tracking-[0.25em] uppercase">{rankLabel(reward)}</span>
                                             </div>
                                             <h2 className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">{reward.title}</h2>
@@ -92,10 +103,6 @@ export default function DaftarHadiah({ rewards }: Props) {
                                             {grand && (
                                                 <div className="mt-6 space-y-2 border-t border-slate-100 pt-5 text-sm text-slate-400">
                                                     <p>Untuk satu peserta dengan total belanja tertinggi di akhir periode.</p>
-                                                    <p>
-                                                        <strong className="text-slate-600">Bonus:</strong> Ada juga 1 orang beruntung yang
-                                                        mendapatkan Paket Umrah melalui undian, terpisah dari peringkat leaderboard.
-                                                    </p>
                                                 </div>
                                             )}
                                         </div>
