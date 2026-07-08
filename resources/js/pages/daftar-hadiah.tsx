@@ -5,7 +5,8 @@ import { Plane, Trophy } from 'lucide-react';
 
 const UMROH_IMG = '/hadiah-umroh.webp';
 const GOLD_IMG = '/hadiah-emas.webp';
-const KITCHEN_IMG = '/hadiah-dapur.webp';
+const MICROWAVE_IMG = '/hadiah-microwave.webp';
+const PANCI_IMG = '/hadiah-panci.webp';
 
 interface Reward {
     id: number;
@@ -28,7 +29,8 @@ const overlaps = (r: Reward, from: number, to: number) => r.rank_start <= to && 
 function rewardImage(r: Reward): string | null {
     if (isGrandPrize(r)) return UMROH_IMG;
     if (overlaps(r, 2, 3)) return GOLD_IMG;
-    if (overlaps(r, 4, 5)) return KITCHEN_IMG;
+    if (overlaps(r, 4, 5)) return MICROWAVE_IMG;
+    if (overlaps(r, 6, 7)) return PANCI_IMG;
     return null;
 }
 
