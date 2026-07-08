@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { Edit2, KeyRound, Plus, Trash2, Users } from 'lucide-react';
+import { Edit2, KeyRound, Plus, Trash2 } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 interface Cashier {
@@ -131,6 +131,7 @@ export default function KasirIndex({ cashiers }: Props) {
                         <table className="w-full border-collapse text-left">
                             <thead>
                                 <tr className="bg-mayang-50/70 text-mayang-700 border-b border-slate-200/30 text-xs font-bold tracking-wider uppercase dark:border-zinc-800/50 dark:bg-zinc-950/40 dark:text-zinc-400">
+                                    <th className="px-6 py-4">No.</th>
                                     <th className="px-6 py-4">Nama Kasir</th>
                                     <th className="px-6 py-4">Email</th>
                                     <th className="px-6 py-4">Tanggal Dibuat</th>
@@ -140,16 +141,17 @@ export default function KasirIndex({ cashiers }: Props) {
                             <tbody className="divide-y divide-slate-200/30 dark:divide-zinc-800/50">
                                 {cashiers.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={5} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             Belum ada data kasir terdaftar.
                                         </td>
                                     </tr>
                                 ) : (
-                                    cashiers.map((cashier) => (
+                                    cashiers.map((cashier, index) => (
                                         <tr
                                             key={cashier.id}
                                             className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 text-sm transition-all duration-200"
                                         >
+                                            <td className="px-6 py-4.5 font-medium text-slate-500 dark:text-zinc-400">{index + 1}</td>
                                             <td className="px-6 py-4.5 font-bold text-slate-900 dark:text-white">{cashier.name}</td>
                                             <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">{cashier.email}</td>
                                             <td className="px-6 py-4.5 text-slate-500 dark:text-zinc-400">{formatDate(cashier.created_at)}</td>
@@ -165,17 +167,6 @@ export default function KasirIndex({ cashiers }: Props) {
                                                             <Link href={route('admin.kasir.edit', cashier.id)}>
                                                                 <Edit2 className="h-3.5 w-3.5" />
                                                                 Edit
-                                                            </Link>
-                                                        </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            className="flex items-center gap-1 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"
-                                                            asChild
-                                                        >
-                                                            <Link href={route('admin.kasir.staff.index', cashier.id)}>
-                                                                <Users className="h-3.5 w-3.5" />
-                                                                Kelola Staff
                                                             </Link>
                                                         </Button>
                                                         <Button

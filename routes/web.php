@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\CashierController;
-use App\Http\Controllers\Admin\CashierStaffController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PeriodController;
 use App\Http\Controllers\Admin\RewardController as AdminRewardController;
+use App\Http\Controllers\Admin\StaffController as AdminStaffController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Kasir\CustomerController as KasirCustomerController;
 use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
@@ -55,13 +55,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('kasir', CashierController::class)->except(['show']);
     Route::put('/kasir/{kasir}/reset-password', [CashierController::class, 'resetPassword'])->name('kasir.reset-password');
 
-    Route::get('/kasir/{kasir}/staff', [CashierStaffController::class, 'index'])->name('kasir.staff.index');
-    Route::post('/kasir/{kasir}/staff', [CashierStaffController::class, 'store'])->name('kasir.staff.store');
-    Route::delete('/kasir/{kasir}/staff/{staff}', [CashierStaffController::class, 'destroy'])->name('kasir.staff.destroy');
+    Route::get('/staff', [AdminStaffController::class, 'index'])->name('staff.index');
+    Route::post('/staff', [AdminStaffController::class, 'store'])->name('staff.store');
+    Route::delete('/staff/{staff}', [AdminStaffController::class, 'destroy'])->name('staff.destroy');
 
     Route::get('/transaksi', [AdminTransactionController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/export', [AdminTransactionController::class, 'export'])->name('transaksi.export');
     Route::get('/transaksi/export-rekap', [AdminTransactionController::class, 'exportRekap'])->name('transaksi.export-rekap');
+    Route::get('/transaksi/{transaction}', [AdminTransactionController::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/{transaction}/receipt', [AdminTransactionController::class, 'receipt'])->name('transaksi.receipt');
+    Route::get('/transaksi/{transaction}/photos/{photo}', [AdminTransactionController::class, 'receiptPhoto'])->name('transaksi.receipt-photo');
     Route::get('/transaksi/{transaction}/edit', [AdminTransactionController::class, 'edit'])->name('transaksi.edit');
     Route::put('/transaksi/{transaction}', [AdminTransactionController::class, 'update'])->name('transaksi.update');
     Route::delete('/transaksi/{transaction}', [AdminTransactionController::class, 'destroy'])->name('transaksi.destroy');

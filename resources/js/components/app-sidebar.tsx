@@ -4,13 +4,14 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CalendarDays, ClipboardList, Gift, History, LayoutGrid, Trophy, UserPlus, Users } from 'lucide-react';
+import { CalendarDays, ClipboardList, Gift, History, IdCard, LayoutGrid, Trophy, UserPlus, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const adminNavItems: NavItem[] = [
     { title: 'Dashboard', url: '/admin/dashboard', icon: LayoutGrid },
     { title: 'Periode', url: '/admin/periode', icon: CalendarDays },
     { title: 'Kasir', url: '/admin/kasir', icon: Users },
+    { title: 'Data Kasir', url: '/admin/staff', icon: IdCard },
     { title: 'Transaksi', url: '/admin/transaksi', icon: ClipboardList },
     { title: 'Hadiah', url: '/admin/hadiah', icon: Gift },
     { title: 'Customer', url: '/admin/customer', icon: UserPlus },
