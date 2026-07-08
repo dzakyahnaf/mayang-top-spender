@@ -9,13 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
-interface RegisterForm {
+type RegisterForm = {
     name: string;
     email: string;
     phone: string;
     password: string;
     password_confirmation: string;
-}
+};
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({

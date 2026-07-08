@@ -9,7 +9,7 @@ export function FlashNotification() {
 
     useEffect(() => {
         return router.on('success', (event) => {
-            const flash = (event.detail.page.props as SharedData).flash;
+            const flash = (event.detail.page.props as unknown as SharedData).flash;
             if (flash?.success) {
                 setMessage({ type: 'success', text: flash.success });
                 setVisible(true);
