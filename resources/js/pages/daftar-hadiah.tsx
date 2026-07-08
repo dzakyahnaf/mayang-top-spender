@@ -35,7 +35,7 @@ function rewardImage(r: Reward): string | null {
     if (isGrandPrize(r) || isLottery(r)) return UMROH_IMG;
     if (overlaps(r, 2, 3)) return GOLD_IMG;
     if (overlaps(r, 4, 5)) return MICROWAVE_IMG;
-    if (overlaps(r, 6, 7)) return PANCI_IMG;
+    if (overlaps(r, 6, 8)) return PANCI_IMG;
     return null;
 }
 
