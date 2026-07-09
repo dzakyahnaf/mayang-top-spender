@@ -33,3 +33,12 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+
+// After a new deploy, the browser may still hold references to old, now-deleted
+// JS chunk URLs. Force a one-time reload instead of leaving the user on a blank page.
+window.addEventListener('vite:preloadError', () => {
+    if (!sessionStorage.getItem('vite-reloaded')) {
+        sessionStorage.setItem('vite-reloaded', '1');
+        window.location.reload();
+    }
+});
