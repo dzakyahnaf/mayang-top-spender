@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,15 +35,31 @@ class RegisteredUserController extends Controller
             'phone.unique' => 'Nomor HP sudah terdaftar.',
         ]);
 
-        $user = new User($request->only('name', 'email', 'phone', 'password'));
-        $user->role = 'customer';
-        $user->save();
+        $existingCustomer = Customer::where('email', $request->email)
+            ->orWhere('phone', $request->phone)
+            ->first();
 
-        Customer::create([
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone' => $user->phone,
-        ]);
+        if ($existingCustomer && ($existingCustomer->email !== $request->email || $existingCustomer->phone !== $request->phone)) {
+            return back()->withErrors([
+                'email' => 'Email atau nomor HP ini sudah terdaftar dengan data customer yang berbeda. Silakan hubungi admin.',
+            ]);
+        }
+
+        $user = DB::transaction(function () use ($request, $existingCustomer): User {
+            $user = new User($request->only('name', 'email', 'phone', 'password'));
+            $user->role = 'customer';
+            $user->save();
+
+            if (! $existingCustomer) {
+                Customer::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                ]);
+            }
+
+            return $user;
+        });
 
         event(new Registered($user));
 

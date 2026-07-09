@@ -8,7 +8,7 @@ const HERO_IMG = '/MAYANG-bg-1.webp';
 const GALLERY_IMGS = [
     { src: '/hadiah-emas.webp', alt: 'Hadiah Emas Mayang Top Spender' },
     { src: '/hadiah-umroh.webp', alt: 'Hadiah Umrah Mayang Top Spender' },
-    { src: '/hadiah-dapur.webp', alt: 'Hadiah Paket Alat Dapur Mayang Top Spender' },
+    { src: '/hadiah-panci.webp', alt: 'Hadiah Paket Alat Dapur Mayang Top Spender' },
 ];
 
 const rewardSteps = [
