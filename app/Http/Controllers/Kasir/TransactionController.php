@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -40,20 +41,34 @@ class TransactionController extends Controller
             return back()->withErrors(['period' => 'Tidak ada periode kompetisi yang aktif saat ini.']);
         }
 
-        $transaction = Transaction::create([
-            'customer_id' => $request->customer_id,
-            'period_id' => $period->id,
-            'cashier_id' => $request->user()->id,
-            'staff_id' => $request->staff_id,
-            'amount' => $request->amount,
-            'notes' => $request->notes,
-        ]);
+        $recentDuplicate = Transaction::where('customer_id', $request->customer_id)
+            ->where('period_id', $period->id)
+            ->where('cashier_id', $request->user()->id)
+            ->where('staff_id', $request->staff_id)
+            ->where('amount', $request->amount)
+            ->where('created_at', '>=', now()->subSeconds(15))
+            ->exists();
 
-        foreach ($request->file('receipt_photos', []) as $photo) {
-            $transaction->photos()->create([
-                'path' => $this->compressAndStoreReceipt($photo),
-            ]);
+        if ($recentDuplicate) {
+            return back()->withErrors(['duplicate' => 'Transaksi serupa baru saja tersimpan. Cek History Transaksi sebelum input ulang.']);
         }
+
+        DB::transaction(function () use ($request, $period): void {
+            $transaction = Transaction::create([
+                'customer_id' => $request->customer_id,
+                'period_id' => $period->id,
+                'cashier_id' => $request->user()->id,
+                'staff_id' => $request->staff_id,
+                'amount' => $request->amount,
+                'notes' => $request->notes,
+            ]);
+
+            foreach ($request->file('receipt_photos', []) as $photo) {
+                $transaction->photos()->create([
+                    'path' => $this->compressAndStoreReceipt($photo),
+                ]);
+            }
+        });
 
         return redirect()->route('kasir.transaksi.create')
             ->with('success', 'Transaksi berhasil disimpan.');
@@ -67,8 +82,8 @@ class TransactionController extends Controller
     private function compressAndStoreReceipt(UploadedFile $file): string
     {
         $source = match ($file->getMimeType()) {
-            'image/jpeg', 'image/jpg' => imagecreatefromjpeg($file->getRealPath()),
-            'image/png' => imagecreatefrompng($file->getRealPath()),
+            'image/jpeg', 'image/jpg' => function_exists('imagecreatefromjpeg') ? imagecreatefromjpeg($file->getRealPath()) : null,
+            'image/png' => function_exists('imagecreatefrompng') ? imagecreatefrompng($file->getRealPath()) : null,
             'image/webp' => function_exists('imagecreatefromwebp') ? imagecreatefromwebp($file->getRealPath()) : null,
             default => null,
         };

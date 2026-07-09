@@ -131,6 +131,28 @@ class TransactionStoreTest extends TestCase
         $this->assertSame($otherStaff->id, $transaction->staff_id);
     }
 
+    public function test_resubmitting_identical_transaction_within_seconds_is_rejected_as_duplicate()
+    {
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
+        $this->activePeriod();
+        $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
+
+        $payload = [
+            'customer_id' => $customer->id,
+            'staff_id' => $staff->id,
+            'amount' => 212000,
+        ];
+
+        $first = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), $payload);
+        $first->assertRedirect(route('kasir.transaksi.create'));
+
+        $second = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), $payload);
+        $second->assertSessionHasErrors('duplicate');
+
+        $this->assertDatabaseCount('transactions', 1);
+    }
+
     public function test_nonexistent_staff_id_is_rejected()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
