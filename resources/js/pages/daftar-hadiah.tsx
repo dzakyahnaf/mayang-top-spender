@@ -101,8 +101,10 @@ export default function DaftarHadiah({ rewards }: Props) {
                                             <h2 className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">{reward.title}</h2>
                                             {reward.description && <p className="mt-4 leading-relaxed text-slate-500">{reward.description}</p>}
                                             {grand && (
-                                                <div className="mt-6 space-y-2 border-t border-slate-100 pt-5 text-sm text-slate-400">
-                                                    <p>Untuk satu peserta dengan total belanja tertinggi di akhir periode.</p>
+                                                <div className="mt-6 space-y-2 border-t border-slate-100 pt-5">
+                                                    <p className="leading-relaxed text-slate-500">
+                                                        Untuk satu peserta dengan total belanja tertinggi di akhir periode.
+                                                    </p>
                                                 </div>
                                             )}
                                         </div>
