@@ -101,12 +101,14 @@ export default function CreateTransaction({ period }: Props) {
         amount: string;
         notes: string;
         receipt_photos: File[];
+        idempotency_key: string;
     }>({
         customer_id: '',
         staff_id: '',
         amount: '',
         notes: '',
         receipt_photos: [],
+        idempotency_key: crypto.randomUUID(),
     });
 
     const MAX_PHOTOS = 3;
@@ -204,6 +206,7 @@ export default function CreateTransaction({ period }: Props) {
             forceFormData: true,
             onSuccess: () => {
                 reset();
+                setData('idempotency_key', crypto.randomUUID());
                 setSelected(null);
                 setQuery('');
                 setSelectedStaff(null);

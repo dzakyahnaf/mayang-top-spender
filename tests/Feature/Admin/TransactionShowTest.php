@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -62,6 +63,7 @@ class TransactionShowTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina'])->id,
             'amount' => 150000,
+            'idempotency_key' => Str::uuid()->toString(),
             'receipt_photos' => [UploadedFile::fake()->image('struk.jpg')],
         ]);
 

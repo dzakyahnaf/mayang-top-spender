@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Period;
 use App\Models\Transaction;
 use App\Models\TransactionPhoto;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,34 +42,34 @@ class TransactionController extends Controller
             return back()->withErrors(['period' => 'Tidak ada periode kompetisi yang aktif saat ini.']);
         }
 
-        $recentDuplicate = Transaction::where('customer_id', $request->customer_id)
-            ->where('period_id', $period->id)
-            ->where('cashier_id', $request->user()->id)
-            ->where('staff_id', $request->staff_id)
-            ->where('amount', $request->amount)
-            ->where('created_at', '>=', now()->subSeconds(15))
-            ->exists();
-
-        if ($recentDuplicate) {
-            return back()->withErrors(['duplicate' => 'Transaksi serupa baru saja tersimpan. Cek History Transaksi sebelum input ulang.']);
+        if (Transaction::where('idempotency_key', $request->idempotency_key)->exists()) {
+            return redirect()->route('kasir.transaksi.create')
+                ->with('success', 'Transaksi berhasil disimpan.');
         }
 
-        DB::transaction(function () use ($request, $period): void {
-            $transaction = Transaction::create([
-                'customer_id' => $request->customer_id,
-                'period_id' => $period->id,
-                'cashier_id' => $request->user()->id,
-                'staff_id' => $request->staff_id,
-                'amount' => $request->amount,
-                'notes' => $request->notes,
-            ]);
-
-            foreach ($request->file('receipt_photos', []) as $photo) {
-                $transaction->photos()->create([
-                    'path' => $this->compressAndStoreReceipt($photo),
+        try {
+            DB::transaction(function () use ($request, $period): void {
+                $transaction = Transaction::create([
+                    'customer_id' => $request->customer_id,
+                    'period_id' => $period->id,
+                    'cashier_id' => $request->user()->id,
+                    'staff_id' => $request->staff_id,
+                    'idempotency_key' => $request->idempotency_key,
+                    'amount' => $request->amount,
+                    'notes' => $request->notes,
                 ]);
+
+                foreach ($request->file('receipt_photos', []) as $photo) {
+                    $transaction->photos()->create([
+                        'path' => $this->compressAndStoreReceipt($photo),
+                    ]);
+                }
+            });
+        } catch (QueryException $e) {
+            if (! str_contains($e->getMessage(), 'idempotency_key')) {
+                throw $e;
             }
-        });
+        }
 
         return redirect()->route('kasir.transaksi.create')
             ->with('success', 'Transaksi berhasil disimpan.');

@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class TransactionStoreTest extends TestCase
@@ -39,6 +40,7 @@ class TransactionStoreTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => $staff->id,
             'amount' => 150000,
+            'idempotency_key' => Str::uuid()->toString(),
             'receipt_photos' => [
                 UploadedFile::fake()->image('struk1.jpg', 2000, 2000)->size(4000),
                 UploadedFile::fake()->image('struk2.jpg', 2000, 2000)->size(4000),
@@ -71,6 +73,7 @@ class TransactionStoreTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => $staff->id,
             'amount' => 150000,
+            'idempotency_key' => Str::uuid()->toString(),
             'receipt_photos' => [
                 UploadedFile::fake()->image('struk1.jpg'),
                 UploadedFile::fake()->image('struk2.jpg'),
@@ -96,6 +99,7 @@ class TransactionStoreTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => $staff->id,
             'amount' => 150000,
+            'idempotency_key' => Str::uuid()->toString(),
             'receipt_photos' => [
                 UploadedFile::fake()->image('struk-besar.jpg', 3000, 2000),
             ],
@@ -123,6 +127,7 @@ class TransactionStoreTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => $otherStaff->id,
             'amount' => 150000,
+            'idempotency_key' => Str::uuid()->toString(),
         ]);
 
         $response->assertRedirect(route('kasir.transaksi.create'));
@@ -131,7 +136,7 @@ class TransactionStoreTest extends TestCase
         $this->assertSame($otherStaff->id, $transaction->staff_id);
     }
 
-    public function test_resubmitting_identical_transaction_within_seconds_is_rejected_as_duplicate()
+    public function test_resubmitting_with_the_same_idempotency_key_does_not_create_a_duplicate()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
         $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
@@ -142,15 +147,45 @@ class TransactionStoreTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => $staff->id,
             'amount' => 212000,
+            'idempotency_key' => Str::uuid()->toString(),
         ];
 
         $first = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), $payload);
         $first->assertRedirect(route('kasir.transaksi.create'));
 
         $second = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), $payload);
-        $second->assertSessionHasErrors('duplicate');
+        $second->assertRedirect(route('kasir.transaksi.create'));
+        $second->assertSessionHasNoErrors();
 
         $this->assertDatabaseCount('transactions', 1);
+    }
+
+    public function test_two_genuinely_separate_transactions_with_the_same_data_are_both_saved()
+    {
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
+        $this->activePeriod();
+        $customer = Customer::create(['name' => 'Siti Nurhaliza', 'email' => 'siti@example.com', 'phone' => '081234567890']);
+
+        $basePayload = [
+            'customer_id' => $customer->id,
+            'staff_id' => $staff->id,
+            'amount' => 212000,
+        ];
+
+        $first = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
+            ...$basePayload,
+            'idempotency_key' => Str::uuid()->toString(),
+        ]);
+        $first->assertRedirect(route('kasir.transaksi.create'));
+
+        $second = $this->actingAs($kasir)->post(route('kasir.transaksi.store'), [
+            ...$basePayload,
+            'idempotency_key' => Str::uuid()->toString(),
+        ]);
+        $second->assertRedirect(route('kasir.transaksi.create'));
+
+        $this->assertDatabaseCount('transactions', 2);
     }
 
     public function test_nonexistent_staff_id_is_rejected()
@@ -163,6 +198,7 @@ class TransactionStoreTest extends TestCase
             'customer_id' => $customer->id,
             'staff_id' => 999999,
             'amount' => 150000,
+            'idempotency_key' => Str::uuid()->toString(),
         ]);
 
         $response->assertSessionHasErrors('staff_id');

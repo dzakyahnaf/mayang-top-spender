@@ -16,6 +16,7 @@ class Transaction extends Model
         'period_id',
         'cashier_id',
         'staff_id',
+        'idempotency_key',
         'amount',
         'notes',
         'receipt_photo',

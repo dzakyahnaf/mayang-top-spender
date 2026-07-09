@@ -16,6 +16,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'customer_id' => ['required', 'exists:customers,id'],
             'staff_id' => ['required', 'exists:cashier_staff,id'],
+            'idempotency_key' => ['required', 'uuid'],
             'amount' => ['required', 'numeric', 'gt:0', 'max:100000000'],
             'notes' => ['nullable', 'string', 'max:500'],
             'receipt_photos' => ['nullable', 'array', 'max:3'],
