@@ -56,6 +56,30 @@ class RegistrationTest extends TestCase
         $this->assertSame($customer->id, Customer::first()->id);
     }
 
+    public function test_registering_reuses_existing_customer_even_when_stored_email_has_different_casing()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $customer = Customer::create([
+            'name' => 'Ika Sofitri',
+            'email' => 'Ika@Example.com',
+            'phone' => '081234567890',
+            'registered_by' => $admin->id,
+        ]);
+
+        $response = $this->post('/register', [
+            'name' => 'Ika Sofitri',
+            'email' => 'ika@example.com',
+            'phone' => '081234567890',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertDatabaseCount('customers', 1);
+        $this->assertSame($customer->id, Customer::first()->id);
+    }
+
     public function test_registering_with_email_matching_a_customer_but_different_phone_is_rejected()
     {
         $admin = User::factory()->create(['role' => 'admin']);

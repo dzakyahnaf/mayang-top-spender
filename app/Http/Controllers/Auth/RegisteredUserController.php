@@ -39,7 +39,10 @@ class RegisteredUserController extends Controller
             ->orWhere('phone', $request->phone)
             ->first();
 
-        if ($existingCustomer && ($existingCustomer->email !== $request->email || $existingCustomer->phone !== $request->phone)) {
+        $emailMatches = $existingCustomer && strcasecmp(trim($existingCustomer->email), trim($request->email)) === 0;
+        $phoneMatches = $existingCustomer && trim($existingCustomer->phone) === trim($request->phone);
+
+        if ($existingCustomer && (! $emailMatches || ! $phoneMatches)) {
             return back()->withErrors([
                 'email' => 'Email atau nomor HP ini sudah terdaftar dengan data customer yang berbeda. Silakan hubungi admin.',
             ]);
