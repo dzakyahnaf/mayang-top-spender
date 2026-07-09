@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Transaction extends Model
 {
@@ -62,5 +63,16 @@ class Transaction extends Model
     public function staff(): BelongsTo
     {
         return $this->belongsTo(CashierStaff::class, 'staff_id');
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Transaction $transaction): void {
+            $transaction->photos->each->delete();
+
+            if ($transaction->receipt_photo) {
+                Storage::disk('local')->delete($transaction->receipt_photo);
+            }
+        });
     }
 }
