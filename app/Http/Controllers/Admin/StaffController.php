@@ -21,7 +21,7 @@ class StaffController extends Controller
             ->with('user:id,name')
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('name', 'LIKE', "%{$search}%")
+                    $q->where('cashier_staff.name', 'LIKE', "%{$search}%")
                         ->orWhereHas('user', fn ($u) => $u->where('name', 'LIKE', "%{$search}%"));
                 });
             })

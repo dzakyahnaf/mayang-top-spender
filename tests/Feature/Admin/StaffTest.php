@@ -71,6 +71,42 @@ class StaffTest extends TestCase
         );
     }
 
+    public function test_staff_list_can_be_searched_by_staff_name()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $kasirA = User::factory()->create(['role' => 'kasir', 'name' => 'Outlet A']);
+        $kasirB = User::factory()->create(['role' => 'kasir', 'name' => 'Outlet B']);
+        CashierStaff::create(['user_id' => $kasirA->id, 'name' => 'Sabrina Kraksaan']);
+        CashierStaff::create(['user_id' => $kasirB->id, 'name' => 'Budi']);
+
+        $response = $this->actingAs($admin)->get(route('admin.staff.index', ['q' => 'sabrina']));
+
+        $response->assertOk();
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('admin/staff/index')
+            ->has('staff.data', 1)
+            ->where('staff.data.0.name', 'Sabrina Kraksaan')
+        );
+    }
+
+    public function test_staff_list_can_be_searched_by_outlet_name()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $kasirA = User::factory()->create(['role' => 'kasir', 'name' => 'Outlet Kraksaan']);
+        $kasirB = User::factory()->create(['role' => 'kasir', 'name' => 'Outlet Pandaan']);
+        CashierStaff::create(['user_id' => $kasirA->id, 'name' => 'Sabrina K']);
+        CashierStaff::create(['user_id' => $kasirB->id, 'name' => 'Sabrina P']);
+
+        $response = $this->actingAs($admin)->get(route('admin.staff.index', ['q' => 'kraksaan']));
+
+        $response->assertOk();
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('admin/staff/index')
+            ->has('staff.data', 1)
+            ->where('staff.data.0.name', 'Sabrina K')
+        );
+    }
+
     public function test_kasir_role_cannot_access_staff_management()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
