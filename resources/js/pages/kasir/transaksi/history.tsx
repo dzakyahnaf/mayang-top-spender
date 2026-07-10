@@ -43,7 +43,6 @@ const selectClass =
     'focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none border border-slate-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:ring-4 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200';
 
 export default function TransactionHistory({ transactions, periods, filters }: Props) {
-    const today = new Date().toDateString();
     const [search, setSearch] = useState(filters.q ?? '');
     const isFirstRender = useRef(true);
 
@@ -175,7 +174,6 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                             </thead>
                             <tbody className="divide-y divide-slate-200/30 bg-transparent dark:divide-zinc-800/50">
                                 {transactions.data.map((t) => {
-                                    const isToday = new Date(t.created_at).toDateString() === today;
                                     return (
                                         <tr key={t.id} className="hover:bg-mayang-500/5 dark:hover:bg-mayang-500/10 transition-all duration-200">
                                             <td className="dark:text-zinc-350 px-6 py-4 text-sm font-medium whitespace-nowrap text-slate-600">
@@ -208,16 +206,14 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                                     >
                                                         <Link href={route('kasir.transaksi.show', t.id)}>Detail</Link>
                                                     </Button>
-                                                    {isToday && (
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            className="text-mayang-600 hover:text-mayang-700 hover:bg-mayang-500/10 transition-all duration-200"
-                                                            asChild
-                                                        >
-                                                            <Link href={route('kasir.transaksi.edit', t.id)}>Edit</Link>
-                                                        </Button>
-                                                    )}
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="text-mayang-600 hover:text-mayang-700 hover:bg-mayang-500/10 transition-all duration-200"
+                                                        asChild
+                                                    >
+                                                        <Link href={route('kasir.transaksi.edit', t.id)}>Edit</Link>
+                                                    </Button>
                                                 </div>
                                             </td>
                                         </tr>
