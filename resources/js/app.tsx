@@ -4,6 +4,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
+import { ErrorBoundary } from './components/error-boundary';
 import { FlashNotification } from './components/flash-notification';
 import { initializeTheme } from './hooks/use-appearance';
 
@@ -20,10 +21,10 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <>
+            <ErrorBoundary>
                 <FlashNotification />
                 <App {...props} />
-            </>,
+            </ErrorBoundary>,
         );
     },
     progress: {
