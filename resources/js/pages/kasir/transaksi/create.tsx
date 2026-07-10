@@ -402,7 +402,6 @@ export default function CreateTransaction({ period }: Props) {
                                             id="receipt_photo"
                                             type="file"
                                             accept="image/*"
-                                            capture="environment"
                                             onChange={handleFilesChange}
                                             className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 block w-full border border-slate-200 bg-white/60 px-4 py-3 text-sm text-slate-500 transition-all duration-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:bg-slate-200 focus-visible:ring-4 focus-visible:outline-none dark:border-zinc-800/80 dark:bg-zinc-950/40"
                                         />
