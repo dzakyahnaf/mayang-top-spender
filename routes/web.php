@@ -69,6 +69,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/transaksi/{transaction}', [AdminTransactionController::class, 'update'])->name('transaksi.update');
     Route::delete('/transaksi/{transaction}', [AdminTransactionController::class, 'destroy'])->name('transaksi.destroy');
 
+    Route::get('/api/customers/search', [AdminTransactionController::class, 'searchCustomers'])->name('api.customers.search');
+    Route::get('/api/staff/search', [AdminTransactionController::class, 'searchStaff'])->name('api.staff.search');
+
     Route::resource('hadiah', AdminRewardController::class)->except(['show']);
 
     Route::resource('customer', AdminCustomerController::class)->except(['show']);

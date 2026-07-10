@@ -33,8 +33,6 @@ export default function ShowTransaction({ transaction }: Props) {
         { title: 'Detail Transaksi', href: '#' },
     ];
 
-    const isToday = new Date(transaction.created_at).toDateString() === new Date().toDateString();
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Detail Transaksi" />
@@ -45,17 +43,15 @@ export default function ShowTransaction({ transaction }: Props) {
                         <p className="mt-1 text-sm text-slate-500">Rincian transaksi yang tercatat.</p>
                     </div>
                     <div className="flex items-center gap-2">
-                        {isToday && (
-                            <Button
-                                className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 flex items-center gap-1.5 bg-gradient-to-r font-bold text-white"
-                                asChild
-                            >
-                                <Link href={route('kasir.transaksi.edit', transaction.id)}>
-                                    <Pencil className="h-4 w-4" />
-                                    Edit
-                                </Link>
-                            </Button>
-                        )}
+                        <Button
+                            className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 flex items-center gap-1.5 bg-gradient-to-r font-bold text-white"
+                            asChild
+                        >
+                            <Link href={route('kasir.transaksi.edit', transaction.id)}>
+                                <Pencil className="h-4 w-4" />
+                                Edit
+                            </Link>
+                        </Button>
                         <Button
                             variant="outline"
                             className="flex items-center gap-1.5 border-slate-200 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50"

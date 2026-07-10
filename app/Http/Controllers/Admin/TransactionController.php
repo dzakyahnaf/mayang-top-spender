@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\CompressesReceiptPhotos;
+use App\Http\Controllers\Concerns\SearchesCustomersAndStaff;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Period;
@@ -11,6 +13,7 @@ use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -19,6 +22,9 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransactionController extends Controller
 {
+    use CompressesReceiptPhotos;
+    use SearchesCustomersAndStaff;
+
     private function filteredQuery(Request $request): Builder
     {
         $search = trim((string) $request->get('q', ''));
@@ -178,22 +184,46 @@ class TransactionController extends Controller
 
     public function edit(Transaction $transaction): Response
     {
-        $transaction->load(['customer', 'period' => fn ($q) => $q->withTrashed()]);
+        $transaction->load(['customer', 'staff', 'period' => fn ($q) => $q->withTrashed(), 'photos']);
 
         return Inertia::render('admin/transaksi/edit', [
             'transaction' => $transaction,
+            'periods' => Period::orderByDesc('created_at')->get(['id', 'name']),
         ]);
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction): RedirectResponse
     {
-        $transaction->update([
-            'original_amount' => $transaction->original_amount ?? $transaction->amount,
-            'amount' => $request->amount,
-            'notes' => $request->notes,
-            'edited_by' => $request->user()->id,
-            'edited_at' => now(),
-        ]);
+        $deleteIds = collect($request->input('delete_photo_ids', []));
+        $remainingCount = $transaction->photos()->count() - $transaction->photos()->whereIn('id', $deleteIds)->count();
+        $newCount = count($request->file('receipt_photos', []));
+
+        if ($remainingCount + $newCount > 3) {
+            return back()->withErrors(['receipt_photos' => 'Maksimal 3 foto struk per transaksi.']);
+        }
+
+        DB::transaction(function () use ($request, $transaction, $deleteIds): void {
+            $transaction->update([
+                'customer_id' => $request->customer_id,
+                'staff_id' => $request->staff_id,
+                'period_id' => $request->period_id,
+                'original_amount' => $transaction->original_amount ?? $transaction->amount,
+                'amount' => $request->amount,
+                'notes' => $request->notes,
+                'edited_by' => $request->user()->id,
+                'edited_at' => now(),
+            ]);
+
+            if ($deleteIds->isNotEmpty()) {
+                $transaction->photos()->whereIn('id', $deleteIds)->get()->each->delete();
+            }
+
+            foreach ($request->file('receipt_photos', []) as $photo) {
+                $transaction->photos()->create([
+                    'path' => $this->compressAndStoreReceipt($photo),
+                ]);
+            }
+        });
 
         return redirect()->route('admin.transaksi.index')
             ->with('success', 'Transaksi berhasil diperbarui.');

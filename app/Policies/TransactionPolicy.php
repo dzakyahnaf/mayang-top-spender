@@ -22,9 +22,7 @@ class TransactionPolicy
             return true;
         }
 
-        return $user->isKasir()
-            && $transaction->cashier_id === $user->id
-            && $transaction->created_at->isToday();
+        return $user->isKasir() && $transaction->cashier_id === $user->id;
     }
 
     public function delete(User $user, Transaction $transaction): bool
