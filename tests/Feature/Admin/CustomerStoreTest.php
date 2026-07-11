@@ -38,6 +38,7 @@ class CustomerStoreTest extends TestCase
             'email' => 'siti@example.com',
             'phone' => '081234567890',
             'password' => 'password123',
+            'password_confirmation' => 'password123',
         ]);
 
         $response->assertRedirect(route('admin.customer.index'));
@@ -53,6 +54,22 @@ class CustomerStoreTest extends TestCase
         $this->assertTrue(Auth::attempt(['email' => 'siti@example.com', 'password' => 'password123']));
     }
 
+    public function test_admin_cannot_register_a_customer_when_password_confirmation_does_not_match()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $response = $this->actingAs($admin)->post(route('admin.customer.store'), [
+            'name' => 'Siti Nurhaliza',
+            'email' => 'siti@example.com',
+            'phone' => '081234567890',
+            'password' => 'password123',
+            'password_confirmation' => 'password456',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseCount('customers', 0);
+    }
+
     public function test_admin_cannot_register_a_customer_whose_email_or_phone_already_has_an_account()
     {
         $admin = User::factory()->create(['role' => 'admin']);
@@ -63,6 +80,7 @@ class CustomerStoreTest extends TestCase
             'email' => 'siti@example.com',
             'phone' => '081234567890',
             'password' => 'password123',
+            'password_confirmation' => 'password123',
         ]);
 
         $response->assertSessionHasErrors(['email', 'phone']);

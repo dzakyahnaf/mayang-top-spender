@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,6 +17,7 @@ export default function CreateCustomer() {
         email: '',
         phone: '',
         password: '',
+        password_confirmation: '',
     });
 
     function submit(e: FormEvent) {
@@ -92,9 +94,8 @@ export default function CreateCustomer() {
                             <Label htmlFor="password" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 Password (opsional)
                             </Label>
-                            <Input
+                            <PasswordInput
                                 id="password"
-                                type="password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 placeholder="Kosongkan jika belum ingin dibuatkan akun"
@@ -103,6 +104,22 @@ export default function CreateCustomer() {
                             <p className="text-xs text-slate-500 dark:text-zinc-400">Isi jika customer ingin bisa langsung login tanpa daftar sendiri.</p>
                             <InputError message={errors.password} />
                         </div>
+
+                        {data.password && (
+                            <div className="space-y-2">
+                                <Label htmlFor="password_confirmation" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                    Konfirmasi Password
+                                </Label>
+                                <PasswordInput
+                                    id="password_confirmation"
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    placeholder="Ulangi password di atas"
+                                    className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                                />
+                                <InputError message={errors.password_confirmation} />
+                            </div>
+                        )}
 
                         <div className="pt-2">
                             <Button
