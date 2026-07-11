@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
+import { formatCoin } from '@/lib/coin';
 import { compressImage } from '@/lib/compress-image';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -14,6 +15,7 @@ interface Customer {
     name: string;
     email: string;
     phone: string;
+    total_spending?: number;
 }
 
 interface Staff {
@@ -248,7 +250,7 @@ export default function EditTransaction({ transaction, periods }: Props) {
                                         >
                                             <div className="font-bold text-slate-900 dark:text-white">{c.name}</div>
                                             <div className="mt-0.5 text-xs text-slate-500 dark:text-zinc-400">
-                                                {c.email} · {c.phone}
+                                                {c.email} · {c.phone} · {formatCoin(c.total_spending ?? 0)}
                                             </div>
                                         </li>
                                     ))}
@@ -268,7 +270,7 @@ export default function EditTransaction({ transaction, periods }: Props) {
                                     </p>
                                     <p className="mt-1 text-base font-bold text-slate-900 dark:text-white">{selected.name}</p>
                                     <p className="mt-0.5 text-sm text-slate-500 dark:text-zinc-400">
-                                        {selected.email} · {selected.phone}
+                                        {selected.email} · {selected.phone} · {formatCoin(selected.total_spending ?? 0)}
                                     </p>
                                 </div>
                             </div>

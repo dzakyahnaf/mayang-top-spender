@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
+import { formatCoin } from '@/lib/coin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { ChevronDown, Download, Edit2, FileText, Search, Trash2, X } from 'lucide-react';
@@ -13,7 +14,7 @@ interface Transaction {
     original_amount: number | null;
     notes: string | null;
     created_at: string;
-    customer: { name: string };
+    customer: { name: string; total_spending?: number };
     cashier: { name: string } | null;
     staff: { name: string } | null;
     period: { name: string };
@@ -213,6 +214,7 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                     <th className="px-6 py-4">Tanggal & Waktu</th>
                                     <th className="px-6 py-4">Customer</th>
                                     <th className="px-6 py-4">Nominal Transaksi</th>
+                                    <th className="px-6 py-4">Coin</th>
                                     <th className="px-6 py-4">Kasir Pelayan</th>
                                     <th className="px-6 py-4 text-right">Aksi</th>
                                 </tr>
@@ -250,6 +252,9 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                                     </span>
                                                 )}
                                             </div>
+                                        </td>
+                                        <td className="text-mayang-600 dark:text-mayang-400 px-6 py-4.5 font-semibold">
+                                            {formatCoin(t.customer.total_spending ?? 0)}
                                         </td>
                                         <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">
                                             <div className="flex flex-col">
@@ -296,7 +301,7 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                 ))}
                                 {transactions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={7} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             {isFiltering ? 'Tidak ada transaksi yang cocok dengan filter.' : 'Belum ada data transaksi tercatat.'}
                                         </td>
                                     </tr>

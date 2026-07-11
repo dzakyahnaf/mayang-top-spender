@@ -30,6 +30,7 @@ class RegistrationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertSame(User::first()->id, Customer::first()->user_id);
     }
 
     public function test_registering_with_email_and_phone_of_an_existing_customer_profile_reuses_it_instead_of_erroring()
@@ -54,6 +55,7 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
         $this->assertDatabaseCount('customers', 1);
         $this->assertSame($customer->id, Customer::first()->id);
+        $this->assertSame(User::where('email', 'ika@example.com')->firstOrFail()->id, $customer->fresh()->user_id);
     }
 
     public function test_registering_reuses_existing_customer_even_when_stored_email_has_different_casing()
@@ -78,6 +80,7 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
         $this->assertDatabaseCount('customers', 1);
         $this->assertSame($customer->id, Customer::first()->id);
+        $this->assertSame(User::where('email', 'ika@example.com')->firstOrFail()->id, $customer->fresh()->user_id);
     }
 
     public function test_registering_with_email_matching_a_customer_but_different_phone_is_rejected()

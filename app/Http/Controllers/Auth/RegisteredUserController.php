@@ -53,11 +53,14 @@ class RegisteredUserController extends Controller
             $user->role = 'customer';
             $user->save();
 
-            if (! $existingCustomer) {
+            if ($existingCustomer) {
+                $existingCustomer->update(['user_id' => $user->id]);
+            } else {
                 Customer::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'phone' => $user->phone,
+                    'user_id' => $user->id,
                 ]);
             }
 

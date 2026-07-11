@@ -100,6 +100,37 @@ class TransactionUpdateTest extends TestCase
         Storage::disk('local')->assertMissing($oldPath);
     }
 
+    public function test_edit_page_shows_the_customers_total_spending_for_the_active_period()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
+        $period = $this->makePeriod();
+        $customer = Customer::create(['name' => 'Siti', 'email' => 'siti@example.com', 'phone' => '081111111111']);
+
+        $transaction = Transaction::create([
+            'customer_id' => $customer->id,
+            'period_id' => $period->id,
+            'cashier_id' => $kasir->id,
+            'staff_id' => $staff->id,
+            'amount' => 100000,
+        ]);
+        Transaction::create([
+            'customer_id' => $customer->id,
+            'period_id' => $period->id,
+            'cashier_id' => $kasir->id,
+            'staff_id' => $staff->id,
+            'amount' => 50000,
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.transaksi.edit', $transaction));
+
+        $response->assertOk();
+        $response->assertInertia(fn (Assert $page) => $page
+            ->where('transaction.customer.total_spending', 150000)
+        );
+    }
+
     public function test_edit_page_lists_all_periods_for_reassignment()
     {
         $admin = User::factory()->create(['role' => 'admin']);

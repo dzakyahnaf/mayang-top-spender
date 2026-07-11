@@ -19,6 +19,7 @@ export default function CreateCustomer() {
         name: '',
         email: '',
         phone: '',
+        password: '',
     });
 
     function submit(e: FormEvent) {
@@ -101,6 +102,22 @@ export default function CreateCustomer() {
                                 className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
                             />
                             <InputError message={errors.phone} />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="password" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                Password (opsional)
+                            </Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="Kosongkan jika belum ingin dibuatkan akun"
+                                className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                            />
+                            <p className="text-xs text-slate-500 dark:text-zinc-400">Isi jika customer ingin bisa langsung login tanpa daftar sendiri.</p>
+                            <InputError message={errors.password} />
                         </div>
 
                         <div className="pt-2">

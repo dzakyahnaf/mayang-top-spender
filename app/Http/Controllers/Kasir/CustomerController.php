@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Kasir;
 
+use App\Http\Controllers\Concerns\CreatesCustomerAccount;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerRequest;
-use App\Models\Customer;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CustomerController extends Controller
 {
+    use CreatesCustomerAccount;
+
     public function create(): Response
     {
         return Inertia::render('kasir/customer/create');
@@ -18,10 +20,7 @@ class CustomerController extends Controller
 
     public function store(StoreCustomerRequest $request): RedirectResponse
     {
-        Customer::create([
-            ...$request->validated(),
-            'registered_by' => $request->user()->id,
-        ]);
+        $this->createCustomerFromRequest($request);
 
         return redirect()->route('kasir.customer.create')
             ->with('success', 'Customer berhasil didaftarkan.');

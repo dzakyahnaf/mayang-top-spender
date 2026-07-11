@@ -63,7 +63,14 @@ class TransactionController extends Controller
 
     public function index(Request $request): Response
     {
-        $query = $this->filteredQuery($request)->with(['customer', 'cashier', 'staff', 'period' => fn ($q) => $q->withTrashed()]);
+        $activePeriod = Period::getActive();
+
+        $query = $this->filteredQuery($request)->with([
+            'customer' => fn ($q) => $q->withPeriodSpending($activePeriod),
+            'cashier',
+            'staff',
+            'period' => fn ($q) => $q->withTrashed(),
+        ]);
 
         $transactions = $query->orderByDesc('created_at')->paginate(20)->withQueryString();
         $periods = Period::orderByDesc('created_at')->get();
@@ -184,7 +191,12 @@ class TransactionController extends Controller
 
     public function edit(Transaction $transaction): Response
     {
-        $transaction->load(['customer', 'staff', 'period' => fn ($q) => $q->withTrashed(), 'photos']);
+        $transaction->load([
+            'customer' => fn ($q) => $q->withPeriodSpending(Period::getActive()),
+            'staff',
+            'period' => fn ($q) => $q->withTrashed(),
+            'photos',
+        ]);
 
         return Inertia::render('admin/transaksi/edit', [
             'transaction' => $transaction,

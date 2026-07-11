@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\CreatesCustomerAccount;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
@@ -15,6 +16,8 @@ use Inertia\Response;
 
 class CustomerController extends Controller
 {
+    use CreatesCustomerAccount;
+
     public function index(Request $request): Response
     {
         $period = Period::getActive();
@@ -48,14 +51,7 @@ class CustomerController extends Controller
         }
 
         $query = Customer::query()
-            ->when($period, function ($query) use ($period) {
-                $query->addSelect([
-                    'total_spending' => DB::table('transactions')
-                        ->selectRaw('COALESCE(SUM(amount), 0)')
-                        ->whereColumn('transactions.customer_id', 'customers.id')
-                        ->where('period_id', $period->id),
-                ]);
-            })
+            ->withPeriodSpending($period)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'LIKE', "%{$search}%")
@@ -128,10 +124,7 @@ class CustomerController extends Controller
 
     public function store(StoreCustomerRequest $request): RedirectResponse
     {
-        Customer::create([
-            ...$request->validated(),
-            'registered_by' => $request->user()->id,
-        ]);
+        $this->createCustomerFromRequest($request);
 
         return redirect()->route('admin.customer.index')
             ->with('success', 'Customer berhasil ditambahkan.');

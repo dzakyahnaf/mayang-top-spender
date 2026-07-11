@@ -78,8 +78,13 @@ class TransactionController extends Controller
     public function history(Request $request): Response
     {
         $search = trim((string) $request->get('q', ''));
+        $activePeriod = Period::getActive();
 
-        $query = Transaction::with(['customer', 'staff', 'period' => fn ($q) => $q->withTrashed()])
+        $query = Transaction::with([
+            'customer' => fn ($q) => $q->withPeriodSpending($activePeriod),
+            'staff',
+            'period' => fn ($q) => $q->withTrashed(),
+        ])
             ->where('cashier_id', $request->user()->id);
 
         if ($request->filled('period_id')) {
@@ -145,7 +150,12 @@ class TransactionController extends Controller
     {
         Gate::authorize('update', $transaction);
 
-        $transaction->load(['customer', 'staff', 'period' => fn ($q) => $q->withTrashed(), 'photos']);
+        $transaction->load([
+            'customer' => fn ($q) => $q->withPeriodSpending(Period::getActive()),
+            'staff',
+            'period' => fn ($q) => $q->withTrashed(),
+            'photos',
+        ]);
 
         return Inertia::render('kasir/transaksi/edit', [
             'transaction' => $transaction,

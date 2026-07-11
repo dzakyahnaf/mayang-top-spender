@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Concerns;
 
 use App\Models\CashierStaff;
 use App\Models\Customer;
+use App\Models\Period;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,11 +19,13 @@ trait SearchesCustomersAndStaff
         }
 
         $customers = Customer::query()
+            ->select(['id', 'name', 'email', 'phone'])
+            ->withPeriodSpending(Period::getActive())
             ->where('name', 'LIKE', "%{$keyword}%")
             ->orWhere('phone', 'LIKE', "%{$keyword}%")
             ->orWhere('email', 'LIKE', "%{$keyword}%")
             ->limit(10)
-            ->get(['id', 'name', 'email', 'phone']);
+            ->get();
 
         return response()->json($customers);
     }

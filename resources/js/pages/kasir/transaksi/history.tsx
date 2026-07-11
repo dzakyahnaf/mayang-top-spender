@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
+import { formatCoin } from '@/lib/coin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Search, X } from 'lucide-react';
@@ -12,7 +13,7 @@ interface Transaction {
     original_amount: number | null;
     notes: string | null;
     created_at: string;
-    customer: { name: string };
+    customer: { name: string; total_spending?: number };
     staff: { name: string } | null;
     period: { name: string } | null;
 }
@@ -165,6 +166,9 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                         Nominal Belanja
                                     </th>
                                     <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
+                                        Coin
+                                    </th>
+                                    <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
                                         Periode
                                     </th>
                                     <th className="text-mayang-700 px-6 py-4.5 text-left text-xs font-bold tracking-wider uppercase dark:text-zinc-400">
@@ -195,6 +199,9 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                                     </span>
                                                 )}
                                             </td>
+                                            <td className="text-mayang-600 px-6 py-4 text-sm font-semibold dark:text-zinc-100">
+                                                {formatCoin(t.customer.total_spending ?? 0)}
+                                            </td>
                                             <td className="px-6 py-4 text-sm text-slate-500 dark:text-zinc-400">{t.period?.name ?? '-'}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 <div className="flex items-center gap-1">
@@ -221,7 +228,7 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                 })}
                                 {transactions.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={7} className="px-6 py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             {isFiltering
                                                 ? 'Tidak ada transaksi yang cocok dengan filter.'
                                                 : 'Belum ada transaksi yang tercatat.'}

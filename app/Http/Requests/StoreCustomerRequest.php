@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
 
 class StoreCustomerRequest extends FormRequest
 {
@@ -17,6 +20,7 @@ class StoreCustomerRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:customers,email'],
             'phone' => ['required', 'string', 'max:20', 'unique:customers,phone'],
+            'password' => ['nullable', 'string', Rules\Password::defaults()],
         ];
     }
 
@@ -29,5 +33,20 @@ class StoreCustomerRequest extends FormRequest
             'phone.required' => 'Nomor HP harus diisi.',
             'phone.unique' => 'Nomor HP sudah terdaftar.',
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $accountExists = User::where('email', $this->email)
+                ->orWhere('phone', $this->phone)
+                ->exists();
+
+            if ($accountExists) {
+                $message = 'Email/No HP ini sudah terdaftar sebagai akun. Minta customer untuk login sendiri.';
+                $validator->errors()->add('email', $message);
+                $validator->errors()->add('phone', $message);
+            }
+        });
     }
 }

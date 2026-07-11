@@ -93,4 +93,31 @@ class TransactionHistoryTest extends TestCase
                 ->where('transactions.data.0.id', $inRange->id)
             );
     }
+
+    public function test_history_shows_customer_total_spending_for_the_active_period_only()
+    {
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $activePeriod = $this->period();
+        $oldPeriod = Period::create([
+            'name' => 'Periode Lama',
+            'start_date' => now()->subYear(),
+            'end_date' => now()->subMonths(11),
+            'is_active' => false,
+        ]);
+
+        $transaction = $this->transaction($kasir, $activePeriod, 'Siti Nurhaliza');
+        Transaction::create([
+            'customer_id' => $transaction->customer_id,
+            'period_id' => $oldPeriod->id,
+            'cashier_id' => $kasir->id,
+            'amount' => 500000,
+        ]);
+
+        $this->actingAs($kasir)
+            ->get(route('kasir.transaksi.history'))
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->where('transactions.data.0.customer.total_spending', 150000)
+            );
+    }
 }

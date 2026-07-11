@@ -1,5 +1,6 @@
 import PublicFooter from '@/components/public-footer';
 import PublicNavbar from '@/components/public-navbar';
+import { formatCoin } from '@/lib/coin';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
 
@@ -32,12 +33,6 @@ interface LeaderboardProps {
 
 function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
-// Coin system: 1 Coin = Rp 5 belanja. Raw rupiah stays in the DB; only the
-// displayed value is divided by 5.
-function formatCoin(amount: number): string {
-    return new Intl.NumberFormat('id-ID').format(Math.floor(amount / 5)) + ' Coin';
 }
 
 function rankLabel(r: Reward): string {

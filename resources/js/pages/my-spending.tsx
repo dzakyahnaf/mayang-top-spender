@@ -1,5 +1,6 @@
 import PublicFooter from '@/components/public-footer';
 import PublicNavbar from '@/components/public-navbar';
+import { formatCoin } from '@/lib/coin';
 import { Head } from '@inertiajs/react';
 import { CircleUser, History, Trophy } from 'lucide-react';
 
@@ -21,12 +22,6 @@ interface MySpendingProps {
     period: { name: string } | null;
     myRank: { ranking: number | null; total_spending: number } | null;
     nextReward: { title: string; rank_label: string; amount_needed: number } | null;
-}
-
-// Coin system: 1 Coin = Rp 5 belanja. Raw rupiah stays in the DB; only the
-// displayed value is divided by 5.
-function formatCoin(amount: number): string {
-    return new Intl.NumberFormat('id-ID').format(Math.floor(amount / 5)) + ' Coin';
 }
 
 function formatDate(dateString: string): string {

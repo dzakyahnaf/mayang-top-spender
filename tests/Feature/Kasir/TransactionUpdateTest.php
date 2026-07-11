@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class TransactionUpdateTest extends TestCase
@@ -61,6 +62,36 @@ class TransactionUpdateTest extends TestCase
         $this->assertEquals(250000, $transaction->amount);
         $this->assertSame('Diperbarui', $transaction->notes);
         $this->assertEquals(100000, $transaction->original_amount);
+    }
+
+    public function test_edit_page_shows_the_customers_total_spending_for_the_active_period()
+    {
+        $kasir = User::factory()->create(['role' => 'kasir']);
+        $staff = CashierStaff::create(['user_id' => $kasir->id, 'name' => 'Rina']);
+        $period = $this->makePeriod();
+        $customer = Customer::create(['name' => 'Siti', 'email' => 'siti@example.com', 'phone' => '081111111111']);
+
+        $transaction = Transaction::create([
+            'customer_id' => $customer->id,
+            'period_id' => $period->id,
+            'cashier_id' => $kasir->id,
+            'staff_id' => $staff->id,
+            'amount' => 100000,
+        ]);
+        Transaction::create([
+            'customer_id' => $customer->id,
+            'period_id' => $period->id,
+            'cashier_id' => $kasir->id,
+            'staff_id' => $staff->id,
+            'amount' => 50000,
+        ]);
+
+        $this->actingAs($kasir)
+            ->get(route('kasir.transaksi.edit', $transaction))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('transaction.customer.total_spending', 150000)
+            );
     }
 
     public function test_kasir_can_edit_a_transaction_from_a_previous_day()
