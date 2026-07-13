@@ -14,7 +14,7 @@ interface Transaction {
     original_amount: number | null;
     notes: string | null;
     created_at: string;
-    customer: { name: string; total_spending?: number };
+    customer: { name: string };
     cashier: { name: string } | null;
     staff: { name: string } | null;
     period: { name: string };
@@ -254,7 +254,7 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                                             </div>
                                         </td>
                                         <td className="text-mayang-600 dark:text-mayang-400 px-6 py-4.5 font-semibold">
-                                            {formatCoin(t.customer.total_spending ?? 0)}
+                                            {formatCoin(t.amount)}
                                         </td>
                                         <td className="dark:text-zinc-350 px-6 py-4.5 text-slate-600">
                                             <div className="flex flex-col">

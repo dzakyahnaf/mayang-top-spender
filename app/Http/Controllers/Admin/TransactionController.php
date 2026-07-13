@@ -63,10 +63,8 @@ class TransactionController extends Controller
 
     public function index(Request $request): Response
     {
-        $activePeriod = Period::getActive();
-
         $query = $this->filteredQuery($request)->with([
-            'customer' => fn ($q) => $q->withPeriodSpending($activePeriod),
+            'customer',
             'cashier',
             'staff',
             'period' => fn ($q) => $q->withTrashed(),

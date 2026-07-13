@@ -78,10 +78,9 @@ class TransactionController extends Controller
     public function history(Request $request): Response
     {
         $search = trim((string) $request->get('q', ''));
-        $activePeriod = Period::getActive();
 
         $query = Transaction::with([
-            'customer' => fn ($q) => $q->withPeriodSpending($activePeriod),
+            'customer',
             'staff',
             'period' => fn ($q) => $q->withTrashed(),
         ])

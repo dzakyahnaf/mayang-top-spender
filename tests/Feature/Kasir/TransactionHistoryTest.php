@@ -94,21 +94,16 @@ class TransactionHistoryTest extends TestCase
             );
     }
 
-    public function test_history_shows_customer_total_spending_for_the_active_period_only()
+    public function test_history_shows_each_transactions_own_amount_not_a_customer_total()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
         $activePeriod = $this->period();
-        $oldPeriod = Period::create([
-            'name' => 'Periode Lama',
-            'start_date' => now()->subYear(),
-            'end_date' => now()->subMonths(11),
-            'is_active' => false,
-        ]);
 
         $transaction = $this->transaction($kasir, $activePeriod, 'Siti Nurhaliza');
+        $transaction->forceFill(['created_at' => now()->subMinute()])->save();
         Transaction::create([
             'customer_id' => $transaction->customer_id,
-            'period_id' => $oldPeriod->id,
+            'period_id' => $activePeriod->id,
             'cashier_id' => $kasir->id,
             'amount' => 500000,
         ]);
@@ -117,7 +112,9 @@ class TransactionHistoryTest extends TestCase
             ->get(route('kasir.transaksi.history'))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->where('transactions.data.0.customer.total_spending', 150000)
+                ->has('transactions.data', 2)
+                ->where('transactions.data.0.amount', '500000.00')
+                ->where('transactions.data.1.amount', '150000.00')
             );
     }
 }
