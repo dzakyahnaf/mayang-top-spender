@@ -79,11 +79,12 @@ class TransactionController extends Controller
     {
         $search = trim((string) $request->get('q', ''));
 
-        $query = Transaction::with([
-            'customer',
-            'staff',
-            'period' => fn ($q) => $q->withTrashed(),
-        ])
+        $query = Transaction::withRunningCoinTotal()
+            ->with([
+                'customer',
+                'staff',
+                'period' => fn ($q) => $q->withTrashed(),
+            ])
             ->where('cashier_id', $request->user()->id);
 
         if ($request->filled('period_id')) {

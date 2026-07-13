@@ -14,7 +14,7 @@ class TransactionIndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_index_shows_each_transactions_own_amount_not_a_customer_total()
+    public function test_index_shows_running_coin_total_per_transaction_not_a_flat_customer_total()
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $kasir = User::factory()->create(['role' => 'kasir']);
@@ -26,6 +26,15 @@ class TransactionIndexTest extends TestCase
             'end_date' => now()->addMonth(),
             'is_active' => true,
         ]);
+        $oldPeriod = Period::create([
+            'name' => 'Periode Lama',
+            'start_date' => now()->subYear(),
+            'end_date' => now()->subMonths(11),
+            'is_active' => false,
+        ]);
+
+        // Old-period transaction must not leak into the active period's running total.
+        Transaction::create(['customer_id' => $customer->id, 'period_id' => $oldPeriod->id, 'cashier_id' => $kasir->id, 'amount' => 999000]);
 
         $older = Transaction::create(['customer_id' => $customer->id, 'period_id' => $activePeriod->id, 'cashier_id' => $kasir->id, 'amount' => 100000]);
         $older->forceFill(['created_at' => now()->subMinute()])->save();
@@ -37,7 +46,9 @@ class TransactionIndexTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->has('transactions.data', 2)
                 ->where('transactions.data.0.amount', '500000.00')
+                ->where('transactions.data.0.running_coin_total', 600000)
                 ->where('transactions.data.1.amount', '100000.00')
+                ->where('transactions.data.1.running_coin_total', 100000)
             );
     }
 }

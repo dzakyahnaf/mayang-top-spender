@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class Transaction extends Model
@@ -63,6 +66,23 @@ class Transaction extends Model
     public function staff(): BelongsTo
     {
         return $this->belongsTo(CashierStaff::class, 'staff_id');
+    }
+
+    public function scopeWithRunningCoinTotal(Builder $query): Builder
+    {
+        return $query->addSelect([
+            'running_coin_total' => DB::table('transactions as t2')
+                ->selectRaw('COALESCE(SUM(t2.amount), 0)')
+                ->whereColumn('t2.customer_id', 'transactions.customer_id')
+                ->whereColumn('t2.period_id', 'transactions.period_id')
+                ->where(function (QueryBuilder $q) {
+                    $q->whereColumn('t2.created_at', '<', 'transactions.created_at')
+                        ->orWhere(function (QueryBuilder $q2) {
+                            $q2->whereColumn('t2.created_at', '=', 'transactions.created_at')
+                                ->whereColumn('t2.id', '<=', 'transactions.id');
+                        });
+                }),
+        ]);
     }
 
     protected static function booted(): void

@@ -63,7 +63,7 @@ class TransactionController extends Controller
 
     public function index(Request $request): Response
     {
-        $query = $this->filteredQuery($request)->with([
+        $query = $this->filteredQuery($request)->withRunningCoinTotal()->with([
             'customer',
             'cashier',
             'staff',

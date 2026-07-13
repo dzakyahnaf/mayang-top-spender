@@ -16,6 +16,7 @@ interface Transaction {
     customer: { name: string };
     staff: { name: string } | null;
     period: { name: string } | null;
+    running_coin_total: number;
 }
 
 interface PaginatedData {
@@ -200,7 +201,7 @@ export default function TransactionHistory({ transactions, periods, filters }: P
                                                 )}
                                             </td>
                                             <td className="text-mayang-600 px-6 py-4 text-sm font-semibold dark:text-zinc-100">
-                                                {formatCoin(t.amount)}
+                                                {formatCoin(t.running_coin_total)}
                                             </td>
                                             <td className="px-6 py-4 text-sm text-slate-500 dark:text-zinc-400">{t.period?.name ?? '-'}</td>
                                             <td className="px-6 py-4 text-sm">

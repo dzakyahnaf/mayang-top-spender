@@ -94,27 +94,32 @@ class TransactionHistoryTest extends TestCase
             );
     }
 
-    public function test_history_shows_each_transactions_own_amount_not_a_customer_total()
+    public function test_history_shows_running_coin_total_per_transaction_not_a_flat_customer_total()
     {
         $kasir = User::factory()->create(['role' => 'kasir']);
         $activePeriod = $this->period();
 
-        $transaction = $this->transaction($kasir, $activePeriod, 'Siti Nurhaliza');
-        $transaction->forceFill(['created_at' => now()->subMinute()])->save();
+        $first = $this->transaction($kasir, $activePeriod, 'Siti Nurhaliza');
+        $first->forceFill(['created_at' => now()->subMinute()])->save();
         Transaction::create([
-            'customer_id' => $transaction->customer_id,
+            'customer_id' => $first->customer_id,
             'period_id' => $activePeriod->id,
             'cashier_id' => $kasir->id,
             'amount' => 500000,
         ]);
 
+        // Another customer's transaction must not leak into Siti's running total.
+        $this->transaction($kasir, $activePeriod, 'Aisyah Putri');
+
         $this->actingAs($kasir)
-            ->get(route('kasir.transaksi.history'))
+            ->get(route('kasir.transaksi.history', ['q' => 'Siti']))
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->has('transactions.data', 2)
                 ->where('transactions.data.0.amount', '500000.00')
+                ->where('transactions.data.0.running_coin_total', 650000)
                 ->where('transactions.data.1.amount', '150000.00')
+                ->where('transactions.data.1.running_coin_total', 150000)
             );
     }
 }
