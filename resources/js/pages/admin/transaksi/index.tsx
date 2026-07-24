@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { formatCoin } from '@/lib/coin';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ChevronDown, Download, Edit2, FileText, Search, Trash2, X } from 'lucide-react';
+import { Banknote, ChevronDown, ClipboardList, Download, Edit2, FileText, Search, Trash2, Wallet, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface Transaction {
@@ -29,6 +30,11 @@ interface Filters {
     date_to?: string;
 }
 
+interface Stats {
+    total_transaksi: number;
+    total_nominal: number;
+}
+
 interface Props {
     transactions: {
         data: Transaction[];
@@ -38,6 +44,7 @@ interface Props {
     periods: Array<{ id: number; name: string }>;
     cashiers: Array<{ id: number; name: string }>;
     filters: Filters;
+    stats: Stats;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -46,13 +53,41 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const formatRupiah = (val: number) => new Intl.NumberFormat('id-ID').format(val);
+const formatNumber = (val: number) => new Intl.NumberFormat('id-ID').format(val);
 
 const selectClass =
     'focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none border border-slate-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:ring-4 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200';
 
-export default function TransactionIndex({ transactions, periods, cashiers, filters }: Props) {
+function buildScopeLabel(filters: Filters, periods: Array<{ id: number; name: string }>, cashiers: Array<{ id: number; name: string }>): string {
+    const parts: string[] = [];
+
+    if (filters.period_id) {
+        const period = periods.find((p) => String(p.id) === String(filters.period_id));
+        parts.push(`periode ${period?.name ?? '-'}`);
+    } else {
+        parts.push('seluruh periode');
+    }
+
+    if (filters.cashier_id) {
+        const cashier = cashiers.find((c) => String(c.id) === String(filters.cashier_id));
+        parts.push(`outlet ${cashier?.name ?? '-'}`);
+    }
+
+    if (filters.date_from || filters.date_to) {
+        parts.push(`${filters.date_from || '...'} s/d ${filters.date_to || '...'}`);
+    }
+
+    if (filters.q) {
+        parts.push(`cari "${filters.q}"`);
+    }
+
+    return parts.join(' · ');
+}
+
+export default function TransactionIndex({ transactions, periods, cashiers, filters, stats }: Props) {
     const [search, setSearch] = useState(filters.q ?? '');
     const isFirstRender = useRef(true);
+    const scopeLabel = buildScopeLabel(filters, periods, cashiers);
 
     useEffect(() => {
         if (isFirstRender.current) {
@@ -123,6 +158,52 @@ export default function TransactionIndex({ transactions, periods, cashiers, filt
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+                </div>
+
+                {/* Stats */}
+                <div className="grid gap-6 sm:grid-cols-3">
+                    <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                Jumlah Transaksi
+                            </CardTitle>
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
+                                <ClipboardList className="h-5 w-5" />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="pt-2">
+                            <div className="text-3xl font-black text-slate-900 dark:text-white">{formatNumber(stats.total_transaksi)}</div>
+                            <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Selama {scopeLabel}</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">
+                                Total Transaksi (Rp)
+                            </CardTitle>
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
+                                <Banknote className="h-5 w-5" />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="pt-2">
+                            <div className="text-3xl font-black text-slate-900 dark:text-white">Rp {formatRupiah(stats.total_nominal)}</div>
+                            <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Nominal belanja {scopeLabel}</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="relative overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-zinc-400">Total Coin</CardTitle>
+                            <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 border-mayang-500/10 flex h-10 w-10 items-center justify-center border">
+                                <Wallet className="h-5 w-5" />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="pt-2">
+                            <div className="text-mayang-600 dark:text-mayang-400 text-3xl font-black">{formatCoin(stats.total_nominal)}</div>
+                            <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400">Coin terkumpul {scopeLabel}</p>
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {/* Filter bar */}

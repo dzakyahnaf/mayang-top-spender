@@ -63,6 +63,10 @@ class TransactionController extends Controller
 
     public function index(Request $request): Response
     {
+        $stats = $this->filteredQuery($request)
+            ->selectRaw('COUNT(*) AS total_transaksi, COALESCE(SUM(amount), 0) AS total_nominal')
+            ->first();
+
         $query = $this->filteredQuery($request)->withRunningCoinTotal()->with([
             'customer',
             'cashier',
@@ -79,6 +83,10 @@ class TransactionController extends Controller
             'periods' => $periods,
             'cashiers' => $cashiers,
             'filters' => $request->only(['period_id', 'cashier_id', 'q', 'date_from', 'date_to']),
+            'stats' => [
+                'total_transaksi' => (int) $stats->total_transaksi,
+                'total_nominal' => (float) $stats->total_nominal,
+            ],
         ]);
     }
 
