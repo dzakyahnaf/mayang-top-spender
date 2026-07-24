@@ -14,6 +14,7 @@ interface Customer {
     created_at: string;
     total_spending?: number;
     ranking?: number | null;
+    registrar: { name: string; role: string } | null;
 }
 
 interface Props {
@@ -23,7 +24,8 @@ interface Props {
         from: number | null;
     };
     period: { name: string } | null;
-    filters: { q: string; status: string | null; sort: string; direction: 'asc' | 'desc' };
+    cashiers: Array<{ id: number; name: string }>;
+    filters: { q: string; status: string | null; sort: string; direction: 'asc' | 'desc'; registered_by: string | null };
 }
 
 type SortColumn = 'ranking' | 'name' | 'total_spending' | 'created_at';
@@ -57,7 +59,7 @@ function RankBadge({ ranking }: { ranking?: number | null }) {
     return <span className={`font-display inline-flex size-8 items-center justify-center text-sm font-bold ${color}`}>{ranking}</span>;
 }
 
-export default function CustomerIndex({ customers, period, filters }: Props) {
+export default function CustomerIndex({ customers, period, cashiers, filters }: Props) {
     const [search, setSearch] = useState(filters.q ?? '');
     const isFirstRender = useRef(true);
 
@@ -74,16 +76,18 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
-    function applyFilters(next: { q?: string; status?: string; sort?: string; direction?: string }) {
+    function applyFilters(next: { q?: string; status?: string; sort?: string; direction?: string; registered_by?: string }) {
         const params: Record<string, string> = {};
         const q = next.q !== undefined ? next.q : search;
         const status = next.status !== undefined ? next.status : (filters.status ?? '');
         const sort = next.sort !== undefined ? next.sort : filters.sort;
         const direction = next.direction !== undefined ? next.direction : filters.direction;
+        const registeredBy = next.registered_by !== undefined ? next.registered_by : (filters.registered_by ?? '');
         if (q) params.q = q;
         if (status) params.status = status;
         if (sort) params.sort = sort;
         if (direction) params.direction = direction;
+        if (registeredBy) params.registered_by = registeredBy;
 
         router.get(route('admin.customer.index'), params, { preserveState: true, preserveScroll: true, replace: true });
     }
@@ -124,7 +128,7 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
         }
     };
 
-    const isFiltering = Boolean(filters.q) || Boolean(filters.status);
+    const isFiltering = Boolean(filters.q) || Boolean(filters.status) || Boolean(filters.registered_by);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -176,6 +180,19 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                             <option value="no_spending">Belum Belanja</option>
                         </select>
                     )}
+                    <select
+                        value={filters.registered_by ?? ''}
+                        onChange={(e) => applyFilters({ registered_by: e.target.value })}
+                        className="focus:ring-mayang-500/20 focus:border-mayang-500 w-full cursor-pointer appearance-none border border-slate-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:ring-4 focus:outline-none sm:w-56 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200"
+                    >
+                        <option value="">Semua Cabang</option>
+                        {cashiers.map((c) => (
+                            <option key={c.id} value={c.id}>
+                                {c.name}
+                            </option>
+                        ))}
+                        <option value="non_cabang">Non-Cabang (Web/Admin)</option>
+                    </select>
                 </div>
 
                 <div className="overflow-hidden border border-slate-200/50 bg-white/70 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
@@ -188,6 +205,7 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                                     <SortableHeader column="name" label="Nama" />
                                     <th className="px-6 py-4">Email</th>
                                     <th className="px-6 py-4">Nomor HP</th>
+                                    <th className="px-6 py-4">Didaftarkan Oleh</th>
                                     <SortableHeader column="created_at" label="Tanggal Daftar" />
                                     {period && <SortableHeader column="total_spending" label="Total Belanja" className="text-right" />}
                                     <th className="px-6 py-4 text-right">Aksi</th>
@@ -207,6 +225,15 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                                         <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">{c.name}</td>
                                         <td className="dark:text-zinc-350 px-6 py-4 text-slate-600">{c.email}</td>
                                         <td className="dark:text-zinc-350 px-6 py-4 text-slate-600">{c.phone}</td>
+                                        <td className="px-6 py-4 text-slate-600 dark:text-zinc-400">
+                                            {c.registrar ? (
+                                                c.registrar.name
+                                            ) : (
+                                                <span className="inline-flex items-center border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                                                    Web
+                                                </span>
+                                            )}
+                                        </td>
                                         <td className="px-6 py-4 font-medium text-slate-500 dark:text-zinc-400">
                                             {new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                                         </td>
@@ -243,7 +270,7 @@ export default function CustomerIndex({ customers, period, filters }: Props) {
                                 ))}
                                 {customers.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={period ? 8 : 6} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
+                                        <td colSpan={period ? 9 : 7} className="py-12 text-center font-medium text-slate-500 dark:text-zinc-400">
                                             {isFiltering ? 'Tidak ada customer yang cocok dengan pencarian.' : 'Belum ada customer terdaftar.'}
                                         </td>
                                     </tr>

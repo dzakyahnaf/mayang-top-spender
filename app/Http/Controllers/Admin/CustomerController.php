@@ -8,6 +8,7 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use App\Models\Period;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,8 +51,11 @@ class CustomerController extends Controller
             $rankMap = collect($rankRows)->pluck('ranking', 'customer_id');
         }
 
+        $registeredBy = $request->get('registered_by');
+
         $query = Customer::query()
             ->withPeriodSpending($period)
+            ->with('registrar:id,name,role')
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'LIKE', "%{$search}%")
@@ -69,6 +73,15 @@ class CustomerController extends Controller
                 } else {
                     $query->whereNotExists($existsQuery);
                 }
+            })
+            ->when($registeredBy === 'non_cabang', function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('registered_by')
+                        ->orWhereHas('registrar', fn ($r) => $r->where('role', '!=', 'kasir'));
+                });
+            })
+            ->when($registeredBy && $registeredBy !== 'non_cabang', function ($query) use ($registeredBy) {
+                $query->where('registered_by', $registeredBy);
             });
 
         if ($sort === 'ranking') {
@@ -108,11 +121,13 @@ class CustomerController extends Controller
         return Inertia::render('admin/customer/index', [
             'customers' => $customers,
             'period' => $period,
+            'cashiers' => User::where('role', 'kasir')->orderBy('name')->get(['id', 'name']),
             'filters' => [
                 'q' => $search,
                 'status' => $status,
                 'sort' => $sort,
                 'direction' => $direction,
+                'registered_by' => $registeredBy,
             ],
         ]);
     }
