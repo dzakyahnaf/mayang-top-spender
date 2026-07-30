@@ -75,6 +75,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('hadiah', AdminRewardController::class)->except(['show']);
 
     Route::resource('customer', AdminCustomerController::class)->except(['show']);
+    Route::put('/customer/{customer}/reset-password', [AdminCustomerController::class, 'resetPassword'])->name('customer.reset-password');
 });
 
 // Kasir routes

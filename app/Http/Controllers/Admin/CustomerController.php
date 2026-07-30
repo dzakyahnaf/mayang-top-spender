@@ -171,4 +171,20 @@ class CustomerController extends Controller
         return redirect()->route('admin.customer.index')
             ->with('success', 'Customer berhasil dihapus.');
     }
+
+    public function resetPassword(Request $request, Customer $customer): RedirectResponse
+    {
+        abort_unless($customer->user_id !== null, 404);
+
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $customer->user->update([
+            'password' => $request->password,
+        ]);
+
+        return redirect()->route('admin.customer.edit', $customer->id)
+            ->with('success', "Password customer \"{$customer->name}\" berhasil direset.");
+    }
 }
