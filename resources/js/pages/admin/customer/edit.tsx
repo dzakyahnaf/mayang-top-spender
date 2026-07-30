@@ -87,6 +87,78 @@ function ResetPasswordCard({ customerId, customerName }: { customerId: number; c
     );
 }
 
+function SetPasswordCard({ customerId, customerName }: { customerId: number; customerName: string }) {
+    const { data, setData, put, processing, errors, reset } = useForm({
+        password: '',
+        password_confirmation: '',
+    });
+
+    function submit(e: FormEvent) {
+        e.preventDefault();
+        put(route('admin.customer.set-password', customerId), {
+            onSuccess: () => reset(),
+        });
+    }
+
+    return (
+        <div className="overflow-hidden border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
+            <form onSubmit={submit} className="max-w-2xl space-y-6">
+                <div className="flex items-center gap-2 border-b border-slate-100 pb-4 dark:border-zinc-800/80">
+                    <div className="bg-mayang-500/10 text-mayang-600 dark:bg-mayang-500/20 dark:text-mayang-400 flex h-10 w-10 items-center justify-center">
+                        <KeyRound className="h-5 w-5" />
+                    </div>
+                    <div>
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">Buat Akun Login</h3>
+                        <p className="text-xs text-slate-500">
+                            Customer ini belum punya akun login (didaftarkan sebelum fitur password tersedia). Setel password untuk membuatkan
+                            akunnya sekarang.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="new_password" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        Password
+                    </Label>
+                    <Input
+                        id="new_password"
+                        type="password"
+                        value={data.password}
+                        onChange={(e) => setData('password', e.target.value)}
+                        placeholder="Minimal 8 karakter"
+                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                    />
+                    <InputError message={errors.password} />
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="new_password_confirmation" className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        Konfirmasi Password
+                    </Label>
+                    <Input
+                        id="new_password_confirmation"
+                        type="password"
+                        value={data.password_confirmation}
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                        placeholder="Ulangi password"
+                        className="focus-visible:ring-mayang-500/20 focus-visible:border-mayang-500 border-slate-200 bg-white/60 py-5.5 transition-all duration-300 focus-visible:ring-4 dark:border-zinc-800/80 dark:bg-zinc-950/40"
+                    />
+                </div>
+
+                <div className="pt-2">
+                    <Button
+                        type="submit"
+                        disabled={processing}
+                        className="from-mayang-500 to-mayang-600 hover:from-mayang-600 hover:to-mayang-700 shadow-mayang-500/20 hover:shadow-mayang-500/30 w-full bg-gradient-to-r px-8 py-5.5 font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto"
+                    >
+                        {processing ? 'Menyimpan...' : 'Buat Akun & Password'}
+                    </Button>
+                </div>
+            </form>
+        </div>
+    );
+}
+
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/admin/dashboard' },
     { title: 'Customer', href: '/admin/customer' },
@@ -197,20 +269,7 @@ export default function EditCustomer({ customer }: Props) {
                 {customer.user_id ? (
                     <ResetPasswordCard customerId={customer.id} customerName={customer.name} />
                 ) : (
-                    <div className="overflow-hidden border border-slate-200/50 bg-white/70 p-6 shadow-xl backdrop-blur-md dark:border-zinc-800/50 dark:bg-zinc-900/60">
-                        <div className="flex items-center gap-2">
-                            <div className="flex h-10 w-10 items-center justify-center bg-slate-100 text-slate-400 dark:bg-zinc-800 dark:text-zinc-500">
-                                <KeyRound className="h-5 w-5" />
-                            </div>
-                            <div>
-                                <h3 className="text-base font-bold text-slate-900 dark:text-white">Reset Password</h3>
-                                <p className="text-xs text-slate-500">
-                                    Customer ini belum memiliki akun login (belum pernah daftar dengan password), jadi tidak ada password untuk
-                                    direset.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <SetPasswordCard customerId={customer.id} customerName={customer.name} />
                 )}
             </div>
         </AppLayout>

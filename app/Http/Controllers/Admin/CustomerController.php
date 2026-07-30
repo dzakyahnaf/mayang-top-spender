@@ -187,4 +187,39 @@ class CustomerController extends Controller
         return redirect()->route('admin.customer.edit', $customer->id)
             ->with('success', "Password customer \"{$customer->name}\" berhasil direset.");
     }
+
+    public function setPassword(Request $request, Customer $customer): RedirectResponse
+    {
+        abort_if($customer->user_id !== null, 404);
+
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $accountExists = User::where('email', $customer->email)
+            ->orWhere('phone', $customer->phone)
+            ->exists();
+
+        if ($accountExists) {
+            return back()->withErrors([
+                'password' => 'Email atau nomor HP customer ini sudah dipakai akun lain. Perbarui data customer terlebih dahulu.',
+            ]);
+        }
+
+        DB::transaction(function () use ($request, $customer): void {
+            $user = new User([
+                'name' => $customer->name,
+                'email' => $customer->email,
+                'phone' => $customer->phone,
+                'password' => $request->password,
+            ]);
+            $user->role = 'customer';
+            $user->save();
+
+            $customer->update(['user_id' => $user->id]);
+        });
+
+        return redirect()->route('admin.customer.edit', $customer->id)
+            ->with('success', "Akun login untuk customer \"{$customer->name}\" berhasil dibuat.");
+    }
 }
