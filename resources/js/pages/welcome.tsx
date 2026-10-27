@@ -2,9 +2,10 @@ import PublicFooter from '@/components/public-footer';
 import PublicNavbar from '@/components/public-navbar';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRight, Gift, LogIn, RotateCcw, ShoppingBag, Trophy, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const HERO_IMG = '/MAYANG-bg-1.webp';
+const FLASH_DEAL_IMG = '/banner-flash-deal.webp';
 const GALLERY_IMGS = [
     { src: '/hadiah-emas.webp', alt: 'Hadiah Emas Mayang Top Spender' },
     { src: '/hadiah-umroh.webp', alt: 'Hadiah Umrah Mayang Top Spender' },
@@ -27,6 +28,16 @@ const joinSteps = [
 
 export default function Welcome() {
     const [showHowTo, setShowHowTo] = useState(false);
+    const [slide, setSlide] = useState(0);
+    const [paused, setPaused] = useState(false);
+
+    useEffect(() => {
+        if (paused) {
+            return;
+        }
+        const timer = setInterval(() => setSlide((s) => (s + 1) % 2), 6000);
+        return () => clearInterval(timer);
+    }, [paused, slide]);
 
     return (
         <>
@@ -34,46 +45,89 @@ export default function Welcome() {
             <div className="selection:bg-mayang-500 relative min-h-screen overflow-x-hidden bg-white font-sans text-slate-900 selection:text-white">
                 <PublicNavbar current="" />
 
-                {/* Hero banner, full-width dengan teks di tengah */}
-                <section className="relative z-10 h-[85vh] min-h-[600px] w-full overflow-hidden pt-20">
-                    <img src={HERO_IMG} alt="Mayang Modest Wear" className="absolute inset-0 h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/50" aria-hidden="true" />
+                {/* Banner slider: slide 0 = banner Flash Deal (paling depan), slide 1 = hero teks */}
+                <section
+                    className="relative z-10 min-h-[600px] w-full overflow-hidden pt-20"
+                    onMouseEnter={() => setPaused(true)}
+                    onMouseLeave={() => setPaused(false)}
+                >
+                    {/* Spacer: tinggi section mengikuti rasio banner (2000x855) supaya tidak ada gap kiri/kanan */}
+                    <div className="aspect-[2000/855] w-full" aria-hidden="true" />
+                    <Link
+                        href={route('leaderboard')}
+                        aria-hidden={slide !== 0}
+                        tabIndex={slide === 0 ? 0 : -1}
+                        className={`absolute inset-0 flex items-center justify-center bg-[#fbeee6] pt-20 transition-opacity duration-700 ${
+                            slide === 0 ? 'opacity-100' : 'pointer-events-none opacity-0'
+                        }`}
+                    >
+                        <img
+                            src={FLASH_DEAL_IMG}
+                            alt="Mayang Top Spender Flash Deal, poin belanja 3x dari biasanya"
+                            className="h-full w-full object-contain xl:object-cover"
+                        />
+                    </Link>
 
-                    <div className="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-4 text-center text-white sm:px-6">
-                        <p className="mb-4 text-xs font-bold tracking-[0.3em] text-white/70 uppercase">Mayang - Top Spender</p>
-                        <h1 className="font-display mb-8 text-5xl leading-[1.05] font-bold tracking-tight sm:text-6xl lg:text-7xl">
-                            Jadilah yang <span className="text-mayang-300 italic">Teratas.</span>
-                        </h1>
-                        <p className="mb-4 max-w-2xl text-lg leading-relaxed text-white/85">
-                            Di 27 tahun bersama Mayang, setiap transaksi selama periode program akan tercatat sebagai kesempatan meraih{' '}
-                            <strong className="text-white">Paket Umrah</strong>. Cek posisimu dan ikuti perkembangannya langsung disini.
-                        </p>
-                        <p className="mb-10 text-sm font-bold tracking-[0.2em] text-white/60 uppercase">1 Juli &ndash; 31 Desember 2026</p>
+                    <div
+                        aria-hidden={slide !== 1}
+                        className={`absolute inset-0 pt-20 transition-opacity duration-700 ${slide === 1 ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                    >
+                        <img src={HERO_IMG} alt="Mayang Modest Wear" className="absolute inset-0 h-full w-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/50" aria-hidden="true" />
 
-                        <div className="flex flex-col flex-wrap justify-center gap-4 sm:flex-row">
-                            <Link
-                                href={route('leaderboard')}
-                                className="group bg-mayang-500 hover:bg-mayang-600 flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-[0.15em] text-white uppercase transition-all"
-                            >
-                                Papan Peringkat
-                                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                            </Link>
-                            <Link
-                                href={route('register')}
-                                className="flex items-center justify-center border border-white/40 bg-white/10 px-8 py-4 text-sm font-bold tracking-[0.15em] text-white uppercase backdrop-blur-sm transition-all hover:border-white hover:bg-white/20"
-                            >
-                                Daftar Sekarang
-                            </Link>
+                        <div className="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-4 text-center text-white sm:px-6">
+                            <p className="mb-4 text-xs font-bold tracking-[0.3em] text-white/70 uppercase">Mayang Anniversary 27th &bull; Timeless</p>
+                            <h1 className="font-display mb-4 text-5xl leading-[1.05] font-bold tracking-tight sm:text-6xl lg:text-7xl">
+                                Top Spender <span className="text-mayang-300 italic">Flash Deal</span>
+                            </h1>
+                            <p className="mb-8 text-sm font-bold tracking-[0.2em] text-white/60 uppercase">31 Oktober &ndash; 1 November 2026</p>
+                            <p className="font-display mb-2 text-4xl font-bold tracking-tight uppercase sm:text-5xl">
+                                3X Poin Belanja
+                            </p>
+                            <p className="mb-4 max-w-2xl text-lg leading-relaxed text-white/85">
+                                Makin banyak belanja, makin besar kesempatan naik ranking!
+                            </p>
+                            <p className="mb-10 max-w-3xl text-sm font-semibold tracking-wide text-white/70">
+                                2 Paket Umrah &bull; Logam Mulia &bull; Microwave &bull; Bolde Set Panci &bull; Voucher Belanja
+                            </p>
+
+                            <div className="flex flex-col flex-wrap justify-center gap-4 sm:flex-row">
+                                <Link
+                                    href={route('register')}
+                                    className="group bg-mayang-500 hover:bg-mayang-600 flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-[0.15em] text-white uppercase transition-all"
+                                >
+                                    Belanja Sekarang
+                                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                                </Link>
+                                <Link
+                                    href={route('leaderboard')}
+                                    className="flex items-center justify-center border border-white/40 bg-white/10 px-8 py-4 text-sm font-bold tracking-[0.15em] text-white uppercase backdrop-blur-sm transition-all hover:border-white hover:bg-white/20"
+                                >
+                                    Cek Ranking
+                                </Link>
+                            </div>
+                            <div className="mt-8">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowHowTo(true)}
+                                    className="text-mayang-200 hover:text-mayang-100 text-sm font-semibold underline-offset-4 transition-colors hover:underline"
+                                >
+                                    Cara meraih hadiahnya &rarr;
+                                </button>
+                            </div>
                         </div>
-                        <div className="mt-8">
+                    </div>
+
+                    <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+                        {[0, 1].map((i) => (
                             <button
+                                key={i}
                                 type="button"
-                                onClick={() => setShowHowTo(true)}
-                                className="text-mayang-200 hover:text-mayang-100 text-sm font-semibold underline-offset-4 transition-colors hover:underline"
-                            >
-                                Cara meraih hadiahnya &rarr;
-                            </button>
-                        </div>
+                                aria-label={`Tampilkan banner ${i + 1}`}
+                                onClick={() => setSlide(i)}
+                                className={`h-2 rounded-full transition-all ${slide === i ? 'bg-mayang-500 w-8' : 'w-2 bg-slate-400/70'}`}
+                            />
+                        ))}
                     </div>
                 </section>
 
@@ -110,7 +164,7 @@ export default function Welcome() {
                                         {item.step === '01' ? (
                                             <>
                                                 Daftar mandiri{' '}
-                                                <a href={route('register')} className="text-mayang-600 font-semibold underline">
+                                                <a href={route('leaderboard')} className="text-mayang-600 font-semibold underline">
                                                     di sini
                                                 </a>{' '}
                                                 atau di toko melalui kasir.
