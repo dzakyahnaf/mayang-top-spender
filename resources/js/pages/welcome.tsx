@@ -82,7 +82,7 @@ export default function Welcome() {
                             </h1>
                             <p className="mb-8 text-sm font-bold tracking-[0.2em] text-white/60 uppercase">31 Oktober &ndash; 1 November 2026</p>
                             <p className="font-display mb-2 text-4xl font-bold tracking-tight uppercase sm:text-5xl">
-                                3X Poin Belanja
+                                <span className="text-[1.18em] leading-none">3</span>X Poin Belanja
                             </p>
                             <p className="mb-4 max-w-2xl text-lg leading-relaxed text-white/85">
                                 Makin banyak belanja, makin besar kesempatan naik ranking!
